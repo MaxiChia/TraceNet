@@ -1,0 +1,227 @@
+/*-- scss:defaults --*/
+$primary:                 #E15759;
+$body-bg:                 #ffffff;
+$body-color:              #24292f;
+$link-color:              #E15759;
+$navbar-bg:               #24292f;
+$navbar-fg:               #ffffff;
+$font-family-sans-serif:  "Inter", system-ui, sans-serif;
+$headings-color:          #24292f;
+$border-color:            #d0d7de;
+
+/*-- scss:rules --*/
+
+p {
+  text-align: justify;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* ── hero ── */
+.hero-section {
+  background: #f6f8fa;
+  padding: 80px 40px 60px 40px;
+  text-align: center;
+  border-bottom: 3px solid #E15759;
+}
+
+.hero-eyebrow {
+  font-size: 0.78rem;
+  color: #E15759;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.hero-title {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #24292f;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+  line-height: 1;
+}
+
+.hero-subtitle {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 0.88rem;
+  color: #57606a;
+  letter-spacing: 2px;
+  margin-bottom: 1.8rem;
+}
+
+.hero-description {
+  font-size: 1.05rem;
+  color: #57606a;
+  max-width: 680px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.9;
+}
+
+/* ── incident badges ── */
+.incident-strip {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 2.5rem 0;
+}
+
+.incident-badge {
+  font-family: "JetBrains Mono", monospace;
+  background: #fff0f0;
+  border: 1px solid #E15759;
+  color: #E15759;
+  padding: 5px 14px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  letter-spacing: 1px;
+}
+
+/* ── stat strip ── */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  max-width: 660px;
+  margin: 0 auto;
+  background: #d0d7de;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.stat-card {
+  background: #ffffff;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #E15759;
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: #57606a;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-top: 6px;
+  display: block;
+}
+
+/* ── section headings ── */
+.section-heading {
+  text-align: center;
+  color: #24292f;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 4rem 0 0.5rem 0;
+}
+
+.section-divider {
+  width: 40px;
+  height: 3px;
+  background: #E15759;
+  margin: 0 auto 2.5rem auto;
+}
+
+/* ── challenge description ── */
+.challenge-text {
+  max-width: 720px;
+  margin: 0 auto 3rem auto;
+  padding: 0 20px;
+  color: #57606a;
+  line-height: 1.9;
+  font-size: 0.97rem;
+  text-align: center;
+}
+
+/* ── module/task cards ── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  max-width: 960px;
+  margin: 0 auto 3rem auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.module-card {
+  background: #f6f8fa;
+  border: 1px solid #d0d7de;
+  border-top: 3px solid #E15759;
+  border-radius: 6px;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.module-number {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  color: #E15759;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.module-card h4 {
+  color: #24292f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.module-card p {
+  color: #57606a;
+  font-size: 0.87rem;
+  line-height: 1.7;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+/* ── CTA button ── */
+.cta-wrap {
+  text-align: center;
+  margin: 2rem 0 4rem 0;
+}
+
+.cta-btn {
+  display: inline-block;
+  background: transparent;
+  border: 2px solid #E15759;
+  color: #E15759;
+  padding: 12px 36px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  font-family: monospace;
+}
+
+.cta-btn:hover {
+  background: #E15759;
+  color: #ffffff !important;
+}
+
+/* ── TOC ── */
+#TOC { border-left: 3px solid #E15759 !important; }
+#TOC a { color: #57606a !important; }
+#TOC a:hover, #TOC a.active { color: #E15759 !important; }

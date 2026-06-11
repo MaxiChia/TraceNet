@@ -1,0 +1,32 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "TraceNet"
+  navbar:
+    background: "#0d1117"
+    foreground: "#ffffff"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: proposal.qmd
+        text: Proposal
+      - href: about.qmd
+        text: Team
+    right:
+      - icon: github
+        href: https://github.com/MaxiChia/TraceNet
+
+format:
+  html:
+    theme: [flatly, custom.scss]
+    toc: true
+    toc-depth: 3
+    code-fold: true
+    code-summary: "Show code"
+    code-tools: true
+    fontsize: 1rem
+    page-layout: full
+    mermaid:
+      theme: neutral
