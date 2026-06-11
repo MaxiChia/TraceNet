@@ -5,7 +5,10 @@ format:
     toc: true
     toc-depth: 2
     toc-title: "Meetings"
-    toc-location: right
+    toc-location: left
+    code-tools: false
+    fontsize: 1rem
+    page-layout: full
 ---
 
 ## Meeting 1 — 7 June 2026

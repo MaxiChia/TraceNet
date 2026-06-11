@@ -22,7 +22,8 @@ p {
 
 /* ── hero ── */
 .hero-section {
-  background: #f6f8fa;
+  background: linear-gradient(rgba(246,248,250,0.88), rgba(246,248,250,0.88)),
+              url("images/hero-bg.png") center/cover no-repeat;
   padding: 80px 40px 60px 40px;
   text-align: center;
   border-bottom: 3px solid #E15759;
@@ -40,7 +41,7 @@ p {
 .hero-title {
   font-size: 4rem;
   font-weight: 800;
-  color: #24292f;
+  color: #0d1117;
   letter-spacing: 6px;
   text-transform: uppercase;
   margin-bottom: 0.4rem;
@@ -50,14 +51,14 @@ p {
 .hero-subtitle {
   font-family: "JetBrains Mono", "Fira Code", monospace;
   font-size: 0.88rem;
-  color: #57606a;
+  color: #444444;
   letter-spacing: 2px;
   margin-bottom: 1.8rem;
 }
 
 .hero-description {
   font-size: 1.05rem;
-  color: #57606a;
+  color: #24292f;
   max-width: 680px;
   margin: 0 auto 2rem auto;
   line-height: 1.9;

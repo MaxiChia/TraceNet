@@ -12,11 +12,10 @@ website:
         text: Home
       - href: proposal.qmd
         text: Proposal
+
+    right:
       - href: minutes.qmd
         text: Minutes of Meetings
-      - href: about.qmd
-        text: Team
-    right:
       - icon: github
         href: https://github.com/MaxiChia/TraceNet
 

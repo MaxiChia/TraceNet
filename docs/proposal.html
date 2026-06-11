@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-9cbde334c875c51da5ffc02f4db02c41.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fa726e0dfa3f8edc0014ab9f82fe6e31.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,16 +140,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="nav-link active" href="./proposal.html" aria-current="page"> 
 <span class="menu-text">Proposal</span></a>
   </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="./minutes.html"> 
 <span class="menu-text">Minutes of Meetings</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">Team</span></a>
-  </li>  
-</ul>
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/MaxiChia/TraceNet"> <i class="bi bi-github" role="img">
 </i> 
@@ -200,7 +196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Project Proposal</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+<h1 class="title">Project Proposal</h1>
 <p class="subtitle lead">TraceNet — Visualising Multi-Agent Anomalies and System Interventions</p>
 </div>
 
@@ -583,8 +579,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 
 
-<!-- -->
-
 </section>
 
 </main> <!-- /main -->
@@ -658,57 +652,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
-    }
-    const viewSource = window.document.getElementById('quarto-view-source') ||
-                       window.document.getElementById('quarto-code-tools-source');
-    if (viewSource) {
-      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-      viewSource.addEventListener("click", function(e) {
-        if (sourceUrl) {
-          // rstudio viewer pane
-          if (/\bcapabilities=\b/.test(window.location)) {
-            window.open(sourceUrl);
-          } else {
-            window.location.href = sourceUrl;
-          }
-        } else {
-          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-          modal.show();
-        }
-        return false;
-      });
-    }
-    function toggleCodeHandler(show) {
-      return function(e) {
-        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-        for (let i=0; i<detailsSrc.length; i++) {
-          const details = detailsSrc[i].parentElement;
-          if (show) {
-            details.open = true;
-          } else {
-            details.removeAttribute("open");
-          }
-        }
-        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-        const fromCls = show ? "hidden" : "unhidden";
-        const toCls = show ? "unhidden" : "hidden";
-        for (let i=0; i<cellCodeDivs.length; i++) {
-          const codeDiv = cellCodeDivs[i];
-          if (codeDiv.classList.contains(fromCls)) {
-            codeDiv.classList.remove(fromCls);
-            codeDiv.classList.add(toCls);
-          } 
-        }
-        return false;
-      }
-    }
-    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-    if (hideAllCode) {
-      hideAllCode.addEventListener("click", toggleCodeHandler(false));
-    }
-    const showAllCode = window.document.getElementById("quarto-show-all-code");
-    if (showAllCode) {
-      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -1038,247 +981,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
     }
   });
-  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Project Proposal"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "TraceNet — Visualising Multi-Agent Anomalies and System Interventions"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Brandon Komajaya, Albert Chia, Chua Wee Tian"</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "June 11, 2026"</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="an">date-modified:</span><span class="co"> "last-modified"</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">  freeze: false</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-title: "Contents"</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-location: left</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co">    code-summary: "Show code"</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-overflow: wrap</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-width: 10</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-height: 6</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-align: center</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">    fontsize: 1rem</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">    page-layout: full</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">    mermaid:</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="co">      theme: neutral</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> visual</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. Motivation</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>Modern enterprises increasingly rely on networks of autonomous AI agents to automate routine workflows — drafting communications, managing files, routing tasks, and maintaining social media presence. These multi-agent systems offer significant efficiency gains but introduce a new class of operational risk: when agents malfunction or interact in unintended ways, the consequences can propagate silently across the organisation before any human observer notices.</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>On 17 May 2046 at 11:21 UTC, an AI agent associated with John Windward — an employee of TenantThread (Company A) — published an anomalous post on SaidIT, a public social media platform. The post was routed to a seemingly arbitrary forum and its content appeared to be gibberish. No corresponding user action triggered the post. Preliminary investigation revealed this was not an isolated error: identical anomalous posts had occurred on 10 May and 11 May 2046, each time through the same terminal agent, using the same content injection mechanism, and followed by immediate evidence destruction within two seconds of publication.</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>Investigating such incidents is difficult for two reasons. First, the raw event log — 185,147 rows spanning 24 event types across nearly ten weeks — overwhelms manual inspection. Second, the relevant signals are sparse and non-obvious: the anomalous posts account for fewer than 0.2% of all events, and the relay chain responsible spans ten hours and nine distinct agents per incident. Static reports or dashboards cannot support the kind of interactive, hypothesis-driven exploration that forensic investigation requires.</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>This project addresses that gap by building **TraceNet** — a web-enabled, interactive Shiny application that enables system administrators to reconstruct the causal chain behind anomalous agent behaviour, contextualise isolated incidents within the macro-level system topology, identify historical patterns proving the operation is not a one-off error, and evaluate a targeted structural intervention to prevent recurrence.</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. Objectives</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>TraceNet is built to address the three investigative questions posed by <span class="co">[</span><span class="ot">VAST Challenge 2026 Mini-Challenge 2</span><span class="co">](https://vast-challenge.github.io/2026/MC2.html)</span>:</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>**Objective 1 — Reconstruct and audit the incident.** Provide an interactive timeline and network explorer that allows analysts to trace the exact sequence of events leading to each anomalous SaidIT post, map the multi-agent architecture within which it occurred, and identify John Windward as the terminal executor of a multi-hop delegation chain rather than the originating actor.</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>**Objective 2 — Decode the delivery mechanism.** Enable analysts to characterise how the anomalous post content bypassed normal agent-generated posting workflows, using the <span class="in">`content_source`</span> field as the forensic detection signal. Establish why the existing <span class="in">`saidit_post_check`</span> validation gate failed to block the posts on all three occasions.</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>**Objective 3 — Identify historical patterns and propose an intervention.** Support analysts in confirming that the three incidents share a stable core actor network, a fixed terminal executor, and an identical scripted terminal sequence — proving coordinated intent. Evaluate a single, well-defined intervention at the existing validation gate to prevent future occurrences without requiring new infrastructure.</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. Data</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>The project uses two data files from <span class="co">[</span><span class="ot">VAST Challenge 2026 Mini-Challenge 2</span><span class="co">](https://vast-challenge.github.io/2026/MC2.html)</span>:</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>**`mc2_df.rds`** — TenantThread's internal multi-agent event log, containing 185,147 rows across 24 event types spanning 8 May to 16 July 2046. Each row represents a single system event. Key fields include <span class="in">`short_name`</span> (event type), <span class="in">`when`</span> (Unix timestamp), <span class="in">`parties`</span> (list column of involved agents), <span class="in">`target_agent`</span> (recipient in task delegation events), and a nested <span class="in">`details`</span> dataframe with 42 sub-columns including <span class="in">`content_source`</span>, <span class="in">`file`</span>, <span class="in">`forum`</span>, and <span class="in">`task`</span>.</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>**`org_chart.json`** — TenantThread's organisational hierarchy, containing 75 nodes (1 company, 6 departments, 19 teams, 49 persons) connected by hierarchical <span class="in">`contains`</span> relationships. Used to contextualise each agent's position and formal reporting authority within the organisation.</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. Methodology</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4.1 Data preparation</span></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>Two primary transformations are applied before any analysis.</span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>The <span class="in">`when`</span> column is converted from Unix timestamp to a proper datetime object using <span class="in">`as_datetime()`</span>, with three derived columns — <span class="in">`date`</span>, <span class="in">`hour`</span>, <span class="in">`wday`</span> — added for temporal filtering in the Shiny app.</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>The <span class="in">`details`</span> column contains a nested dataframe with 42 sub-columns embedded within each row. These are flattened into the main dataframe using <span class="in">`bind_cols()`</span>, enabling direct column-level access to fields including <span class="in">`content_source`</span>, <span class="in">`file`</span>, <span class="in">`forum`</span>, and <span class="in">`task`</span>.</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>A single binary classification rule is then derived: <span class="in">`saidit_post`</span> events where <span class="in">`content_source IS NOT NULL`</span> are classified as anomalous; all others are normal. This rule — confirmed across all three incidents — is the forensic detection foundation for the entire investigation. Under normal posting behaviour, content is generated by the agent through the registered file pathway and <span class="in">`content_source`</span> remains NA. In all three anomalous posts, this is inverted: <span class="in">`content_source`</span> carries the injected filename and <span class="in">`file`</span> is NA, bypassing file registration and audit controls entirely.</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### 4.2 Analytical pipeline</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>flowchart LR</span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>  A[<span class="ot">/mc2_df.rds/</span>] --&gt; B[Parse timestamps&lt;br/&gt;Flatten details]</span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>  C[<span class="ot">/org_chart.json/</span>] --&gt; D[Extract nodes&lt;br/&gt;<span class="ot">and</span> edges]</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>  B --&gt; E[Classify events&lt;br/&gt;Normal vs anomalous]</span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>  D --&gt; F[Build org&lt;br/&gt;hierarchy graph]</span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>  E --&gt; G[Reconstruct relay&lt;br/&gt;chains per incident]</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>  F --&gt; G</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>  G --&gt; H[Temporal&lt;br/&gt;analysis]</span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>  G --&gt; I[Network&lt;br/&gt;analysis]</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>  G --&gt; J[Recurrence&lt;br/&gt;analysis]</span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>  H --&gt; K[<span class="ot">/TraceNet Shiny App/</span>]</span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>  I --&gt; K</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>  J --&gt; K</span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>**Temporal analysis.** Event counts by weekday and hour are aggregated to establish the system's baseline activity rhythm. Per-actor timelines are constructed for each incident date, locating the anomalous post within its surrounding context and identifying the clustering of delegation, post-check, post, and deletion events.</span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>**Network analysis.** Delegation chains are reconstructed using <span class="in">`queue_subordinate_task`</span> events with <span class="in">`task = "read_file"`</span>, tracing directionality through the <span class="in">`target_agent`</span> field (the <span class="in">`from`</span>/<span class="in">`to`</span> fields are NA for task events). Node-level degree centrality is computed using <span class="in">`igraph`</span>. The full relay graph is built with <span class="in">`tidygraph`</span> and visualised with <span class="in">`ggraph`</span> using Fruchterman-Reingold layout.</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>**Recurrence analysis.** Actor participation across all three incident dates is compared using a presence heatmap. The terminal four-event sequence (<span class="in">`saidit_post_check`</span> → <span class="in">`saidit_post`</span> → <span class="in">`delete_file`</span> × 2) is extracted for each incident and aligned at the post-check timestamp to demonstrate one-second precision timing consistency across dates — evidence of a scripted, automated protocol rather than manual action.</span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## 5. Application Design</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>TraceNet is structured across three analytical modules, each corresponding to one MC2 investigative objective. Modules share a **reactive data backend**: selecting an agent in the network tab propagates that filter to the timeline and recurrence tabs, allowing analysts to follow a single actor across all three analytical views without re-entering parameters.</span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Module 1 — System topology and event reconstruction</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>*Addresses Objectives 1 and 2*</span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>**Macro view — agent interaction network.** An interactive `ggraph` network renders the full TenantThread agent interaction graph for a user-selected time window. Edge colour distinguishes directive events (`queue_subordinate_task`, red) from informational events (blue). Edge width encodes interaction frequency. Node size is proportional to degree centrality. A **period toggle** (pre-incident / incident window / post-incident / full log) enables before-and-after topology comparison directly addressing the Q1 requirement to characterise normal vs anomalous system behaviour.</span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>**Micro view — incident event timeline.** An interactive `plotly` timeline plots all events involving the confirmed chain actors on each incident date, coloured by event type (delegation, post-check, anomalous post, deletion). A **date selector** switches between the May 10, May 11, and May 17 incidents. A **time-window slider** zooms from the full-day view down to the critical twelve-minute window around the anomalous post.</span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>**Relay chain arc diagram.** The confirmed delegation chain for the selected incident is rendered as a separate <span class="in">`ggraph`</span> arc diagram with timestamped edges, making the relay structure — and non-adjacent node reuse — immediately legible.</span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a>*Proposed visualisations: `ggraph` (FR layout, static + interactive via `ggiraph`), `plotly` timeline*</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="fu">### Module 2 — Content source anomaly and detection</span></span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>*Addresses Objective 2*</span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>This module investigates *how* the anomalous posts bypassed the existing validation infrastructure.</span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>**Normal vs anomalous posting comparison.** A side-by-side visual comparison of the <span class="in">`saidit_post`</span> event structure under normal and anomalous conditions: in normal posts, <span class="in">`content`</span> is populated and <span class="in">`content_source`</span> is NA; in anomalous posts, this is inverted. The comparison makes the detection rule (<span class="in">`content_source IS NOT NULL`</span>) visually self-evident.</span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>**Validation gate failure analysis.** An annotated event sequence diagram for each incident shows the existing <span class="in">`saidit_post_check`</span> firing one second before the post, passing without inspecting <span class="in">`content_source`</span>, and the anomalous post proceeding to publication immediately followed by evidence destruction. This makes explicit what the existing gate evaluates and what it does not.</span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>**Event log explorer.** An interactive <span class="in">`DT`</span> table of all <span class="in">`saidit_post`</span> events, filterable by pattern (normal / anomalous), date, and agent. Allows analysts to verify the three anomalous posts and inspect their field-level structure directly.</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>*Note: The `content_source` files (`HiddenOrca.txt`, `MellowOtter.txt`, `SwiftWren.txt`) appear nowhere in `mc2_df` outside the `content_source` field at the moment of posting. They were never registered as file objects and leave no decodable payload in the event log. This module focuses on the structural anomaly in the posting mechanism rather than the content of the files, which is irrecoverable by design.*</span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>*Proposed visualisations: `ggplot2` comparison panels, annotated sequence diagram, `DT` interactive table*</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### Module 3 — Historical context and intervention</span></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>*Addresses Objective 3*</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>**Actor participation heatmap.** A tile heatmap with actors on the y-axis (ordered by number of incidents) and incident dates on the x-axis. Filled by presence/absence. Identifies the six agents who appear across all three incidents — <span class="in">`victoria_rigging`</span>, <span class="in">`mia_fender`</span>, <span class="in">`lily_anchorline`</span>, <span class="in">`john_windward`</span>, <span class="in">`daniel_gangway`</span>, <span class="in">`chloe_ballast`</span> — confirming a stable coordinated core network. Incident-specific actors in the variable outer relay are visually separated in the lower rows.</span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>**Terminal sequence comparison.** A dot-plot chart aligning all three incidents at the post-check event (+0s baseline). Renders the four-event sequence (<span class="in">`saidit_post_check`</span> → <span class="in">`saidit_post`</span> → <span class="in">`delete_file`</span> → <span class="in">`delete_file`</span>) for each date, annotated with the injected filename. The one-second precision timing repeating across three separate dates — at different times of day — proves the terminal sequence is scripted rather than manual.</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>**Before / after intervention flow.** A two-panel process flow diagram (built with <span class="in">`ggplot2`</span>) showing the current vulnerable state (existing <span class="in">`saidit_post_check`</span> passes without evaluating <span class="in">`content_source`</span>) against the proposed state (a single additional null-check on <span class="in">`content_source`</span> blocks the post and raises an alert before publication). No new infrastructure is required — the gate already fires at the right moment. The addition is a single condition on a field that is always NA in legitimate posting operations.</span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>*Proposed visualisations: `ggplot2` heatmap and sequence plot, `ggplot2` process flow diagram*</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## 6. Prototype Sketches</span></span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a><span class="al">![Overview tab — system heatmap and incident summary](wireframe_overview.png)</span></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a><span class="al">![Module 1 — agent network, relay chain arc diagram, incident timeline](wireframe_module1.png)</span></span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="al">![Module 2 — normal vs anomalous comparison, validation gate sequence, event log explorer](wireframe_module2.png)</span></span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a><span class="al">![Module 3 — actor heatmap, terminal sequence comparison, intervention flow](wireframe_module3.png)</span></span>
-<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## 7. R Packages</span></span>
-<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: packages</span></span>
-<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
-<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Data wrangling</span></span>
-<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a>  tidyverse, jsonlite, lubridate, here,</span>
-<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Network analysis</span></span>
-<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>  tidygraph, ggraph, igraph,</span>
-<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Visualisation</span></span>
-<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a>  ggplot2, plotly, ggiraph, patchwork,</span>
-<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>  scales, ggtext, ggrepel,</span>
-<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tables</span></span>
-<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>  DT, knitr,</span>
-<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Shiny</span></span>
-<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a>  shiny, bslib, shinyWidgets, shinyjs</span>
-<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Package        <span class="pp">|</span> Role                                                       <span class="pp">|</span></span>
-<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------------------------------|------------------------------------|</span></span>
-<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`tidyverse`</span>    <span class="pp">|</span> Core data wrangling and <span class="in">`ggplot2`</span>-based visualisation      <span class="pp">|</span></span>
-<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`jsonlite`</span>     <span class="pp">|</span> Parsing <span class="in">`org_chart.json`</span>                                   <span class="pp">|</span></span>
-<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`lubridate`</span>    <span class="pp">|</span> Unix timestamp conversion and time-window filtering        <span class="pp">|</span></span>
-<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`tidygraph`</span>    <span class="pp">|</span> Tidy graph manipulation for relay chain and org network    <span class="pp">|</span></span>
-<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`ggraph`</span>       <span class="pp">|</span> Static network visualisation (Fruchterman-Reingold layout) <span class="pp">|</span></span>
-<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`igraph`</span>       <span class="pp">|</span> Degree centrality and shortest-path computation            <span class="pp">|</span></span>
-<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`plotly`</span>       <span class="pp">|</span> Interactive timeline charts with hover tooltips            <span class="pp">|</span></span>
-<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`ggiraph`</span>      <span class="pp">|</span> Interactive <span class="in">`ggplot2`</span>-based network with click/hover       <span class="pp">|</span></span>
-<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`patchwork`</span>    <span class="pp">|</span> Multi-panel chart composition                              <span class="pp">|</span></span>
-<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`DT`</span>           <span class="pp">|</span> Interactive event log explorer in Shiny                    <span class="pp">|</span></span>
-<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`shiny`</span>        <span class="pp">|</span> Application framework                                      <span class="pp">|</span></span>
-<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`bslib`</span>        <span class="pp">|</span> Modern Bootstrap-based UI layout                           <span class="pp">|</span></span>
-<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`shinyWidgets`</span> <span class="pp">|</span> Enhanced Shiny input controls                              <span class="pp">|</span></span>
-<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> <span class="in">`shinyjs`</span>      <span class="pp">|</span> JavaScript-driven reactive UI state                        <span class="pp">|</span></span>
-<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a><span class="fu">## 8. Division of Labour</span></span>
-<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Member <span class="pp">|</span> Primary module <span class="pp">|</span> Responsibilities <span class="pp">|</span></span>
-<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a><span class="pp">|------------------------|------------------------|------------------------|</span></span>
-<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Brandon Komajaya <span class="pp">|</span> Module 1 — System topology and event reconstruction <span class="pp">|</span> Agent interaction network, relay chain arc diagram, period toggle, incident timeline, Shiny tab <span class="pp">|</span></span>
-<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Albert Chia <span class="pp">|</span> Module 3 — Historical context and intervention <span class="pp">|</span> Actor participation heatmap, terminal sequence comparison, before/after intervention flow, Shiny tab <span class="pp">|</span></span>
-<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Chua Wee Tian <span class="pp">|</span> Module 2 — Content source anomaly and detection <span class="pp">|</span> Normal vs anomalous posting comparison, validation gate sequence diagram, event log explorer, Shiny tab <span class="pp">|</span></span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> All members <span class="pp">|</span> Overview tab, project website, poster, user guide, minutes of meeting <span class="pp">|</span> Shared deliverables allocated equally <span class="pp">|</span></span>
-<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## 9. Project Schedule</span></span>
-<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Milestone                                        <span class="pp">|</span> Target date  <span class="pp">|</span></span>
-<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------------------------------------------------|--------------|</span></span>
-<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Project proposal published on Vercel             <span class="pp">|</span> 10 June 2026 <span class="pp">|</span></span>
-<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Data preparation and EDA complete                <span class="pp">|</span> 17 June 2026 <span class="pp">|</span></span>
-<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Module prototypes (all three, standalone)        <span class="pp">|</span> 24 June 2026 <span class="pp">|</span></span>
-<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Shiny app fully integrated with reactive backend <span class="pp">|</span> 28 June 2026 <span class="pp">|</span></span>
-<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Project website complete                         <span class="pp">|</span> 30 June 2026 <span class="pp">|</span></span>
-<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Poster uploaded to eLearn                        <span class="pp">|</span> 1 July 2026  <span class="pp">|</span></span>
-<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Poster presentation                              <span class="pp">|</span> 4 July 2026  <span class="pp">|</span></span>
-<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Final submission to eLearn                       <span class="pp">|</span> 5 July 2026  <span class="pp">|</span></span>
-<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: project-gantt</span></span>
-<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a><span class="co">#| fig-cap: "Figure 9.1: TraceNet project timeline"</span></span>
-<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
-<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
-<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(vistime, ggplot2)</span>
-<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>schedule <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">text =</span></span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>  <span class="st">"event,group,start,end,color</span></span>
-<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Proposal,2026-06-05,2026-06-10,#a5d6a7</span></span>
-<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Data preparation and EDA,2026-06-10,2026-06-17,#DD4B39</span></span>
-<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Module prototypes,2026-06-14,2026-06-24,#DD4B39</span></span>
-<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Shiny integration,2026-06-24,2026-06-28,#DD4B39</span></span>
-<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Project website,2026-06-10,2026-06-30,#DD4B39</span></span>
-<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Poster design,2026-06-21,2026-07-01,#DD4B39</span></span>
-<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a><span class="st">  ,User guide,2026-06-25,2026-07-05,#DD4B39</span></span>
-<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a><span class="st">  ,Final submission,2026-07-01,2026-07-05,#DD4B39"</span></span>
-<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">gg_vistime</span>(schedule,</span>
-<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>                <span class="at">title =</span> <span class="st">"TraceNet — Project Timeline (AY2025-26 April Term)"</span>)</span>
-<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span></span>
-<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
-<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">as.numeric</span>(<span class="fu">as.POSIXct</span>(<span class="st">"2026-07-05"</span>)),</span>
-<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
-</div></div></div></div></div>
+  </script>
 </div> <!-- /content -->
 
 

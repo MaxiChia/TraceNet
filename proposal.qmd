@@ -16,7 +16,7 @@ format:
     toc-location: left
     code-fold: true
     code-summary: "Show code"
-    code-tools: true
+    code-tools: false
     code-overflow: wrap
     fig-width: 10
     fig-height: 6
