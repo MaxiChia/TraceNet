@@ -12,6 +12,8 @@ website:
         text: Home
       - href: proposal.qmd
         text: Proposal
+      - href: minutes.qmd
+        text: Minutes of Meetings
       - href: about.qmd
         text: Team
     right:

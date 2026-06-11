@@ -1,0 +1,53 @@
+---
+title: "Minutes of Meeting"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    toc-title: "Meetings"
+    toc-location: right
+---
+
+## Meeting 1 — 7 June 2026
+
+**Date:** 7 June 2026  
+**Time:** 10:00 – 10:45pm  
+**Location:** Teams Call  
+**Participants:** Brandon Komajaya, Albert Chia, Chua Wee Tian
+
+### Agenda
+
+1. Discussion on project topic
+2. Action items
+
+### Discussion
+
+**Review of Mini-Challenge 1 (MC1) and Mini-Challenge 2 (MC2)**
+
+The main goal of the meeting was to decide whether to proceed with MC1 or MC2 for the group project. Each team member presented their respective Take-Home Exercise 02 findings.
+
+*MC1 Presentation — Brandon:* The challenge involved an information leak at a company on 5 June. A private chat channel ("shadow channel") was created on 22 March, which the AI agent ("Judge") could not access. An intern not part of the private chat requested and was granted permission to release information, leading to the leak. The AI agent could not alert supervisors due to its lack of visibility into the private channel.
+
+*MC2 Presentation — Albert:* An in-depth analysis tracing the anomalous SaidIT post back through a delegation chain of nine agents to the earliest visible initiator. The analysis was noted as detailed, with confirmed detection rule (`content_source IS NOT NULL`) and a proposed single intervention point.
+
+*MC2 Presentation — Wee Tian:* Identified the three anomalous files (HiddenOrca.txt, MellowOtter.txt, SwiftWren.txt) and recommended a control point for file verification before posting.
+
+**Group project direction**
+
+Brandon suggested MC2 might offer more visually impressive outputs for a Shiny app. Albert noted MC1 had strong, clear visualisations — micro timeline, network graph — that would translate well to an interactive format. A concern was raised that MC2's complexity might be difficult to present effectively. The team referenced the Big Fish example poster, noting its emphasis on network diagrams as a guide for the final project's visual direction.
+
+### Conclusion
+
+The team could not reach a final decision on which Mini-Challenge to pursue. It was agreed to review each other's work again before holding a poll on 8 June 2026.
+
+### Action Items
+
+| # | Action | Owner | Due |
+|---|--------|-------|-----|
+| 1 | Review each other's Mini-Challenge submissions | All | 8 Jun 2026 |
+| 2 | Conduct a poll over Telegram to decide on MC1 or MC2 | All | 8 Jun 2026 |
+
+::: callout-note
+## Afternote
+Following a poll conducted over Telegram on 8 June 2026, the team reached a consensus to proceed with **Mini-Challenge 2** for the group project, based on the combined familiarity of two team members with the MC2 dataset and the strength of the existing analytical work.
+:::
