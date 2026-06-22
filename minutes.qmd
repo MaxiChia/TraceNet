@@ -54,3 +54,69 @@ The team could not reach a final decision on which Mini-Challenge to pursue. It 
 ## Afternote
 Following a poll conducted over Telegram on 8 June 2026, the team reached a consensus to proceed with **Mini-Challenge 2** for the group project, based on the combined familiarity of two team members with the MC2 dataset and the strength of the existing analytical work.
 :::
+
+---
+
+## Meeting 2 — 20 June 2026
+
+**Date:** 20 June 2026  
+**Time:** 10:10 – 10:45pm  
+**Location:** Teams Call  
+**Participants:** Brandon Komajaya, Albert Chia, Chua Wee Tian
+
+### Agenda
+
+1. Final project deliverables and submission requirements
+2. Shiny app development plan and work division
+3. Methodology and findings preparation
+4. Poster and user manual development
+5. Coordination schedule and checkpoints
+
+### Discussion
+
+**Final project deliverables**
+
+The team reviewed the full submission package due in two weeks. The submission consists of a Shiny app, a poster, a user guide, and meeting minutes. The core deliverable is the Shiny app — the poster will be created using screenshots and graphics from the completed application, and the 7–8 page user guide will serve as a post-development walkthrough document. The team acknowledged a heavy schedule with upcoming quizzes and presentations posed a risk to the timeline, and agreed to prioritise app development accordingly.
+
+**Shiny app development and work division**
+
+The primary goal is to convert the team's existing R code and MC2 analysis into an interactive Shiny app with more graphics and fewer words. The app is planned with a modular structure:
+
+- **Module 1** — System topology: agent network, relay chain, incident timeline
+- **Module 2** — Normal vs anomalous post differentiation
+- **Module 3** — Actor analysis and participation heatmaps
+
+The main technical challenge identified is converting the existing R code to be Shiny-compatible. Albert will begin building Shiny App and share any immediate blockers. If the conversion proves difficult, the work will be broken up and redistributed among the team. 
+
+**Methodology and findings preparation**
+
+To support app development and downstream deliverables, the team will separate methodological documentation and preliminary findings into four distinct files. Brandon is tasked with translating Albert's MC2 analysis into structured methodology and findings sections, including draft text insights, to be delivered by 22 June 2026. This will provide Albert with reference content for the Shiny app and unblock downstream tasks.
+
+**Poster and user manual development**
+
+Poster creation is deprioritised until the Shiny app modules are functional. Once the app is ready, screenshots and content will be used to create the poster, due for upload by 1 July. The user manual will be drafted by Brandon after the app is completed and stabilised. The manual will align with the app's structure, providing guidance on navigation, inputs, and interpretation of outputs.
+
+### Conclusion
+
+The team agreed on a clear division of labour and a phased delivery schedule. Albert leads Shiny app development; Brandon leads methodology documentation and user manual, and Wee Tian can assist in the Poster development. Interim checkpoints are set to monitor progress and adjust workloads.
+
+### Action Items
+
+| # | Action | Owner | Due |
+|---|--------|-------|-----|
+| 1 | Zip and share R project file (code + data) via Telegram | Albert | Immediate |
+| 2 | Prepare and submit separated methodology and findings files (4 total) | Brandon | 22 Jun 2026 |
+| 3 | Build Shiny App | Albert | 25 Jun 2026 |
+| 4 | Share blockers on code transformation; redistribute work if needed | Albert, All | 25 Jun 2026 |
+| 5 | Checkpoint meeting — review files and Shiny app status | All | 25 Jun 2026 |
+| 6 | Get familiar with the dataset and code | All | 26 Jun 2026 |
+| 7 | Weekend working session — content integration and site upload | All | 27 Jun 2026 |
+| 8 | Finalise and upload poster using content from completed app | All | 1 Jul 2026 |
+| 9 | Conduct final review meeting before poster deadline | All | 1 Jul 2026 |
+| 10 | Draft and finalise user manual after app is complete | Brandon | TBC |
+| 11 | Create new "Methodology" section on project website | Brandon | TBC |
+
+::: callout-note
+## Afternote
+Albert proceeded to build all three Shiny modules, completing Modules 1–3 ahead of the 25 June checkpoint. The app was deployed to [TraceNet on shinyapps.io](https://tracenet.shinyapps.io/TraceNet) on 22 June 2026 and linked from the TraceNet Vercel site.
+:::

@@ -1,0 +1,11 @@
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.navbar-nav a').forEach(function(link) {
+    if (link.textContent.trim().includes('App') || 
+        link.href.includes('shinyapps.io')) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+});
+</script>

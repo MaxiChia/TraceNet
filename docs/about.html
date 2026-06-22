@@ -100,7 +100,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="https://tracenet.shinyapps.io/TraceNet/"> 
+    <a class="nav-link" href="https://tracenet.shinyapps.io/TraceNet/" target="_blank"> 
 <span class="menu-text">TraceNet Shiny App ↗</span></a>
   </li>  
 </ul>
@@ -155,6 +155,17 @@ ul.task-list li input[type="checkbox"] {
 
 
 </main> <!-- /main -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.navbar-nav a').forEach(function(link) {
+    if (link.textContent.trim().includes('App') || 
+        link.href.includes('shinyapps.io')) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";

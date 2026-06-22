@@ -32,5 +32,6 @@ format:
     code-tools: false
     fontsize: 1rem
     page-layout: full
+    include-after-body: navbar_fix.html
     mermaid:
       theme: neutral

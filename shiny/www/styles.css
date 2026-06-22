@@ -1,1 +1,286 @@
-/* TraceNet custom styles — to be filled in later */
+/* =============================================================================
+   TraceNet — styles.css  VISUAL EXCELLENCE EDITION
+   Matches Big Fish aesthetic: fixed sidebar, full-height cards, clean type
+   ============================================================================= */
+
+/* --------------------------------------------------------------------------
+   ROOT & TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+:root {
+  --sidebar-width: 220px;
+  --card-border:   #dee2e6;
+  --card-radius:   6px;
+  --accent-blue:   #4E79A7;
+  --accent-red:    #E15759;
+  --accent-green:  #59A14F;
+  --accent-orange: #F28E2B;
+  --text-primary:  #212529;
+  --text-secondary:#6c757d;
+  --bg-sidebar:    #f8f9fa;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size:   0.875rem;
+  color:       var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   NAVBAR
+   -------------------------------------------------------------------------- */
+.navbar {
+  padding: 0.4rem 1rem !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.navbar-brand {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+}
+
+.navbar-nav .nav-link {
+  font-size:   0.8rem !important;
+  font-weight: 500 !important;
+  padding:     0.4rem 0.75rem !important;
+  letter-spacing: 0.02em;
+}
+
+.navbar-nav .nav-link.active {
+  border-bottom: 2px solid #76B7B2;
+  color: #76B7B2 !important;
+}
+
+/* --------------------------------------------------------------------------
+   SIDEBAR — fixed width, no resize handle
+   -------------------------------------------------------------------------- */
+.bslib-sidebar-layout > .sidebar {
+  width:      var(--sidebar-width) !important;
+  min-width:  var(--sidebar-width) !important;
+  max-width:  var(--sidebar-width) !important;
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--card-border) !important;
+  padding:    1rem 0.85rem !important;
+  overflow-y: auto;
+  flex-shrink: 0 !important;
+}
+
+/* Hide the drag handle */
+.bslib-sidebar-layout > .collapse-toggle {
+  display: none !important;
+}
+
+/* Sidebar section labels — small caps style */
+.sidebar .sidebar-title,
+.sidebar h6,
+.sidebar .form-label,
+.sidebar label {
+  font-size:      0.68rem !important;
+  font-weight:    600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  color:          var(--text-secondary) !important;
+  margin-bottom:  0.3rem !important;
+}
+
+/* Sidebar controls */
+.sidebar .form-select,
+.sidebar .form-control {
+  font-size:    0.8rem !important;
+  border-radius: 4px !important;
+  border-color:  #ced4da !important;
+  padding:      0.25rem 0.5rem !important;
+}
+
+.sidebar .form-check-label {
+  font-size:   0.8rem !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  color: var(--text-primary) !important;
+}
+
+.sidebar hr {
+  margin: 0.6rem 0 !important;
+  border-color: #dee2e6 !important;
+  opacity: 0.5 !important;
+}
+
+.sidebar .help-block,
+.sidebar .shiny-text-output {
+  font-size: 0.72rem !important;
+  color:     var(--text-secondary) !important;
+  line-height: 1.4 !important;
+}
+
+/* Radio buttons */
+.sidebar .form-check {
+  padding-left: 1.4rem !important;
+  margin-bottom: 0.2rem !important;
+}
+
+/* Slider */
+.sidebar .irs--shiny .irs-bar {
+  background: var(--accent-blue) !important;
+  border-color: var(--accent-blue) !important;
+}
+
+.sidebar .irs--shiny .irs-handle {
+  border-color: var(--accent-blue) !important;
+}
+
+/* --------------------------------------------------------------------------
+   MAIN CONTENT AREA
+   -------------------------------------------------------------------------- */
+.bslib-sidebar-layout > .main {
+  padding:   0.75rem !important;
+  overflow-y: auto;
+}
+
+/* --------------------------------------------------------------------------
+   CARDS — no excess padding, header clearly separated
+   -------------------------------------------------------------------------- */
+.card {
+  border:        1px solid var(--card-border) !important;
+  border-radius: var(--card-radius) !important;
+  box-shadow:    0 1px 3px rgba(0,0,0,0.06) !important;
+  margin-bottom: 0.6rem !important;
+}
+
+.card-header {
+  background:    #ffffff !important;
+  border-bottom: 1px solid var(--card-border) !important;
+  padding:       0.45rem 0.85rem !important;
+  font-size:     0.78rem !important;
+  font-weight:   600 !important;
+  color:         var(--text-primary) !important;
+  letter-spacing: 0.02em !important;
+}
+
+.card-body {
+  padding: 0.6rem 0.75rem !important;
+}
+
+/* Full-screen expand button */
+.bslib-full-screen-enter {
+  opacity: 0.4 !important;
+}
+.card:hover .bslib-full-screen-enter {
+  opacity: 1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT — tighter column gaps
+   -------------------------------------------------------------------------- */
+.bslib-column-wrap {
+  gap: 0.6rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   PLOTS — fill their containers, no overflow
+   -------------------------------------------------------------------------- */
+.shiny-plot-output,
+.shiny-html-output,
+.plotly,
+.vis-network {
+  width:  100% !important;
+  height: 100% !important;
+}
+
+/* Plotly toolbar — hide until hover */
+.modebar {
+  opacity: 0 !important;
+  transition: opacity 0.2s !important;
+}
+.js-plotly-plot:hover .modebar {
+  opacity: 1 !important;
+}
+
+/* --------------------------------------------------------------------------
+   DT TABLES — compact, clean
+   -------------------------------------------------------------------------- */
+table.dataTable {
+  font-size: 0.78rem !important;
+}
+
+table.dataTable thead th {
+  font-size:      0.7rem !important;
+  font-weight:    600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color:          var(--text-secondary) !important;
+  border-bottom:  2px solid var(--card-border) !important;
+  padding:        6px 10px !important;
+}
+
+table.dataTable tbody td {
+  padding:      5px 10px !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+table.dataTable tbody tr:hover {
+  background-color: #f5f8ff !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  font-size:    0.78rem !important;
+  border-radius: 4px !important;
+  border:       1px solid #ced4da !important;
+  padding:      3px 8px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_length label {
+  font-size: 0.72rem !important;
+  color:     var(--text-secondary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   VISNETWORK — remove default white border flash
+   -------------------------------------------------------------------------- */
+.vis-network canvas {
+  border-radius: 4px !important;
+}
+
+/* --------------------------------------------------------------------------
+   TAB NAV (mod2 / mod3 views via radio look clean)
+   -------------------------------------------------------------------------- */
+.nav-tabs .nav-link {
+  font-size:   0.78rem !important;
+  font-weight: 500 !important;
+  color:       var(--text-secondary) !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  padding: 0.3rem 0.75rem !important;
+}
+
+.nav-tabs .nav-link.active {
+  color:        var(--accent-blue) !important;
+  border-bottom: 2px solid var(--accent-blue) !important;
+  background:   transparent !important;
+}
+
+/* --------------------------------------------------------------------------
+   OVERVIEW PAGE SPECIFICS
+   -------------------------------------------------------------------------- */
+.ov-stat-val {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   SCROLLBAR — thin, subtle
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width:  5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background:    #cccccc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #aaaaaa;
+}
