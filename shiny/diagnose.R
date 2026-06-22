@@ -1,0 +1,5 @@
+source('global.R')
+cat('--- terminal_seq_events ---\n')
+print(terminal_seq_events[, c('datetime','short_name','target_agent','parties','content_source')])
+cat('\n--- incident_events non-NA counts ---\n')
+print(sapply(incident_events, function(x) sum(!is.na(x))))

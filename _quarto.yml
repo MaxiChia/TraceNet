@@ -12,7 +12,9 @@ website:
         text: Home
       - href: proposal.qmd
         text: Proposal
-
+      - href: https://tracenet.shinyapps.io/TraceNet/
+        text: "TraceNet Shiny App ↗"
+        
     right:
       - href: minutes.qmd
         text: Minutes of Meetings
