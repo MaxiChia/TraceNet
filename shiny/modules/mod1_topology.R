@@ -376,3 +376,129 @@ mod1_render_timeline <- function(data) {
     plotly::layout(legend = list(orientation = "h", y = -0.1,
                                  font = list(size = 10)))
 }
+
+# -----------------------------------------------------------------------------
+# mod1_render_delegation_table
+# Task delegation audit trail for the selected incident date
+# Shows queue_subordinate_task events in chain order with timing
+# -----------------------------------------------------------------------------
+mod1_render_delegation_table <- function(data, network_mode, selected_date) {
+  
+  # Hardcoded 17 May chain for relay mode (always accurate, no data query needed)
+  relay_chain_hardcoded <- tibble::tibble(
+    Step = 1:10,
+    Time = c("00:51:43", "02:26:11", "04:12:33", "05:34:09",
+             "05:52:21", "06:44:57", "08:16:02", "10:11:44",
+             "11:12:38", "11:21:13"),
+    From = c("james_stern", "gabriel_sonar", "daniel_gangway",
+             "zoey_drydock", "mia_fender", "victoria_rigging",
+             "zoey_drydock", "lily_anchorline", "daniel_gangway",
+             "chloe_ballast"),
+    To   = c("gabriel_sonar", "daniel_gangway", "zoey_drydock",
+             "mia_fender", "victoria_rigging", "zoey_drydock",
+             "lily_anchorline", "daniel_gangway", "chloe_ballast",
+             "john_windward"),
+    Task = rep("read_file", 10),
+    Note = c(
+      "Chain initiator",
+      "Delay: 1h 35min",
+      "First pass (reused node)",
+      "First pass (reused node)",
+      "", "", "",
+      "Second pass through daniel_gangway",
+      "Second pass through zoey_drydock",
+      "\u26a1 Terminal executor — post follows in 2s"
+    )
+  )
+  
+  if (network_mode == "relay") {
+    # Show hardcoded 17 May chain with colour formatting
+    DT::datatable(
+      relay_chain_hardcoded,
+      options  = list(
+        pageLength = 10,
+        dom        = "t",         # table only — no search/pagination controls
+        ordering   = FALSE
+      ),
+      rownames = FALSE,
+      caption  = htmltools::tags$caption(
+        style = "font-weight:bold; font-size:0.9rem; text-align:left; padding:6px 0;",
+        "Task Delegation Audit Trail — 17 May 2046 (same chain structure confirmed on 10 & 11 May)"
+      )
+    ) |>
+      DT::formatStyle("Step", fontWeight = "bold", color = "#4E79A7") |>
+      DT::formatStyle("Time", fontFamily = "monospace", fontWeight = "bold") |>
+      DT::formatStyle("From",
+                      color      = DT::styleEqual("james_stern", "#F28E2B"),
+                      fontWeight = "bold"
+      ) |>
+      DT::formatStyle("To",
+                      color      = DT::styleEqual("john_windward", "#E15759"),
+                      fontWeight = DT::styleEqual("john_windward", "bold")
+      ) |>
+      DT::formatStyle("Note",
+                      color      = DT::styleEqual(
+                        "\u26a1 Terminal executor — post follows in 2s", "#E15759"
+                      ),
+                      fontStyle  = "italic",
+                      color      = "#888888"
+      )
+    
+  } else {
+    # Core mode — pull actual queue_subordinate_task events from data
+    chain_actors <- c("james_stern", "gabriel_sonar", "daniel_gangway",
+                      "zoey_drydock", "mia_fender", "victoria_rigging",
+                      "lily_anchorline", "chloe_ballast", "john_windward")
+    
+    deleg_df <- data |>
+      dplyr::filter(short_name == "queue_subordinate_task") |>
+      dplyr::mutate(
+        from_clean = stringr::str_remove(
+          purrr::map_chr(parties, ~ .x[1]), "Agent/person:"),
+        to_clean   = stringr::str_remove(
+          target_agent, "Agent/person:")
+      ) |>
+      dplyr::filter(
+        from_clean %in% chain_actors | to_clean %in% chain_actors
+      ) |>
+      dplyr::arrange(datetime) |>
+      dplyr::transmute(
+        Time = format(datetime, "%H:%M:%S"),
+        Date = format(date, "%d %b"),
+        From = stringr::str_replace_all(from_clean, "_", " ") |>
+          stringr::str_to_title(),
+        To   = stringr::str_replace_all(to_clean, "_", " ") |>
+          stringr::str_to_title(),
+        Task = details_task,
+        ID   = id
+      )
+    
+    if (nrow(deleg_df) == 0) {
+      return(DT::datatable(
+        data.frame(Message = "No delegation events for selected date."),
+        options = list(dom = "t"), rownames = FALSE
+      ))
+    }
+    
+    DT::datatable(
+      deleg_df,
+      options = list(
+        pageLength = 15, scrollX = TRUE,
+        dom = "frtip", ordering = FALSE
+      ),
+      rownames = FALSE,
+      filter   = "top",
+      caption  = htmltools::tags$caption(
+        style = "font-weight:bold; font-size:0.9rem; text-align:left; padding:6px 0;",
+        paste0("Task Delegation Events — ", ifelse(selected_date == "all",
+                                                   "All Incident Dates", selected_date))
+      )
+    ) |>
+      DT::formatStyle("Time", fontFamily = "monospace", fontWeight = "bold") |>
+      DT::formatStyle("From", fontWeight = "bold") |>
+      DT::formatStyle("To",
+                      color      = DT::styleEqual("John Windward", "#E15759"),
+                      fontWeight = DT::styleEqual("John Windward", "bold")
+      )
+  }
+}

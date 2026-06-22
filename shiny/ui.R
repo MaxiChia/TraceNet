@@ -230,12 +230,16 @@ ui <- bslib::page_navbar(
         
         bslib::card(
           full_screen = TRUE,
+          bslib::card_header("Task Delegation Audit Trail"),
+          DT::dataTableOutput("mod1_delegation")
+        ),
+        
+        bslib::card(
+          full_screen = TRUE,
           bslib::card_header("Incident Event Timeline"),
-          plotly::plotlyOutput("mod1_timeline", height = "300px")
+          plotly::plotlyOutput("mod1_timeline", height = "420px")
         )
-      )
-    )
-  ),
+      ),
   
   # ---------------------------------------------------------------------------
   # MODULE 2 — Content Source Anomaly Detection

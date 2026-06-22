@@ -4,16 +4,16 @@
 # =============================================================================
 
 server <- function(input, output, session) {
-
+  
   # ---------------------------------------------------------------------------
   # Source module files (loaded here so they share global.R environment)
   # ---------------------------------------------------------------------------
-
-
+  
+  
   # ---------------------------------------------------------------------------
   # MODULE 1 — System Topology & Event Reconstruction
   # ---------------------------------------------------------------------------
-
+  
   # Reactive: filter mc2_df to selected incident date
   mod1_data <- reactive({
     if (input$mod1_incident == "all") {
@@ -23,7 +23,7 @@ server <- function(input, output, session) {
         dplyr::filter(date == as.Date(input$mod1_incident))
     }
   })
-
+  
   # Network plot
   output$mod1_network <- visNetwork::renderVisNetwork({
     mod1_render_network(
@@ -33,16 +33,25 @@ server <- function(input, output, session) {
       selected_date = input$mod1_incident
     )
   })
-
+  
   # Timeline plot
   output$mod1_timeline <- plotly::renderPlotly({
     mod1_render_timeline(data = mod1_data())
   })
-
+  
+  # Delegation audit table
+  output$mod1_delegation <- DT::renderDataTable({
+    mod1_render_delegation_table(
+      data         = mod1_data(),
+      network_mode = input$mod1_network_mode,
+      selected_date = input$mod1_incident
+    )
+  })
+  
   # ---------------------------------------------------------------------------
   # MODULE 2 — Content Source Anomaly Detection
   # ---------------------------------------------------------------------------
-
+  
   # Panel title (reactive to view selection)
   output$mod2_panel_title <- renderText({
     switch(input$mod2_view,
@@ -93,11 +102,11 @@ server <- function(input, output, session) {
     )
   })
   
-
+  
   # ---------------------------------------------------------------------------
   # MODULE 3 — Historical Patterns & Intervention
   # ---------------------------------------------------------------------------
-
+  
   observe({
     n_actors <- dplyr::bind_rows(
       get_chain_actors_per_date("2046-05-10", "2046-05-10 12:45:40"),
@@ -144,5 +153,5 @@ server <- function(input, output, session) {
   output$mod3_plot_static <- renderPlot({
     mod3_render_intervention(panel = input$mod3_view)
   }, res = 110)
-
+  
 }

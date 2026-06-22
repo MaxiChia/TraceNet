@@ -14,6 +14,7 @@ website:
         text: Proposal
       - href: https://tracenet.shinyapps.io/TraceNet/
         text: "TraceNet Shiny App ↗"
+        target: _blank
         
     right:
       - href: minutes.qmd
