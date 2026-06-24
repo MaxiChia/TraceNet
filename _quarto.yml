@@ -1,6 +1,11 @@
 project:
   type: website
   output-dir: docs
+  render:
+    - index.qmd
+    - proposal.qmd
+    - minutes.qmd
+    - Take-Home_Exercise02/Take-Home_Ex02.qmd
 
 website:
   title: "TraceNet"
@@ -12,8 +17,16 @@ website:
         text: Home
       - href: proposal.qmd
         text: Proposal
-      - href: Take-Home_Exercise02/Take-Home_Ex02.qmd
-        text: Methodology
+      - text: "Methodology"
+        menu:
+          - text: "Overview & Data"
+            href: Take-Home_Exercise02/Take-Home_Ex02.html#overview
+          - text: "The Post"
+            href: Take-Home_Exercise02/Take-Home_Ex02.html#how-was-the-post-made
+          - text: "Analysis"
+            href: Take-Home_Exercise02/Take-Home_Ex02.html#historical-anomalies---recurrence-analysis
+          - text: "Intervention"
+            href: Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal
       - href: https://tracenet.shinyapps.io/TraceNet/
         text: "TraceNet Shiny App ↗"
         target: _blank

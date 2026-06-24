@@ -5,3 +5,4 @@ shiny/data/mc2_df.rds
 Take-Home_Exercise02/data/raw/MC2 data.json
 Take-Home_Exercise02/data/raw/mc2_df.rds
 shiny/data/*.rds
+docs/site_libs/
