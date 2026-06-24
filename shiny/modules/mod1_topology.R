@@ -16,8 +16,8 @@ RELAY_NODES <- tibble::tibble(
             "Chloe Ballast",
             "John Windward\n(Terminal)"),
   color.background = c(
-    "#F28E2B", "#4E79A7", "#E8A838", "#E8A838",
-    "#4E79A7", "#4E79A7", "#4E79A7", "#4E79A7", "#E15759"
+    "#E8A52B", "#1D9E75", "#E8C547", "#E8C547",
+    "#1D9E75", "#1D9E75", "#1D9E75", "#1D9E75", "#D84040"
   ),
   color.border               = "white",
   color.highlight.background = "#FFD700",
@@ -30,13 +30,13 @@ RELAY_NODES <- tibble::tibble(
   title = c(
     "<b>James Stern — Chain Root</b><br>First delegation: 00:51:43 UTC<br>Initiates the relay on all 3 incident dates",
     "<b>Gabriel Sonar</b><br>Received: 00:51 | Delegated: 02:26<br>Delay: 1h 35min",
-    "<b>Daniel Gangway</b><br><span style='color:#F28E2B'>Reused node — step 2 and step 8</span><br>Deliberate obfuscation tactic",
-    "<b>Zoey Drydock</b><br><span style='color:#F28E2B'>Reused node — step 3 and step 6</span><br>Deliberate obfuscation tactic",
+    "<b>Daniel Gangway</b><br><span style='color:#E8A52B'>Reused node — step 2 and step 8</span><br>Deliberate obfuscation tactic",
+    "<b>Zoey Drydock</b><br><span style='color:#E8A52B'>Reused node — step 3 and step 6</span><br>Deliberate obfuscation tactic",
     "<b>Mia Fender</b><br>Received: 05:34 | Delegated: 05:52",
     "<b>Victoria Rigging</b><br>Received: 05:52 | Delegated: 06:44",
     "<b>Lily Anchorline</b><br>Received: 08:16 | Delegated: 10:11",
     "<b>Chloe Ballast</b><br>Received: 11:12 | Delegated: 11:21",
-    "<b style='color:#E15759'>John Windward — TERMINAL EXECUTOR</b><br>Received task: 11:21:13 UTC<br>Anomalous post: 11:21:15 UTC (+2s)<br>Evidence deleted: 11:21:16–17 UTC<br>Injected file: SwiftWren.txt"
+    "<b style='color:#D84040'>John Windward — TERMINAL EXECUTOR</b><br>Received task: 11:21:13 UTC<br>Anomalous post: 11:21:15 UTC (+2s)<br>Evidence deleted: 11:21:16–17 UTC<br>Injected file: SwiftWren.txt"
   )
 )
 
@@ -54,11 +54,11 @@ RELAY_EDGES <- tibble::tibble(
                   "08:16", "10:11", "11:12",
                   "11:21 ⚡"),
   is_terminal = c(rep(FALSE, 9), TRUE),
-  color       = c(rep("#AAAAAA", 9), "#E15759"),
+  color       = c(rep("#3d5a63", 9), "#D84040"),
   width       = c(rep(2, 9), 6),
   arrows      = "to",
   font.size   = c(rep(10, 9), 13),
-  font.color  = c(rep("#888888", 9), "#E15759"),
+  font.color  = c(rep("#5DCAA5", 9), "#D84040"),
   font.bold   = c(rep(FALSE, 9), TRUE),
   smooth      = TRUE,
   dashes      = FALSE
@@ -118,7 +118,7 @@ mod1_network_relay <- function(show_labels) {
       addNodes = data.frame(
         label            = c("Chain Root", "Reused (obfuscation)",
                              "Relay Node", "Terminal Executor"),
-        color.background = c("#F28E2B", "#E8A838", "#4E79A7", "#E15759"),
+        color.background = c("#E8A52B", "#E8C547", "#1D9E75", "#D84040"),
         shape = "dot", size = 20, stringsAsFactors = FALSE
       ),
       useGroups = FALSE, position = "right", width = 0.18
@@ -147,7 +147,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
     return(visNetwork::visNetwork(
       data.frame(id = "none",
                  label = "No core actor events for selected date",
-                 color.background = "#EEEEEE"),
+                 color.background = "#1a2e35"),
       data.frame(from = character(0), to = character(0))
     ))
   }
@@ -166,7 +166,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
       arrows = "to",
       color  = ifelse(
         from %in% CORE_ACTOR_IDS & to %in% CORE_ACTOR_IDS,
-        ANOMALY_COLOUR, "#CCCCCC"
+        ANOMALY_COLOUR, "#3d5a63"
       )
     )
   
@@ -178,8 +178,8 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
       label       = ifelse(show_labels, clean_name(id), ""),
       color.background = dplyr::case_when(
         is_terminal ~ ANOMALY_COLOUR,
-        is_core     ~ "#4E79A7",
-        TRUE        ~ "#CCCCCC"
+        is_core     ~ "#1D9E75",
+        TRUE        ~ "#3d5a63"
       ),
       color.border               = "white",
       color.highlight.background = "#FFD700",
@@ -215,7 +215,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
     visNetwork::visLegend(
       addNodes = data.frame(
         label            = c("Terminal Executor", "Core Actor", "Peripheral"),
-        color.background = c(ANOMALY_COLOUR, "#4E79A7", "#CCCCCC"),
+        color.background = c(ANOMALY_COLOUR, "#1D9E75", "#3d5a63"),
         shape = "dot", size = 20, stringsAsFactors = FALSE
       ),
       useGroups = FALSE, position = "right"
@@ -288,11 +288,11 @@ mod1_render_timeline <- function(data) {
   }
   
   colour_map <- c(
-    "Task Delegation"            = "#4E79A7",
-    "Gate Check"                 = "#F28E2B",
+    "Task Delegation"            = "#1D9E75",
+    "Gate Check"                 = "#E8A52B",
     "File Read"                  = "#B07AA1",
     "Evidence Deleted"           = "#555555",
-    "Anomalous Post (INJECTION)" = "#E15759"
+    "Anomalous Post (INJECTION)" = "#D84040"
   )
   
   shape_map <- c(
@@ -338,7 +338,7 @@ mod1_render_timeline <- function(data) {
     # Pulse ring on anomalous only
     ggplot2::geom_point(
       data   = dplyr::filter(timeline_df, is_anomalous),
-      colour = "#E15759", size = 16, alpha = 0.2,
+      colour = "#D84040", size = 16, alpha = 0.2,
       shape = 1, stroke = 1.5, inherit.aes = FALSE,
       mapping = ggplot2::aes(x = datetime, y = actor_factor)
     ) +
@@ -365,8 +365,8 @@ mod1_render_timeline <- function(data) {
       strip.text         = ggplot2::element_text(face = "bold", size = 10,
                                                  colour = "white",
                                                  margin = ggplot2::margin(3,3,3,3)),
-      strip.background   = ggplot2::element_rect(fill = "#4E79A7", colour = NA),
-      panel.grid.major.x = ggplot2::element_line(colour = "#EEEEEE"),
+      strip.background   = ggplot2::element_rect(fill = "#1D9E75", colour = NA),
+      panel.grid.major.x = ggplot2::element_line(colour = "#1a2e35"),
       panel.grid.major.y = ggplot2::element_blank(),
       axis.text.y        = ggplot2::element_text(size = 9, colour = "#333333"),
       panel.spacing      = ggplot2::unit(0.6, "lines")
@@ -375,130 +375,4 @@ mod1_render_timeline <- function(data) {
   plotly::ggplotly(p, tooltip = "text") |>
     plotly::layout(legend = list(orientation = "h", y = -0.1,
                                  font = list(size = 10)))
-}
-
-# -----------------------------------------------------------------------------
-# mod1_render_delegation_table
-# Task delegation audit trail for the selected incident date
-# Shows queue_subordinate_task events in chain order with timing
-# -----------------------------------------------------------------------------
-mod1_render_delegation_table <- function(data, network_mode, selected_date) {
-  
-  # Hardcoded 17 May chain for relay mode (always accurate, no data query needed)
-  relay_chain_hardcoded <- tibble::tibble(
-    Step = 1:10,
-    Time = c("00:51:43", "02:26:11", "04:12:33", "05:34:09",
-             "05:52:21", "06:44:57", "08:16:02", "10:11:44",
-             "11:12:38", "11:21:13"),
-    From = c("james_stern", "gabriel_sonar", "daniel_gangway",
-             "zoey_drydock", "mia_fender", "victoria_rigging",
-             "zoey_drydock", "lily_anchorline", "daniel_gangway",
-             "chloe_ballast"),
-    To   = c("gabriel_sonar", "daniel_gangway", "zoey_drydock",
-             "mia_fender", "victoria_rigging", "zoey_drydock",
-             "lily_anchorline", "daniel_gangway", "chloe_ballast",
-             "john_windward"),
-    Task = rep("read_file", 10),
-    Note = c(
-      "Chain initiator",
-      "Delay: 1h 35min",
-      "First pass (reused node)",
-      "First pass (reused node)",
-      "", "", "",
-      "Second pass through daniel_gangway",
-      "Second pass through zoey_drydock",
-      "\u26a1 Terminal executor — post follows in 2s"
-    )
-  )
-  
-  if (network_mode == "relay") {
-    # Show hardcoded 17 May chain with colour formatting
-    DT::datatable(
-      relay_chain_hardcoded,
-      options  = list(
-        pageLength = 10,
-        dom        = "t",         # table only — no search/pagination controls
-        ordering   = FALSE
-      ),
-      rownames = FALSE,
-      caption  = htmltools::tags$caption(
-        style = "font-weight:bold; font-size:0.9rem; text-align:left; padding:6px 0;",
-        "Task Delegation Audit Trail — 17 May 2046 (same chain structure confirmed on 10 & 11 May)"
-      )
-    ) |>
-      DT::formatStyle("Step", fontWeight = "bold", color = "#4E79A7") |>
-      DT::formatStyle("Time", fontFamily = "monospace", fontWeight = "bold") |>
-      DT::formatStyle("From",
-                      color      = DT::styleEqual("james_stern", "#F28E2B"),
-                      fontWeight = "bold"
-      ) |>
-      DT::formatStyle("To",
-                      color      = DT::styleEqual("john_windward", "#E15759"),
-                      fontWeight = DT::styleEqual("john_windward", "bold")
-      ) |>
-      DT::formatStyle("Note",
-                      color      = DT::styleEqual(
-                        "\u26a1 Terminal executor — post follows in 2s", "#E15759"
-                      ),
-                      fontStyle  = "italic",
-                      color      = "#888888"
-      )
-    
-  } else {
-    # Core mode — pull actual queue_subordinate_task events from data
-    chain_actors <- c("james_stern", "gabriel_sonar", "daniel_gangway",
-                      "zoey_drydock", "mia_fender", "victoria_rigging",
-                      "lily_anchorline", "chloe_ballast", "john_windward")
-    
-    deleg_df <- data |>
-      dplyr::filter(short_name == "queue_subordinate_task") |>
-      dplyr::mutate(
-        from_clean = stringr::str_remove(
-          purrr::map_chr(parties, ~ .x[1]), "Agent/person:"),
-        to_clean   = stringr::str_remove(
-          target_agent, "Agent/person:")
-      ) |>
-      dplyr::filter(
-        from_clean %in% chain_actors | to_clean %in% chain_actors
-      ) |>
-      dplyr::arrange(datetime) |>
-      dplyr::transmute(
-        Time = format(datetime, "%H:%M:%S"),
-        Date = format(date, "%d %b"),
-        From = stringr::str_replace_all(from_clean, "_", " ") |>
-          stringr::str_to_title(),
-        To   = stringr::str_replace_all(to_clean, "_", " ") |>
-          stringr::str_to_title(),
-        Task = details_task,
-        ID   = id
-      )
-    
-    if (nrow(deleg_df) == 0) {
-      return(DT::datatable(
-        data.frame(Message = "No delegation events for selected date."),
-        options = list(dom = "t"), rownames = FALSE
-      ))
-    }
-    
-    DT::datatable(
-      deleg_df,
-      options = list(
-        pageLength = 15, scrollX = TRUE,
-        dom = "frtip", ordering = FALSE
-      ),
-      rownames = FALSE,
-      filter   = "top",
-      caption  = htmltools::tags$caption(
-        style = "font-weight:bold; font-size:0.9rem; text-align:left; padding:6px 0;",
-        paste0("Task Delegation Events — ", ifelse(selected_date == "all",
-                                                   "All Incident Dates", selected_date))
-      )
-    ) |>
-      DT::formatStyle("Time", fontFamily = "monospace", fontWeight = "bold") |>
-      DT::formatStyle("From", fontWeight = "bold") |>
-      DT::formatStyle("To",
-                      color      = DT::styleEqual("John Windward", "#E15759"),
-                      fontWeight = DT::styleEqual("John Windward", "bold")
-      )
-  }
 }

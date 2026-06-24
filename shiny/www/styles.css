@@ -1,183 +1,264 @@
 /* =============================================================================
-   TraceNet — styles.css  VISUAL EXCELLENCE EDITION
-   Matches Big Fish aesthetic: fixed sidebar, full-height cards, clean type
+   TraceNet — styles.css  BOLD & MODERN EDITION
+   Deep teal/slate shell · gold accents · high contrast
    ============================================================================= */
 
-/* --------------------------------------------------------------------------
-   ROOT & TYPOGRAPHY
-   -------------------------------------------------------------------------- */
 :root {
-  --sidebar-width: 220px;
-  --card-border:   #dee2e6;
-  --card-radius:   6px;
-  --accent-blue:   #4E79A7;
-  --accent-red:    #E15759;
-  --accent-green:  #59A14F;
-  --accent-orange: #F28E2B;
-  --text-primary:  #212529;
-  --text-secondary:#6c757d;
-  --bg-sidebar:    #f8f9fa;
+  --tn-dark:    #0f1d22;
+  --tn-slate:   #1a2e35;
+  --tn-mid:     #243d47;
+  --tn-teal:    #5DCAA5;
+  --tn-teal-dk: #1D9E75;
+  --tn-gold:    #E8C547;
+  --tn-amber:   #E8A52B;
+  --tn-red:     #D84040;
+  --tn-text:    #e8eaea;
+  --tn-muted:   rgba(232,234,234,0.45);
+  --tn-border:  rgba(93,202,165,0.15);
+  --sidebar-w:  220px;
 }
 
+/* --------------------------------------------------------------------------
+   GLOBAL
+   -------------------------------------------------------------------------- */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size:   0.875rem;
-  color:       var(--text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--tn-dark) !important;
+  color: var(--tn-text) !important;
 }
 
 /* --------------------------------------------------------------------------
    NAVBAR
    -------------------------------------------------------------------------- */
 .navbar {
-  padding: 0.4rem 1rem !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  background: var(--tn-dark) !important;
+  border-bottom: 1px solid var(--tn-border) !important;
+  padding: 0.3rem 1rem !important;
 }
 
 .navbar-brand {
-  font-size: 1rem !important;
+  color: var(--tn-gold) !important;
   font-weight: 700 !important;
-  letter-spacing: 0.02em;
+  font-size: 1rem !important;
+  letter-spacing: 0.04em !important;
 }
 
 .navbar-nav .nav-link {
-  font-size:   0.8rem !important;
+  color: var(--tn-muted) !important;
+  font-size: 0.78rem !important;
   font-weight: 500 !important;
-  padding:     0.4rem 0.75rem !important;
-  letter-spacing: 0.02em;
+  padding: 0.45rem 0.8rem !important;
+  letter-spacing: 0.02em !important;
+  transition: color 0.15s !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: var(--tn-text) !important;
 }
 
 .navbar-nav .nav-link.active {
-  border-bottom: 2px solid #76B7B2;
-  color: #76B7B2 !important;
+  color: var(--tn-teal) !important;
+  border-bottom: 2px solid var(--tn-teal) !important;
+}
+
+/* Dropdown menus */
+.dropdown-menu {
+  background: var(--tn-slate) !important;
+  border: 1px solid var(--tn-border) !important;
+  border-radius: 6px !important;
+  padding: 4px !important;
+}
+
+.dropdown-item {
+  color: var(--tn-muted) !important;
+  font-size: 0.78rem !important;
+  border-radius: 4px !important;
+  padding: 0.35rem 0.75rem !important;
+}
+
+.dropdown-item:hover {
+  background: var(--tn-mid) !important;
+  color: var(--tn-text) !important;
 }
 
 /* --------------------------------------------------------------------------
-   SIDEBAR — fixed width, no resize handle
+   SIDEBAR
    -------------------------------------------------------------------------- */
 .bslib-sidebar-layout > .sidebar {
-  width:      var(--sidebar-width) !important;
-  min-width:  var(--sidebar-width) !important;
-  max-width:  var(--sidebar-width) !important;
-  background: var(--bg-sidebar) !important;
-  border-right: 1px solid var(--card-border) !important;
-  padding:    1rem 0.85rem !important;
-  overflow-y: auto;
+  width: var(--sidebar-w) !important;
+  min-width: var(--sidebar-w) !important;
+  max-width: var(--sidebar-w) !important;
+  background: var(--tn-slate) !important;
+  border-right: 1px solid var(--tn-border) !important;
+  padding: 1rem 0.9rem !important;
   flex-shrink: 0 !important;
 }
 
-/* Hide the drag handle */
 .bslib-sidebar-layout > .collapse-toggle {
   display: none !important;
 }
 
-/* Sidebar section labels — small caps style */
+/* Sidebar title */
 .sidebar .sidebar-title,
-.sidebar h6,
-.sidebar .form-label,
-.sidebar label {
-  font-size:      0.68rem !important;
-  font-weight:    600 !important;
+.sidebar h2 {
+  color: var(--tn-gold) !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.06em !important;
-  color:          var(--text-secondary) !important;
-  margin-bottom:  0.3rem !important;
+  letter-spacing: 0.1em !important;
+  margin-bottom: 0.75rem !important;
 }
 
-/* Sidebar controls */
+/* Labels */
+.sidebar label,
+.sidebar .form-label,
+.sidebar .control-label {
+  color: var(--tn-muted) !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+  margin-bottom: 0.3rem !important;
+}
+
+/* Select inputs */
 .sidebar .form-select,
 .sidebar .form-control {
-  font-size:    0.8rem !important;
+  background: var(--tn-mid) !important;
+  color: var(--tn-text) !important;
+  border: 1px solid var(--tn-border) !important;
+  font-size: 0.8rem !important;
   border-radius: 4px !important;
-  border-color:  #ced4da !important;
-  padding:      0.25rem 0.5rem !important;
+  padding: 0.28rem 0.5rem !important;
 }
 
-.sidebar .form-check-label {
-  font-size:   0.8rem !important;
-  font-weight: 400 !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-  color: var(--text-primary) !important;
-}
-
-.sidebar hr {
-  margin: 0.6rem 0 !important;
-  border-color: #dee2e6 !important;
-  opacity: 0.5 !important;
-}
-
-.sidebar .help-block,
-.sidebar .shiny-text-output {
-  font-size: 0.72rem !important;
-  color:     var(--text-secondary) !important;
-  line-height: 1.4 !important;
+.sidebar .form-select:focus,
+.sidebar .form-control:focus {
+  border-color: var(--tn-teal) !important;
+  box-shadow: 0 0 0 2px rgba(93,202,165,0.2) !important;
 }
 
 /* Radio buttons */
-.sidebar .form-check {
-  padding-left: 1.4rem !important;
-  margin-bottom: 0.2rem !important;
+.sidebar .form-check-input {
+  background: var(--tn-mid) !important;
+  border-color: var(--tn-border) !important;
+}
+
+.sidebar .form-check-input:checked {
+  background-color: var(--tn-teal) !important;
+  border-color: var(--tn-teal) !important;
+}
+
+.sidebar .form-check-label {
+  color: var(--tn-text) !important;
+  font-size: 0.78rem !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+/* Checkbox */
+.sidebar .form-check-input[type="checkbox"]:checked {
+  background-color: var(--tn-teal) !important;
+  border-color: var(--tn-teal) !important;
 }
 
 /* Slider */
 .sidebar .irs--shiny .irs-bar {
-  background: var(--accent-blue) !important;
-  border-color: var(--accent-blue) !important;
+  background: var(--tn-teal) !important;
+  border-color: var(--tn-teal) !important;
 }
 
 .sidebar .irs--shiny .irs-handle {
-  border-color: var(--accent-blue) !important;
+  border-color: var(--tn-teal) !important;
+  background: var(--tn-gold) !important;
+}
+
+.sidebar .irs--shiny .irs-single {
+  background: var(--tn-teal) !important;
+}
+
+/* HR */
+.sidebar hr {
+  border-color: var(--tn-border) !important;
+  margin: 0.65rem 0 !important;
+  opacity: 1 !important;
+}
+
+/* Help text */
+.sidebar .help-block,
+.sidebar small {
+  color: var(--tn-muted) !important;
+  font-size: 0.7rem !important;
+  line-height: 1.45 !important;
+}
+
+/* Sidebar lists (investigation tab) */
+.sidebar ul {
+  color: var(--tn-text) !important;
 }
 
 /* --------------------------------------------------------------------------
    MAIN CONTENT AREA
    -------------------------------------------------------------------------- */
 .bslib-sidebar-layout > .main {
-  padding:   0.75rem !important;
-  overflow-y: auto;
+  background: var(--tn-dark) !important;
+  padding: 0.75rem !important;
 }
 
 /* --------------------------------------------------------------------------
-   CARDS — no excess padding, header clearly separated
+   CARDS
    -------------------------------------------------------------------------- */
 .card {
-  border:        1px solid var(--card-border) !important;
-  border-radius: var(--card-radius) !important;
-  box-shadow:    0 1px 3px rgba(0,0,0,0.06) !important;
+  background: var(--tn-slate) !important;
+  border: 1px solid var(--tn-border) !important;
+  border-radius: 6px !important;
   margin-bottom: 0.6rem !important;
 }
 
 .card-header {
-  background:    #ffffff !important;
-  border-bottom: 1px solid var(--card-border) !important;
-  padding:       0.45rem 0.85rem !important;
-  font-size:     0.78rem !important;
-  font-weight:   600 !important;
-  color:         var(--text-primary) !important;
-  letter-spacing: 0.02em !important;
+  background: var(--tn-dark) !important;
+  border-bottom: 1px solid var(--tn-border) !important;
+  color: var(--tn-gold) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.45rem 0.85rem !important;
 }
 
 .card-body {
-  padding: 0.6rem 0.75rem !important;
-}
-
-/* Full-screen expand button */
-.bslib-full-screen-enter {
-  opacity: 0.4 !important;
-}
-.card:hover .bslib-full-screen-enter {
-  opacity: 1 !important;
+  padding: 0.65rem 0.85rem !important;
+  background: var(--tn-slate) !important;
 }
 
 /* --------------------------------------------------------------------------
-   LAYOUT — tighter column gaps
+   BUTTONS
    -------------------------------------------------------------------------- */
-.bslib-column-wrap {
-  gap: 0.6rem !important;
+.btn-primary {
+  background: var(--tn-teal) !important;
+  border-color: var(--tn-teal) !important;
+  color: var(--tn-dark) !important;
+  font-weight: 600 !important;
+}
+
+.btn-primary:hover {
+  background: var(--tn-teal-dk) !important;
+  border-color: var(--tn-teal-dk) !important;
+  color: white !important;
+}
+
+.btn-outline-secondary {
+  border-color: var(--tn-border) !important;
+  color: var(--tn-muted) !important;
+}
+
+.btn-outline-secondary:hover {
+  background: var(--tn-mid) !important;
+  color: var(--tn-text) !important;
 }
 
 /* --------------------------------------------------------------------------
-   PLOTS — full width only; height controlled by each output call
+   PLOTS — width only, height controlled per output
    -------------------------------------------------------------------------- */
 .shiny-plot-output,
 .shiny-html-output,
@@ -191,95 +272,114 @@ body {
   opacity: 0 !important;
   transition: opacity 0.2s !important;
 }
+
 .js-plotly-plot:hover .modebar {
   opacity: 1 !important;
 }
 
 /* --------------------------------------------------------------------------
-   DT TABLES — compact, clean
+   DT TABLES
    -------------------------------------------------------------------------- */
+.dataTables_wrapper {
+  color: var(--tn-text) !important;
+}
+
 table.dataTable {
+  background: var(--tn-slate) !important;
+  color: var(--tn-text) !important;
   font-size: 0.78rem !important;
 }
 
 table.dataTable thead th {
-  font-size:      0.7rem !important;
-  font-weight:    600 !important;
+  background: var(--tn-dark) !important;
+  color: var(--tn-gold) !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  color:          var(--text-secondary) !important;
-  border-bottom:  2px solid var(--card-border) !important;
-  padding:        6px 10px !important;
+  letter-spacing: 0.06em !important;
+  border-bottom: 1px solid var(--tn-border) !important;
+  padding: 7px 10px !important;
 }
 
 table.dataTable tbody td {
-  padding:      5px 10px !important;
-  border-bottom: 1px solid #f0f0f0 !important;
+  border-bottom: 1px solid var(--tn-border) !important;
+  padding: 5px 10px !important;
 }
 
 table.dataTable tbody tr:hover {
-  background-color: #f5f8ff !important;
+  background: var(--tn-mid) !important;
 }
 
-.dataTables_wrapper .dataTables_filter input {
-  font-size:    0.78rem !important;
+table.dataTable tbody tr.odd {
+  background: rgba(255,255,255,0.02) !important;
+}
+
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  background: var(--tn-mid) !important;
+  color: var(--tn-text) !important;
+  border: 1px solid var(--tn-border) !important;
   border-radius: 4px !important;
-  border:       1px solid #ced4da !important;
-  padding:      3px 8px !important;
+  font-size: 0.78rem !important;
+  padding: 3px 8px !important;
 }
 
 .dataTables_wrapper .dataTables_info,
-.dataTables_wrapper .dataTables_length label {
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+  color: var(--tn-muted) !important;
   font-size: 0.72rem !important;
-  color:     var(--text-secondary) !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: var(--tn-muted) !important;
+  border-radius: 4px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background: var(--tn-teal) !important;
+  color: var(--tn-dark) !important;
+  border: none !important;
+  font-weight: 600 !important;
 }
 
 /* --------------------------------------------------------------------------
-   VISNETWORK — remove default white border flash
+   VISNETWORK
    -------------------------------------------------------------------------- */
 .vis-network canvas {
   border-radius: 4px !important;
 }
 
-/* --------------------------------------------------------------------------
-   TAB NAV (mod2 / mod3 views via radio look clean)
-   -------------------------------------------------------------------------- */
-.nav-tabs .nav-link {
-  font-size:   0.78rem !important;
-  font-weight: 500 !important;
-  color:       var(--text-secondary) !important;
-  border: none !important;
-  border-bottom: 2px solid transparent !important;
-  padding: 0.3rem 0.75rem !important;
-}
-
-.nav-tabs .nav-link.active {
-  color:        var(--accent-blue) !important;
-  border-bottom: 2px solid var(--accent-blue) !important;
-  background:   transparent !important;
+.vis-tooltip {
+  background: var(--tn-slate) !important;
+  border: 1px solid var(--tn-teal) !important;
+  color: var(--tn-text) !important;
+  border-radius: 5px !important;
+  font-size: 0.75rem !important;
+  padding: 6px 10px !important;
 }
 
 /* --------------------------------------------------------------------------
-   OVERVIEW PAGE SPECIFICS
+   INVESTIGATION STEP CARDS
    -------------------------------------------------------------------------- */
-.ov-stat-val {
-  font-variant-numeric: tabular-nums;
+.inv-progress-card {
+  background: var(--tn-slate) !important;
+  border: 1px solid var(--tn-border) !important;
 }
 
 /* --------------------------------------------------------------------------
-   SCROLLBAR — thin, subtle
+   OVERVIEW PAGE
    -------------------------------------------------------------------------- */
-::-webkit-scrollbar {
-  width:  5px;
-  height: 5px;
+.ov-summary {
+  background: var(--tn-slate) !important;
+  border: 1px solid var(--tn-border) !important;
+  border-left: 3px solid var(--tn-teal) !important;
 }
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-::-webkit-scrollbar-thumb {
-  background:    #cccccc;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #aaaaaa;
-}
+
+/* --------------------------------------------------------------------------
+   SCROLLBAR
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: var(--tn-dark); }
+::-webkit-scrollbar-thumb { background: var(--tn-mid); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--tn-teal); }

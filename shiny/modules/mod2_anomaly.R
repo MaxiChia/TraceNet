@@ -50,24 +50,24 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
   ) +
     ggplot2::geom_vline(
       xintercept = as.numeric(as.Date(c("2046-05-10","2046-05-11","2046-05-17"))),
-      colour = "#E15759", linetype = "dashed", linewidth = 0.5, alpha = 0.4
+      colour = "#D84040", linetype = "dashed", linewidth = 0.5, alpha = 0.4
     ) +
     ggplot2::geom_jitter(width = 0.3, height = 0, stroke = 0) +
     ggplot2::geom_point(
       data    = anomalous_df,
       mapping = ggplot2::aes(x = date, y = time_of_day),
-      colour = "#E15759", size = 18, alpha = 0.12,
+      colour = "#D84040", size = 18, alpha = 0.12,
       shape = 1, stroke = 1.2, inherit.aes = FALSE
     ) +
     ggplot2::geom_label(
       data    = anomalous_df,
       mapping = ggplot2::aes(x = date, y = time_of_day, label = content_source),
-      nudge_x = 1.5, size = 3, colour = "#E15759",
+      nudge_x = 1.5, size = 3, colour = "#D84040",
       fill = "#FFF5F5", label.size = 0.3,
       fontface = "bold", inherit.aes = FALSE
     ) +
     ggplot2::scale_colour_manual(
-      values = c("Normal" = "#76B7B2", "Anomalous (Injected)" = "#E15759"),
+      values = c("Normal" = "#5DCAA5", "Anomalous (Injected)" = "#D84040"),
       name   = NULL
     ) +
     ggplot2::scale_size_manual(
@@ -85,38 +85,21 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
       name   = "Time of day (UTC)"
     ) +
     ggplot2::scale_x_date(date_labels = "%d %b", date_breaks = "7 days") +
-    # Zoom to relevant range — cuts dead whitespace after Jul
-    ggplot2::coord_cartesian(
-      xlim = c(as.Date("2046-05-06"), as.Date("2046-07-25")),
-      ylim = c(0, 24)
-    ) +
-    # SaidIT activation marker
-    ggplot2::annotate("segment",
-                      x = as.Date("2046-05-10"), xend = as.Date("2046-05-10"),
-                      y = 0, yend = 24,
-                      colour = "#4E79A7", linetype = "dotted", linewidth = 0.6, alpha = 0.5
-    ) +
-    ggplot2::annotate("label",
-                      x = as.Date("2046-05-10"), y = 5,
-                      label = "SaidIT integration\nactivated",
-                      size = 2.6, colour = "#4E79A7", fill = "#EEF4FB",
-                      label.size = 0.2, hjust = 0, fontface = "italic", lineheight = 1.2
-    ) +
     ggplot2::annotate("text", x = as.Date("2046-05-10"), y = 23,
-                      label = "10 May", size = 3, colour = "#E15759",
+                      label = "10 May", size = 3, colour = "#D84040",
                       hjust = 0.5, fontface = "bold") +
     ggplot2::annotate("text", x = as.Date("2046-05-11"), y = 23,
-                      label = "11 May", size = 3, colour = "#E15759",
+                      label = "11 May", size = 3, colour = "#D84040",
                       hjust = 0.5, fontface = "bold") +
     ggplot2::annotate("text", x = as.Date("2046-05-17"), y = 23,
-                      label = "17 May", size = 3, colour = "#E15759",
+                      label = "17 May", size = 3, colour = "#D84040",
                       hjust = 0.5, fontface = "bold") +
     ggplot2::labs(
       title    = "All saidit_post Events \u2014 Locating the 3 Anomalous Injections",
       subtitle = paste0(
         "108 total saidit_post events  \u2022  ",
         "3 anomalous (red) carry content_source \u2260 NULL  \u2022  ",
-        "SaidIT integration activated 10 May — all anomalies occur at activation"
+        "Dashed lines = confirmed incident dates"
       ),
       x = "Date"
     ) +
@@ -176,7 +159,7 @@ mod2_render_gate <- function(data, selected_date) {
       "All traces destroyed"
     ),
     timing     = c("+0s", "+1s", "+2s", "+3s"),
-    fill       = c("#4E79A7", "#E15759", "#555555", "#555555"),
+    fill       = c("#1D9E75", "#D84040", "#3d5a63", "#3d5a63"),
     is_inject  = c(FALSE, TRUE, FALSE, FALSE)
   )
   
@@ -282,7 +265,7 @@ mod2_render_log <- function(data, selected_date) {
       "Event",
       backgroundColor = DT::styleEqual(
         c("saidit_post", "saidit_post_check", "delete_file"),
-        c(ANOMALY_COLOUR, "#4E79A7", "#555555")
+        c(ANOMALY_COLOUR, "#1D9E75", "#3d5a63")
       ),
       color = DT::styleEqual(
         c("saidit_post", "saidit_post_check", "delete_file"),

@@ -10,11 +10,17 @@ ui <- bslib::page_navbar(
   ),
   theme = bslib::bs_theme(
     version    = 5,
-    bootswatch = "flatly",
-    primary    = "#4E79A7",
-    danger     = "#E15759",
-    success    = "#59A14F",
-    warning    = "#F28E2B"
+    bootswatch = "darkly",
+    bg         = "#0f1d22",
+    fg         = "#e8eaea",
+    primary    = "#5DCAA5",
+    secondary  = "#1a2e35",
+    success    = "#1D9E75",
+    info       = "#E8C547",
+    warning    = "#E8A52B",
+    danger     = "#D84040",
+    base_font  = bslib::font_google("Inter"),
+    heading_font = bslib::font_google("Inter")
   ),
   header = tags$head(
     tags$link(rel = "stylesheet", href = "styles.css")
@@ -174,51 +180,6 @@ ui <- bslib::page_navbar(
                intervention flow at the validation gate.")
           )
         )
-      )
-    )
-  ),
-  
-  # ---------------------------------------------------------------------------
-  # INVESTIGATION FLOW TAB
-  # ---------------------------------------------------------------------------
-  bslib::nav_panel(
-    title = tagList(bsicons::bs_icon("search"), " Investigation"),
-    value = "investigation",
-    
-    bslib::layout_sidebar(
-      sidebar = bslib::sidebar(
-        width = 220,
-        title = "Investigation",
-        open  = TRUE,
-        
-        tags$p(
-          style = "font-size:0.75rem;color:#666;line-height:1.5;margin-bottom:0.75rem;",
-          "Follow the investigation step by step — from the anomalous post to the proposed fix."
-        ),
-        hr(),
-        tags$p(
-          style = "font-size:0.68rem;text-transform:uppercase;letter-spacing:0.05em;color:#888;margin-bottom:0.4rem;",
-          "MC2 Questions covered"
-        ),
-        tags$ul(
-          style = "font-size:0.72rem;color:#555;padding-left:1rem;line-height:1.8;",
-          tags$li("Q1a — Exact chain of events"),
-          tags$li("Q1b — System overview"),
-          tags$li("Q2 — Post origin & meaning"),
-          tags$li("Q3a — Prior incidents"),
-          tags$li("Q3b — Intervention point")
-        ),
-        hr(),
-        helpText(
-          "Use the Next / Previous buttons to advance through the investigation.",
-          style = "font-size:0.72rem;color:#888;"
-        )
-      ),
-      
-      # No card wrapper — uiOutput fills the full main area directly
-      tags$div(
-        style = "padding: 0.75rem;",
-        uiOutput("inv_step_ui")
       )
     )
   ),
