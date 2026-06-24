@@ -1,14 +1,28 @@
 # =============================================================================
-# modules/mod3_historical.R — VISUAL EXCELLENCE EDITION
+# modules/mod3_historical.R
+# Module 3 — Historical Patterns & Intervention
+#
+# Three render functions:
+#   mod3_render_heatmap()      → actor participation heatmap across 3 incidents
+#   mod3_render_sequence()     → terminal 4-event sequence comparison
+#   mod3_render_intervention() → before/after intervention flow diagram
+#
+# Confirmed terminal sequences (hardcoded from data):
+#   10 May: 12:45:41-44 UTC | HiddenOrca.txt
+#   11 May: 00:56:03-06 UTC | MellowOtter.txt
+#   17 May: 11:21:14-17 UTC | SwiftWren.txt
 # =============================================================================
 
+
+# Helper to extract chain actors per incident date
+# Uses queue_subordinate_task + task == read_file, same as THEx02 Figure 8.1
 get_chain_actors_per_date <- function(target_date, cutoff_time) {
   mc2_df |>
     dplyr::filter(
-      date         == as.Date(target_date),
-      short_name   == "queue_subordinate_task",
+      date       == as.Date(target_date),
+      short_name == "queue_subordinate_task",
       details_task == "read_file",
-      datetime     <= as.POSIXct(cutoff_time, tz = "UTC")
+      datetime   <= as.POSIXct(cutoff_time, tz = "UTC")
     ) |>
     dplyr::mutate(
       issuer   = purrr::map_chr(parties, ~ stringr::str_remove(.x[[1]], "Agent/person:")),
@@ -23,11 +37,13 @@ get_chain_actors_per_date <- function(target_date, cutoff_time) {
 
 
 # =============================================================================
-# mod3_render_heatmap — UPGRADED
-# Polished tile heatmap with clear actor role annotations
+# mod3_render_heatmap
+# Actor × incident date presence/absence tile heatmap
+# Replicates THEx02 Figure 8.1 as an interactive plotly chart
 # =============================================================================
 mod3_render_heatmap <- function(top_n = 15) {
   
+  # Extract chain actors for each incident using confirmed cutoff times
   chain_may10 <- get_chain_actors_per_date("2046-05-10", "2046-05-10 12:45:40")
   chain_may11 <- get_chain_actors_per_date("2046-05-11", "2046-05-11 00:56:03")
   chain_may17 <- get_chain_actors_per_date("2046-05-17", "2046-05-17 11:21:13")
@@ -36,48 +52,43 @@ mod3_render_heatmap <- function(top_n = 15) {
     dplyr::mutate(
       present    = 1,
       date_label = dplyr::case_when(
-        date == "2046-05-10" ~ "10 May\nHiddenOrca.txt",
-        date == "2046-05-11" ~ "11 May\nMellowOtter.txt",
-        date == "2046-05-17" ~ "17 May\nSwiftWren.txt"
+        date == "2046-05-10" ~ "10 May\n(HiddenOrca.txt)",
+        date == "2046-05-11" ~ "11 May\n(MellowOtter.txt)",
+        date == "2046-05-17" ~ "17 May\n(SwiftWren.txt)"
       ),
       date_label = factor(date_label,
-                          levels = c("10 May\nHiddenOrca.txt",
-                                     "11 May\nMellowOtter.txt",
-                                     "17 May\nSwiftWren.txt"))
+                          levels = c("10 May\n(HiddenOrca.txt)",
+                                     "11 May\n(MellowOtter.txt)",
+                                     "17 May\n(SwiftWren.txt)"))
     )
   
+  # Rank actors by number of incidents they appear in
   actor_freq <- all_chains |>
     dplyr::group_by(actor) |>
     dplyr::summarise(n_incidents = dplyr::n_distinct(date), .groups = "drop") |>
     dplyr::arrange(dplyr::desc(n_incidents), actor) |>
     dplyr::slice_head(n = top_n)
   
-  core_six <- c("victoria_rigging","mia_fender","lily_anchorline",
-                "john_windward","daniel_gangway","chloe_ballast")
-  
   heatmap_data <- all_chains |>
     dplyr::filter(actor %in% actor_freq$actor) |>
     tidyr::complete(actor, date_label, fill = list(present = 0)) |>
     dplyr::left_join(actor_freq, by = "actor") |>
     dplyr::mutate(
-      actor_label = stringr::str_replace_all(actor, "_", " ") |>
+      actor_label  = stringr::str_replace_all(actor, "_", " ") |>
         stringr::str_to_title(),
-      fill_label  = ifelse(present == 1, "Present", "Absent"),
-      is_terminal = actor == TERMINAL_EXECUTOR,
-      is_core     = actor %in% core_six,
-      role_tag    = dplyr::case_when(
-        is_terminal ~ "Terminal",
-        is_core     ~ "Core",
-        TRUE        ~ "Support"
-      ),
+      fill_label   = ifelse(present == 1, "Present", "Absent"),
+      is_terminal  = actor == TERMINAL_EXECUTOR,
+      is_core      = actor %in% stringr::str_remove(
+        c("person:victoria_rigging", "person:mia_fender",
+          "person:lily_anchorline", "person:john_windward",
+          "person:daniel_gangway", "person:chloe_ballast"), "person:"),
       tip = paste0(
         "<b>", stringr::str_replace_all(actor, "_", " ") |>
           stringr::str_to_title(), "</b><br>",
-        "Role: ", role_tag, "<br>",
-        "Incidents present: ", n_incidents, " of 3<br>",
+        "Incidents: ", n_incidents, " of 3<br>",
         "Status: ", fill_label,
-        ifelse(is_terminal, "<br><b>\u26a1 Terminal Executor</b>", ""),
-        ifelse(is_core & !is_terminal, "<br>Core relay actor", "")
+        ifelse(is_terminal, "<br><b>★ Terminal Executor</b>", ""),
+        ifelse(is_core & !is_terminal, "<br>Core network actor", "")
       )
     )
   
@@ -90,14 +101,7 @@ mod3_render_heatmap <- function(top_n = 15) {
       text = tip
     )
   ) +
-    ggplot2::geom_tile(colour = "white", linewidth = 1.2) +
-    # Role strip on the right
-    ggplot2::geom_tile(
-      ggplot2::aes(x = 3.75, fill = role_tag),
-      width = 0.25, colour = "white", linewidth = 0.5,
-      show.legend = FALSE
-    ) +
-    # Star for terminal executor
+    ggplot2::geom_tile(colour = "white", linewidth = 0.8) +
     ggplot2::geom_text(
       data    = dplyr::filter(heatmap_data, is_terminal & present == 1),
       mapping = ggplot2::aes(x = date_label,
@@ -106,32 +110,21 @@ mod3_render_heatmap <- function(top_n = 15) {
       colour = "white", size = 5, inherit.aes = FALSE
     ) +
     ggplot2::scale_fill_manual(
-      values = c(
-        "Present"  = "#4E79A7",
-        "Absent"   = "#EEEEEE",
-        "Terminal" = "#E15759",
-        "Core"     = "#F28E2B",
-        "Support"  = "#B0C4DE"
-      ),
-      breaks = c("Present", "Absent"),
-      name   = "Participation"
+      values = c("Present" = "#4E79A7", "Absent" = "#E8E8E8"),
+      name   = NULL
     ) +
-    ggplot2::scale_x_discrete(expand = ggplot2::expansion(add = c(0.5, 0.7))) +
     ggplot2::labs(
       title    = "Actor Participation Across Three Anomalous Incidents",
-      subtitle = paste0(
-        "\u2605 = John Windward (terminal executor, present in all 3)  \u2022  ",
-        "Right strip: \u25a0 Terminal  \u25a0 Core relay  \u25a0 Support  \u2022  ",
-        "Actors ordered by number of incidents"
-      ),
-      x = NULL, y = NULL
+      subtitle = "\u2605 = John Windward (terminal executor, present in all 3)  |  Actors ordered by number of incidents",
+      x        = NULL,
+      y        = NULL
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      plot.title      = ggplot2::element_text(face = "bold", size = 13),
-      plot.subtitle   = ggplot2::element_text(colour = "#666666", size = 9.5),
+      plot.title      = ggplot2::element_text(face = "bold"),
+      plot.subtitle   = ggplot2::element_text(colour = "#666666", size = 10),
       panel.grid      = ggplot2::element_blank(),
-      axis.text.y     = ggplot2::element_text(size = 10, face = "bold"),
+      axis.text.y     = ggplot2::element_text(size = 10),
       axis.text.x     = ggplot2::element_text(size = 11, face = "bold"),
       legend.position = "bottom"
     )
@@ -142,22 +135,24 @@ mod3_render_heatmap <- function(top_n = 15) {
 
 
 # =============================================================================
-# mod3_render_sequence — UPGRADED
-# Lollipop / connected dot chart instead of plain scatter
+# mod3_render_sequence
+# Terminal 4-event sequence aligned at +0s baseline across all 3 incidents
+# Proves scripted one-second-precision timing (not manual action)
 # =============================================================================
 mod3_render_sequence <- function() {
   
+  # Hardcoded from confirmed diagnostic output
   seq_df <- tibble::tibble(
     incident = c(
-      rep("10 May 2046\nHiddenOrca.txt", 4),
-      rep("11 May 2046\nMellowOtter.txt", 4),
-      rep("17 May 2046\nSwiftWren.txt", 4)
+      rep("10 May 2046\n(HiddenOrca.txt)", 4),
+      rep("11 May 2046\n(MellowOtter.txt)", 4),
+      rep("17 May 2046\n(SwiftWren.txt)", 4)
     ),
     step = rep(c(
-      "Step 1\nsaidit_post_check",
-      "Step 2\nsaidit_post \u26a1 INJECTION",
-      "Step 3\ndelete_file",
-      "Step 4\ndelete_file"
+      "Step 1: saidit_post_check",
+      "Step 2: saidit_post (INJECTION)",
+      "Step 3: delete_file",
+      "Step 4: delete_file"
     ), 3),
     elapsed    = rep(c(0, 1, 2, 3), 3),
     event_type = rep(c("saidit_post_check", "saidit_post",
@@ -175,23 +170,23 @@ mod3_render_sequence <- function() {
   ) |>
     dplyr::mutate(
       incident  = factor(incident,
-                         levels = c("10 May 2046\nHiddenOrca.txt",
-                                    "11 May 2046\nMellowOtter.txt",
-                                    "17 May 2046\nSwiftWren.txt")),
+                         levels = c("10 May 2046\n(HiddenOrca.txt)",
+                                    "11 May 2046\n(MellowOtter.txt)",
+                                    "17 May 2046\n(SwiftWren.txt)")),
       step      = factor(step, levels = rev(c(
-        "Step 1\nsaidit_post_check",
-        "Step 2\nsaidit_post \u26a1 INJECTION",
-        "Step 3\ndelete_file",
-        "Step 4\ndelete_file"
+        "Step 1: saidit_post_check",
+        "Step 2: saidit_post (INJECTION)",
+        "Step 3: delete_file",
+        "Step 4: delete_file"
       ))),
       is_injection = event_type == "saidit_post",
       tip = paste0(
-        "<b>", stringr::str_replace(as.character(step), "\n", " — "), "</b><br>",
-        "Incident: ", stringr::str_replace(as.character(incident), "\n", " | "), "<br>",
-        "Elapsed from sequence start: +", elapsed, "s<br>",
+        "<b>", stringr::str_replace(as.character(step), "\n", " "), "</b><br>",
+        "Incident: ", stringr::str_replace(as.character(incident), "\n", " "), "<br>",
+        "Elapsed: +", elapsed, "s from post-check<br>",
         "Anchor time: ", anchor_time, "<br>",
         ifelse(is_injection,
-               paste0("<br><b>\u26a1 Injected file: ", injected_file, "</b>"), "")
+               paste0("<b>Injected file: ", injected_file, "</b>"), "")
       )
     )
   
@@ -207,74 +202,50 @@ mod3_render_sequence <- function() {
       x      = incident,
       y      = step,
       colour = event_type,
+      size   = is_injection,
       text   = tip
     )
   ) +
-    # Connecting lines between incidents (same step)
-    ggplot2::geom_line(
-      ggplot2::aes(group = step),
-      colour = "#DDDDDD", linewidth = 1.5, linetype = "solid"
-    ) +
-    # Lollipop stems (vertical within each incident)
-    ggplot2::geom_segment(
-      data = seq_df |>
-        dplyr::group_by(incident) |>
-        dplyr::summarise(ymin = min(as.numeric(step)),
-                         ymax = max(as.numeric(step)), .groups="drop"),
-      ggplot2::aes(x = incident, xend = incident,
-                   y = ymin, yend = ymax),
-      colour = "#DDDDDD", linewidth = 1, inherit.aes = FALSE
-    ) +
-    ggplot2::geom_point(
-      ggplot2::aes(size = is_injection),
-      alpha = 0.95, stroke = 0.5
-    ) +
-    # Timing labels inside points
+    ggplot2::geom_point(alpha = 0.9) +
     ggplot2::geom_text(
       ggplot2::aes(label = paste0("+", elapsed, "s")),
-      vjust = -1.4, size = 3.2, colour = "#555555",
-      fontface = "bold", show.legend = FALSE
-    ) +
-    # Highlight injection step
-    ggplot2::geom_point(
-      data   = dplyr::filter(seq_df, is_injection),
-      colour = ANOMALY_COLOUR, size = 22, alpha = 0.12,
-      shape = 1, stroke = 1.2
+      vjust = -1.2, size = 3.5, colour = "#666666", show.legend = FALSE
     ) +
     ggplot2::scale_colour_manual(values = colour_map, name = "Event Type") +
     ggplot2::scale_size_manual(
-      values = c("FALSE" = 8, "TRUE" = 14), guide = "none"
+      values = c("FALSE" = 6, "TRUE" = 12), guide = "none"
     ) +
     ggplot2::labs(
-      title    = "Terminal Sequence — Identical Timing Across All 3 Incidents",
-      subtitle = paste0(
-        "4-event sequence at \u00b11s precision across 3 different times of day  \u2022  ",
-        "Proves scripted automated protocol, not manual error  \u2022  ",
-        "Horizontal lines show perfect timing alignment"
-      ),
-      x = NULL, y = NULL
+      title    = "Terminal Sequence Comparison — All Three Incidents",
+      subtitle = "4-event sequence repeats at one-second precision across different times of day\u2003\u2192\u2003evidence of a scripted automated protocol",
+      x        = NULL,
+      y        = NULL
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "bold", size = 13),
-      plot.subtitle      = ggplot2::element_text(colour = "#666666", size = 9.5),
+      plot.title      = ggplot2::element_text(face = "bold"),
+      plot.subtitle   = ggplot2::element_text(colour = "#666666", size = 10),
       panel.grid.major.x = ggplot2::element_blank(),
-      panel.grid.major.y = ggplot2::element_line(colour = "#F0F0F0"),
-      axis.text.x        = ggplot2::element_text(face = "bold", size = 11),
-      axis.text.y        = ggplot2::element_text(size = 10),
-      legend.position    = "bottom"
+      panel.grid.major.y = ggplot2::element_line(colour = "#EEEEEE"),
+      axis.text.x     = ggplot2::element_text(face = "bold", size = 11),
+      legend.position = "bottom"
     )
   
   plotly::ggplotly(p, tooltip = "text") |>
-    plotly::layout(legend = list(orientation = "h", y = -0.12))
+    plotly::layout(legend = list(orientation = "h", y = -0.1))
 }
 
 
 # =============================================================================
-# mod3_render_intervention — unchanged structure, kept clean
+# mod3_render_intervention
+# Before/after intervention flow diagram — replicates THEx02 Figure 9.1
+# Shows the single null-check addition at saidit_post_check that blocks all 3
+# panel = "intervention_before" → current vulnerable state
+# panel = "intervention_after"  → proposed fix state
 # =============================================================================
 mod3_render_intervention <- function(panel = "intervention_before") {
   
+  # Diamond shape helper
   diamond_df <- function(cx, cy, w, h, id) {
     tibble::tibble(
       x     = c(cx, cx + w/2, cx, cx - w/2),
@@ -285,6 +256,9 @@ mod3_render_intervention <- function(panel = "intervention_before") {
   
   if (panel == "intervention_before") {
     
+    # -------------------------------------------------------------------------
+    # CURRENT STATE — Vulnerable
+    # -------------------------------------------------------------------------
     ggplot2::ggplot() +
       ggplot2::annotate("rect",
                         xmin = 0.5, xmax = 9.5, ymin = 0.3, ymax = 11.2,
@@ -303,7 +277,7 @@ mod3_render_intervention <- function(panel = "intervention_before") {
                         color = "white", size = 4) +
       ggplot2::annotate("segment",
                         x = 5, xend = 5, y = 8.8, yend = 7.9,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "grey50") +
       ggplot2::geom_polygon(
         data = diamond_df(5, 6.7, 5.0, 2.2, "d1"),
@@ -323,7 +297,7 @@ mod3_render_intervention <- function(panel = "intervention_before") {
                         color = "#E15759", fontface = "bold", size = 3.2) +
       ggplot2::annotate("segment",
                         x = 5, xend = 5, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "#E15759", linewidth = 1.2) +
       ggplot2::annotate("rect",
                         xmin = 1.2, xmax = 8.8, ymin = 3.5, ymax = 4.7,
@@ -339,7 +313,7 @@ mod3_render_intervention <- function(panel = "intervention_before") {
                         color = "grey50", size = 3, fontface = "italic") +
       ggplot2::annotate("segment",
                         x = 5, xend = 5, y = 3.5, yend = 2.6,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "grey50") +
       ggplot2::annotate("rect",
                         xmin = 2.5, xmax = 7.5, ymin = 1.5, ymax = 2.6,
@@ -347,13 +321,15 @@ mod3_render_intervention <- function(panel = "intervention_before") {
       ggplot2::annotate("text", x = 5, y = 2.05,
                         label = "delete_file \u00d7 2  \u2014  Evidence destroyed",
                         color = "white", size = 3.8) +
-      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5),
-                               expand = FALSE) +
+      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5), expand = FALSE) +
       ggplot2::theme_void() +
-      ggplot2::theme(plot.margin = ggplot2::margin(20, 20, 20, 20))
+      ggplot2::theme(plot.margin = ggplot2::margin(4, 4, 4, 4))
     
   } else {
     
+    # -------------------------------------------------------------------------
+    # PROPOSED STATE — Intervention Applied
+    # -------------------------------------------------------------------------
     ggplot2::ggplot() +
       ggplot2::annotate("rect",
                         xmin = 0.5, xmax = 9.5, ymin = 0.3, ymax = 11.2,
@@ -372,7 +348,7 @@ mod3_render_intervention <- function(panel = "intervention_before") {
                         color = "white", size = 4) +
       ggplot2::annotate("segment",
                         x = 5, xend = 5, y = 8.8, yend = 7.9,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "grey50") +
       ggplot2::geom_polygon(
         data = diamond_df(5, 6.7, 5.0, 2.2, "d2"),
@@ -389,14 +365,14 @@ mod3_render_intervention <- function(panel = "intervention_before") {
                         color = "#FFF176", size = 3.5, fontface = "bold") +
       ggplot2::annotate("segment",
                         x = 5, xend = 2.2, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "#59A14F", linewidth = 1.2) +
       ggplot2::annotate("text", x = 2.4, y = 5.25,
                         label = "PASS\ncontent_source = NA",
                         color = "#59A14F", fontface = "bold", size = 3.2) +
       ggplot2::annotate("segment",
                         x = 5, xend = 7.8, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3,"mm"), type="closed"),
+                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
                         color = "#E15759", linewidth = 1.2) +
       ggplot2::annotate("text", x = 7.6, y = 5.25,
                         label = "FAIL\ncontent_source \u2260 NA",
@@ -425,9 +401,8 @@ mod3_render_intervention <- function(panel = "intervention_before") {
       ggplot2::annotate("text", x = 5, y = 1.85,
                         label = "No new infrastructure required.  The gate already fires at the right moment.\nOne null-check on content_source is sufficient to block all 3 confirmed incidents.",
                         color = "#2E7D32", size = 3.2, fontface = "italic") +
-      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5),
-                               expand = FALSE) +
+      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5), expand = FALSE) +
       ggplot2::theme_void() +
-      ggplot2::theme(plot.margin = ggplot2::margin(20, 20, 20, 20))
+      ggplot2::theme(plot.margin = ggplot2::margin(4, 4, 4, 4))
   }
 }

@@ -12,6 +12,8 @@ website:
         text: Home
       - href: proposal.qmd
         text: Proposal
+      - href: Take-Home_Exercise02/Take-Home_Ex02.qmd
+        text: Methodology
       - href: https://tracenet.shinyapps.io/TraceNet/
         text: "TraceNet Shiny App ↗"
         target: _blank

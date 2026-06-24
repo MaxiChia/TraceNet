@@ -177,14 +177,13 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   PLOTS — fill their containers, no overflow
+   PLOTS — full width only; height controlled by each output call
    -------------------------------------------------------------------------- */
 .shiny-plot-output,
 .shiny-html-output,
 .plotly,
 .vis-network {
-  width:  100% !important;
-  height: 100% !important;
+  width: 100% !important;
 }
 
 /* Plotly toolbar — hide until hover */

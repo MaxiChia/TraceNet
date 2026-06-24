@@ -11,6 +11,29 @@ server <- function(input, output, session) {
   
   
   # ---------------------------------------------------------------------------
+  # INVESTIGATION FLOW
+  # ---------------------------------------------------------------------------
+  
+  inv_step <- reactiveVal(1)
+  
+  observeEvent(input$inv_next, { if (inv_step() < N_STEPS) inv_step(inv_step() + 1) })
+  observeEvent(input$inv_prev, { if (inv_step() > 1)       inv_step(inv_step() - 1) })
+  
+  output$inv_step_ui <- renderUI({ investigation_step_ui(inv_step()) })
+  
+  output$inv_plot <- plotly::renderPlotly({
+    s <- inv_step()
+    if (s == 1) inv_render_step1()
+    else if (s == 3) inv_render_step3()
+    else if (s == 4) inv_render_step4()
+    else plotly::plot_ly()
+  })
+  
+  output$inv_network <- visNetwork::renderVisNetwork({ inv_render_step2() })
+  
+  output$inv_plot_static <- renderPlot({ inv_render_step5() }, res = 110)
+  
+  # ---------------------------------------------------------------------------
   # MODULE 1 — System Topology & Event Reconstruction
   # ---------------------------------------------------------------------------
   
@@ -37,15 +60,6 @@ server <- function(input, output, session) {
   # Timeline plot
   output$mod1_timeline <- plotly::renderPlotly({
     mod1_render_timeline(data = mod1_data())
-  })
-  
-  # Delegation audit table
-  output$mod1_delegation <- DT::renderDataTable({
-    mod1_render_delegation_table(
-      data         = mod1_data(),
-      network_mode = input$mod1_network_mode,
-      selected_date = input$mod1_incident
-    )
   })
   
   # ---------------------------------------------------------------------------

@@ -85,6 +85,23 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
       name   = "Time of day (UTC)"
     ) +
     ggplot2::scale_x_date(date_labels = "%d %b", date_breaks = "7 days") +
+    # Zoom to relevant range — cuts dead whitespace after Jul
+    ggplot2::coord_cartesian(
+      xlim = c(as.Date("2046-05-06"), as.Date("2046-07-25")),
+      ylim = c(0, 24)
+    ) +
+    # SaidIT activation marker
+    ggplot2::annotate("segment",
+                      x = as.Date("2046-05-10"), xend = as.Date("2046-05-10"),
+                      y = 0, yend = 24,
+                      colour = "#4E79A7", linetype = "dotted", linewidth = 0.6, alpha = 0.5
+    ) +
+    ggplot2::annotate("label",
+                      x = as.Date("2046-05-10"), y = 5,
+                      label = "SaidIT integration\nactivated",
+                      size = 2.6, colour = "#4E79A7", fill = "#EEF4FB",
+                      label.size = 0.2, hjust = 0, fontface = "italic", lineheight = 1.2
+    ) +
     ggplot2::annotate("text", x = as.Date("2046-05-10"), y = 23,
                       label = "10 May", size = 3, colour = "#E15759",
                       hjust = 0.5, fontface = "bold") +
@@ -99,7 +116,7 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
       subtitle = paste0(
         "108 total saidit_post events  \u2022  ",
         "3 anomalous (red) carry content_source \u2260 NULL  \u2022  ",
-        "Dashed lines = confirmed incident dates"
+        "SaidIT integration activated 10 May — all anomalies occur at activation"
       ),
       x = "Date"
     ) +

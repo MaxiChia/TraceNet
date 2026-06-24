@@ -179,6 +179,51 @@ ui <- bslib::page_navbar(
   ),
   
   # ---------------------------------------------------------------------------
+  # INVESTIGATION FLOW TAB
+  # ---------------------------------------------------------------------------
+  bslib::nav_panel(
+    title = tagList(bsicons::bs_icon("search"), " Investigation"),
+    value = "investigation",
+    
+    bslib::layout_sidebar(
+      sidebar = bslib::sidebar(
+        width = 220,
+        title = "Investigation",
+        open  = TRUE,
+        
+        tags$p(
+          style = "font-size:0.75rem;color:#666;line-height:1.5;margin-bottom:0.75rem;",
+          "Follow the investigation step by step — from the anomalous post to the proposed fix."
+        ),
+        hr(),
+        tags$p(
+          style = "font-size:0.68rem;text-transform:uppercase;letter-spacing:0.05em;color:#888;margin-bottom:0.4rem;",
+          "MC2 Questions covered"
+        ),
+        tags$ul(
+          style = "font-size:0.72rem;color:#555;padding-left:1rem;line-height:1.8;",
+          tags$li("Q1a — Exact chain of events"),
+          tags$li("Q1b — System overview"),
+          tags$li("Q2 — Post origin & meaning"),
+          tags$li("Q3a — Prior incidents"),
+          tags$li("Q3b — Intervention point")
+        ),
+        hr(),
+        helpText(
+          "Use the Next / Previous buttons to advance through the investigation.",
+          style = "font-size:0.72rem;color:#888;"
+        )
+      ),
+      
+      # No card wrapper — uiOutput fills the full main area directly
+      tags$div(
+        style = "padding: 0.75rem;",
+        uiOutput("inv_step_ui")
+      )
+    )
+  ),
+  
+  # ---------------------------------------------------------------------------
   # MODULE 1 — System Topology & Event Reconstruction
   # ---------------------------------------------------------------------------
   bslib::nav_panel(
@@ -230,16 +275,12 @@ ui <- bslib::page_navbar(
         
         bslib::card(
           full_screen = TRUE,
-          bslib::card_header("Task Delegation Audit Trail"),
-          DT::dataTableOutput("mod1_delegation")
-        ),
-        
-        bslib::card(
-          full_screen = TRUE,
           bslib::card_header("Incident Event Timeline"),
-          plotly::plotlyOutput("mod1_timeline", height = "420px")
+          plotly::plotlyOutput("mod1_timeline", height = "300px")
         )
-      ),
+      )
+    )
+  ),
   
   # ---------------------------------------------------------------------------
   # MODULE 2 — Content Source Anomaly Detection

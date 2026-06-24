@@ -128,6 +128,7 @@ MODULE_COLOURS <- c(
 source("modules/mod1_topology.R")
 source("modules/mod2_anomaly.R")
 source("modules/mod3_historical.R")
+source("modules/mod_investigation.R")
 
 cat("global.R loaded successfully.\n")
 cat("mc2_df rows       :", nrow(mc2_df), "\n")
