@@ -383,3 +383,14 @@ table.dataTable tbody tr.odd {
 ::-webkit-scrollbar-track { background: var(--tn-dark); }
 ::-webkit-scrollbar-thumb { background: var(--tn-mid); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--tn-teal); }
+
+/* --------------------------------------------------------------------------
+   INLINE CODE — visible on dark backgrounds
+   -------------------------------------------------------------------------- */
+code {
+  color: #E8C547 !important;
+  background: rgba(232,197,71,0.12) !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+  font-size: 0.85em !important;
+}
