@@ -1,0 +1,33 @@
+---
+title: "2. Statistical Analysis"
+format: html
+editor: visual
+---
+
+### 1. Descriptive Statistics (Frequencies & Proportions)
+
+The foundation of the anomaly detection in this reportrelies on establishing a baseline of normal activity using basic counts and percentages.
+
+- **Absolute Frequencies (Counts):** Used to measure the total number of times an event occurred. For example, counts was used to find the total number of routine events (`check_email` = 37,286) versus anomalous events to show how rare the social media posts are.
+
+- **Relative Frequencies (Percentages):** Used to calculate the proportion of specific events relative to the whole dataset (e.g., noting that the top five event types account for over **57%** of all logged events, while social media posts are less than **0.2%**).
+
+- **Distinct Counts:** Used during the recurrence analysis to calculate how many *unique* incidents a specific actor participated in (`n_distinct(date)`).
+
+### 2. Temporal Aggregation
+
+Time-based statistics was used to find deviations from normal operating hours.
+
+- **Bivariate Density/Distribution:** Aggregating event counts across two variables—day of the week and hour of the day (UTC)—to create the system activity heatmap. This reveals the statistical "norm" (busy Saturday mornings) and highlights the anomaly of a post occurring on a statistically "quiet" Sunday.
+
+- **Intervals & Offsets:** Calculating the time differences (in seconds) between sequential events to prove they were automated scripts rather than manual human actions (e.g., calculating exactly a `+1s` or `+2s` offset for the post and deletion events).
+
+### 3. Graph Theory & Network Statistics
+
+To map the relationships and task delegations, network measures were relied upon..au
+
+- **Degree Centrality:** Used to evaluate the communication network. Daniel Gangway was identified the "highest-degree node" among human agents because he has the most connecting edges to other peripheral agents, positioning him as a "coordination hub".
+
+- **Shortest-Path/Centrality Measures:** The `igraph` package is explicitly loaded to compute centrality measures and shortest-path calculations on the organizational chart and event networks.
+
+In summary, the statistical methodology here is highly forensic: it uses **counts, temporal distributions, and network degree measures** to isolate needles (the anomalies) in the haystack (the routine system noise).

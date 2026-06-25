@@ -1,0 +1,63 @@
+---
+title: "3. Data Exploration and VIsualisation"
+format: html
+editor: visual
+---
+
+## 1. Discoveries from data preparation: 
+
+- **The Content Injection Anomaly:** Only three of the 108 `saidit_post` events were anomalous, entirely bypassing normal agent-generated text by directly injecting content from external `.txt` files.
+
+- **The Temporal Exploit:** The anomalous post occurred at 11:21 UTC on a Sunday—the system's inherently quietest day—strongly indicating a rogue process designed to exploit an isolated period devoid of normal automated oversight.
+
+- **The Organizational Discrepancy:** Despite John Windward having no managerial authority or subordinates within the 75-node company hierarchy, his agent received a `queue_subordinate_task` at the exact moment of the post, exposing his role as an unwitting terminal executor.
+
+- **The Vulnerability and Fix:** The anomalous posts succeeded because the existing validation gate failed to check the `content_source` field; preventing recurrence requires a single rule addition to block any post where this field is not null.
+
+## 2. Here are the primary discoveries:
+
+- **A Coordinated Operation:** The three anomalous posts—involving `HiddenOrca.txt` on May 10, `MellowOtter.txt` on May 11, and `SwiftWren.txt` on May 17—were not isolated errors. They represented the repeated execution of a single, deliberate operation.
+
+- **A Fixed Terminal Executor:** John Windward was used as the terminal executor in all three incidents. He was consistently the agent who ultimately published the anomalous posts.
+
+- **A Stable Core Network:** The operation utilized a stable core network of actors (`victoria_rigging`, `mia_fender`, `lily_anchorline`, `daniel_gangway`, and `chloe_ballast`) across all three dates, even though the outer routing paths and immediate delegators varied.
+
+- **Exploitation of the `content_source` Field:** The operation consistently delivered content by injecting external files into the `content_source` field, bypassing normal file registration and evading standard file-based audit controls.
+
+- **A Scripted Terminal Sequence:** An identical, four-event automated sequence executed with precise one-second intervals each time: `saidit_post_check` → `saidit_post` → `delete_file` → `delete_file`.
+
+- **Immediate Evidence Destruction:** The two immediate `delete_file` events that followed every post acted as a cover-up, effectively destroying the evidence within two seconds of publication.
+
+- **A Specific System Vulnerability:** The existing validation gate (`saidit_post_check`) fired before every post but failed to block them because it evaluated *if* a post could be made, not *how* the content arrived. It specifically lacked a check on the `content_source` field.
+
+- **Unresolved Elements:** The true originator of the operation could not be identified due to the deliberate relay structure. Furthermore, the actual text content of the posts remains unknown because the source files were kept entirely off the audit trail. A separate anomaly involving sustained virus activity on the agent `zoey_drydock` was also noted but remains uninvestigated.
+
+## 3. Summary
+
+This investigation applied visual analytics methods to TenantThread's Multi-agent event log to reconstruct three anomalous `saidit_post` events and determine whether they represented a coordinated operation. The findings across Section 5 through Section 9 are summarised below.
+
+**What Was Found**
+
+The three anomalous posts - `HiddenOrca.txt` (May 10), `MellowOtter.txt` (May 11), and `SwiftWren.txt` (May 17) - were not isolated system errors. They were the repeated execution of a single coordinated operation, confirmed by four converging lines of evidence: (1) a stable core actor network present across all three data, (2) a fixed terminal executor (`john_windward`) in every incident, (3) an identical `content_source` delivery mechanism bypassing normal file registration, and (4) a scripted four-event terminal sequnce executing at one-second precision each time.
+
+**Key Actors by Role**
+
+- **Terminal Executor**: `john_windward`. Present in all three incidents as the agent who published each anomalous post.
+
+- **Immediate Delegators**: `chloe_ballast` (May 10 and May 17) and `liam_anchor` (May 11).
+
+- **Stable Core Network**: `victoria_rigging`, `mia_fender`, `lily_anchorline`, `daniel_gangway`, `chloe_ballast`.
+
+- **Earliest Traceable Actor (May 17)**: `james_stern` at `00:51:43 UTC`. The chain limit of the available evidence, not a confirmed point of origin.
+
+**What Remains Unresolved**
+
+- The true originator of the operation cannot be identified from the available data. The relay structure was deliberately designed to prevent back-tracing to a single source.
+
+- The content of the three posted files (what they said and what they meant) cannot be determined. The filenames appear nowhere in `mc2_df` outside the `content_source` field, and no file registration, read, or creation event references them anywhere in the log.
+
+- The sustained virus activity attrributed to `zoey_drydock` beginning May 10 at `20:10:04 UTC` remains uninvestigated. Its relationshop to the posting operation is noted but outside the scope of this study.
+
+**The Intervention**
+
+A single additional null-check on the `content_source` field within the existing `saidit_post_check` gate is sufficient to block all three anomalous posts at the point of validation - before publication, before deletion, and before evidence is destroyed. This is the minimum effective intervention identified by the investigation.
