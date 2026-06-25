@@ -1,8 +1,12 @@
 ---
 title: "Data Preparation"
-format: html
+format: 
+  html: 
+    embed-resources: false
+    html-table-processing: none
 editor: visual
 ---
+
 ```{=html}
 <style>
   p {
@@ -110,8 +114,8 @@ mc2_df <- mc2_df |>
     wday     = wday(datetime, label = TRUE, abbr = TRUE)
   )
 
-details_flat <- mc2_df$details
-mc2_df       <- mc2_df |> bind_cols(details_flat)
+details_flat <- bind_rows(mc2_df$details)
+mc2_df       <- mc2_df |> select(-details) |> bind_cols(details_flat)
 ```
 
 ## 4. Data Understanding
@@ -157,6 +161,8 @@ A day-of-week by hour-of-day heatmap is used to reveal the temporal rhythm of sy
 #| fig-width: 10
 #| fig-height: 4
 #| fig-cap: "Figure 4.1: System activity heatmap by weekday and hour (UTC)"
+#| eval: true 
+#| error: true
 
 mc2_df |>
   count(wday, hour) |>

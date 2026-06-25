@@ -33,7 +33,7 @@ website:
         target: _blank
         
     right:
-      - text: "Appendix - "
+      - text: "Appendix - Full Examination"
         menu:
           - text: "Overview & Data"
             href: Take-Home_Exercise02/Take-Home_Ex02.html#overview
