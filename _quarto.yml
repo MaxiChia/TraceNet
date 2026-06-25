@@ -6,6 +6,9 @@ project:
     - proposal.qmd
     - minutes.qmd
     - Take-Home_Exercise02/Take-Home_Ex02.qmd
+    - Methodology/1. Data Preparation.qmd
+    - Methodology/2. Statistical Analysis.qmd
+    - Methodology/3. Data Exploration and VIsualisation.qmd
 
 website:
   title: "TraceNet"
@@ -20,11 +23,11 @@ website:
       - text: "Methodology"
         menu:
           - text: "1. Data Preparation"
-            href: 1. Data Preparation.html
+            href: Methodology/1. Data Preparation.html
           - text: "2. Statistical Analysis"
-            href: 2. Statistical Analysis.html
+            href: Methodology/2. Statistical Analysis.html
           - text: "3. Data Exploration and VIsualisation"
-            href: 3. Data Exploration and VIsualisation.html
+            href: Methodology/3. Data Exploration and VIsualisation.html
       - text: "Methodology"
         menu:
           - text: "Overview & Data"

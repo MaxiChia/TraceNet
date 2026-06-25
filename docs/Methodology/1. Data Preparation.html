@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>1. Data Preparation – TraceNet</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b49de2f8c4950123375d3985ca54db94.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+
+<script src="../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+
+<script src="../site_libs/datatables-binding-0.34.0/datatables.js"></script>
+
+<script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+
+<link href="../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+
+<link href="../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+
+<script src="../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+
+<link href="../site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="../site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+<link href="../site_libs/vis-9.1.0/vis-network.min.css" rel="stylesheet">
+
+<script src="../site_libs/vis-9.1.0/vis-network.min.js"></script>
+
+<script src="../site_libs/visNetwork-binding-2.1.4/visNetwork.js"></script>
+
+<script src="../site_libs/plotly-binding-4.12.0/plotly.js"></script>
+
+<script src="../site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<link href="../site_libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="../site_libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">TraceNet</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../proposal.html"> 
+<span class="menu-text">Proposal</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-methodology" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Methodology</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-methodology">    
+        <li>
+    <a class="dropdown-item" href="../Methodology/1. Data Preparation.html">
+ <span class="dropdown-text">1. Data Preparation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Methodology/2. Statistical Analysis.html">
+ <span class="dropdown-text">2. Statistical Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Methodology/3. Data Exploration and VIsualisation.html">
+ <span class="dropdown-text">3. Data Exploration and VIsualisation</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-methodology-1" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Methodology</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-methodology-1">    
+        <li>
+    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#overview">
+ <span class="dropdown-text">Overview &amp; Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#how-was-the-post-made">
+ <span class="dropdown-text">The Post</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#historical-anomalies---recurrence-analysis">
+ <span class="dropdown-text">Analysis</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal">
+ <span class="dropdown-text">Intervention</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://tracenet.shinyapps.io/TraceNet/" target="_blank"> 
+<span class="menu-text">TraceNet Shiny App ↗</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../minutes.html"> 
+<span class="menu-text">Minutes of Meetings</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/MaxiChia/TraceNet"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#visual-analytics-for-ai-multi-agent-system-diagnostics" id="toc-visual-analytics-for-ai-multi-agent-system-diagnostics" class="nav-link active" data-scroll-target="#visual-analytics-for-ai-multi-agent-system-diagnostics">Visual Analytics for AI Multi-Agent System Diagnostics</a>
+  <ul class="collapse">
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview">1. Overview</a>
+  <ul class="collapse">
+  <li><a href="#objectives" id="toc-objectives" class="nav-link" data-scroll-target="#objectives">1.1 Objectives</a></li>
+  </ul></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">2. The Data</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">3. Getting Started</a>
+  <ul class="collapse">
+  <li><a href="#loading-r-packages" id="toc-loading-r-packages" class="nav-link" data-scroll-target="#loading-r-packages">3.1 Loading R Packages</a></li>
+  <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">3.2 Importing the Data</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">3.3 Data Preparation</a></li>
+  </ul></li>
+  <li><a href="#data-understanding" id="toc-data-understanding" class="nav-link" data-scroll-target="#data-understanding">4. Data Understanding</a>
+  <ul class="collapse">
+  <li><a href="#a.-event-frequency-type-count" id="toc-a.-event-frequency-type-count" class="nav-link" data-scroll-target="#a.-event-frequency-type-count">a. Event Frequency / Type Count</a></li>
+  <li><a href="#b.-activity-heatmap" id="toc-b.-activity-heatmap" class="nav-link" data-scroll-target="#b.-activity-heatmap">b. Activity Heatmap</a></li>
+  <li><a href="#c.-normal-vs-anomalous-posting" id="toc-c.-normal-vs-anomalous-posting" class="nav-link" data-scroll-target="#c.-normal-vs-anomalous-posting">c.&nbsp;Normal vs Anomalous Posting</a></li>
+  <li><a href="#d.-organisational-hiearchy" id="toc-d.-organisational-hiearchy" class="nav-link" data-scroll-target="#d.-organisational-hiearchy">d.&nbsp;Organisational Hiearchy</a></li>
+  <li><a href="#e.-full-incident-overview" id="toc-e.-full-incident-overview" class="nav-link" data-scroll-target="#e.-full-incident-overview">e. Full Incident Overview</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">1. Data Preparation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="visual-analytics-for-ai-multi-agent-system-diagnostics" class="level1">
+<h1>Visual Analytics for AI Multi-Agent System Diagnostics</h1>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">1. Overview</h2>
+<p>Modern enterprises increasingly deploy AI-powered multi-agent systems to automate routine workflows — drafting communications, managing files, routing tasks, and maintaining social media presence. These systems offer significant efficiency gains, but introduce a new class of operational risk - when agents malfunction or interact in unintended ways, the consequences can propagate silently across systems before any human notices.</p>
+<p>This study investigates such an incident. On 17 May 2046 at 4:21am local time, an AI agent associated with John Windward — an employee of TenantThread (Company A) — published an anomalous post on SaidIT, a public social media platform. The post was routed to a seemingly random forum and contained content that appeared to be gibberish rather than intentional communication. No corresponding user action triggered the post.</p>
+<p>Visual analytics — the integration of data visualisation, statistical reasoning, and interactive exploration — provides the investigative framework for this study. By constructing timelines, network maps, and event-sequence comparisons from TenantThread’s internal system logs, we move beyond simple log inspection to reveal the causal chain, contextualise the incident within the broader system architecture, and propose a targeted intervention to prevent recurrence.</p>
+<section id="objectives" class="level3">
+<h3 class="anchored" data-anchor-id="objectives">1.1 Objectives</h3>
+<p>This study applies visual analytics techniques in R to TenantThread’s multi-agent event log, spanning 8 May to 16 Jul 2046.</p>
+<p>The specific objectives are:</p>
+<p><strong>1. Reconstruct the Incident</strong>: (a) Identify the detailed chain of events that led to the anomalous SaidIT post, and (b) map the system architecture within which it occurred.</p>
+<p><strong>2. Decode the Content</strong>: Determine what the anomalous post contains and trace the origin of its content within TenantThread’s file and agent activity logs.</p>
+<p><strong>3. Prevent Recurrence</strong>: (a) Identify whether similar anomalous behaviour has occurred previously in the log, and (b) propose a single, well-defined intervention point to prevent future occurrences.</p>
+</section>
+</section>
+<section id="the-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-data">2. The Data</h2>
+<p>The dataset used in this study is drawn from the internal event logs of TenantThread’s multi-agent AI system, made available as part of <a href="https://vast-challenge.github.io/2026/MC2.html">VAST Challenge 2026 Mini-Challenge 2</a>. It captures a continuous record of all automated and human-initiated actions within the system from 8 May to 16 Jul 2046.</p>
+<p>There are two files provided:</p>
+<ul>
+<li><p><strong>mc2_df.rds</strong>: The primary event logs in a 185,147 rows R dataframe. Each row represents a single system event. The data spans 24 distinct event types ranging from routine file operations and email checks to social media posts and agent-to-agent task assignments.</p></li>
+<li><p><strong>org_chart.json</strong>: This file described TenantThread’s organisational hierarchy, containing 75 nodes (1 company, 6 departments, 19 teams, and 49 persons) connected by hierarchical “contains” relationships.</p></li>
+</ul>
+<p>Together, these two files allow us to reconstruct both the <em>what happened</em> (event log) and the <em>who is involved</em> (org chart) dimensions of the anomalous posting incident.</p>
+</section>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">3. Getting Started</h2>
+<section id="loading-r-packages" class="level3">
+<h3 class="anchored" data-anchor-id="loading-r-packages">3.1 Loading R Packages</h3>
+<p>The following R packages will be loaded using <code>pacman::p_load()</code>, which automatically installs any missing packages before loading them.</p>
+<ul>
+<li><strong>tidyverse</strong>: Core collection of R packages for data wrangling and visualisation, including ggplot2, dplyr, tidyr, readr, and lubridate.</li>
+<li><strong>jsonlite</strong>: Parses JSON files into R objects. Used to load the organisational hierarchy from <code>org_chart.json</code>.</li>
+<li><strong>lubridate</strong>: Simplifies working with Unix timestamps — converting them to datetime objects and extracting components such as date, hour, and weekday.</li>
+<li><strong>here</strong>: Constructs file paths relative to the project root, ensuring code runs consistently regardless of the working directory.</li>
+<li><strong>scales</strong>: Formats axis labels and annotations with commas, percentages, and readable number formats.</li>
+<li><strong>ggtext</strong>: Enables rich text formatting (bold, colour, italics) within ggplot2 titles and labels using HTML or Markdown syntax.</li>
+<li><strong>patchwork</strong>: Combines multiple ggplot2 plots into a single composited layout with shared titles and captions.</li>
+<li><strong>plotly</strong>: Converts ggplot2 charts into interactive HTML visualisations with hover tooltips and zoom controls.</li>
+<li><strong>visNetwork</strong>: Renders interactive network graphs in HTML, allowing nodes and edges to be explored through drag, zoom, and click interactions.</li>
+<li><strong>tidygraph</strong>: Provides a tidy interface for graph manipulation, enabling <code>dplyr</code>-style operations on network nodes and edges.</li>
+<li><strong>ggraph</strong>: Extends ggplot2 with geoms for static network visualisation, built on top of <code>tidygraph</code>.</li>
+<li><strong>igraph</strong>: Provides graph computation algorithms — used for centrality measures and shortest-path calculations on the org chart and event networks.</li>
+<li><strong>DT</strong>: Renders R dataframes as interactive HTML tables with sorting, filtering, and pagination.</li>
+<li><strong>knitr</strong>: Formats R dataframes as clean, publication-ready tables within the HTML output using <code>kable()</code>.</li>
+<li><strong>ggrepel</strong>: Extends ggplot2 by automatically repositioning overlapping text and label annotations, drawing connecting segments back to their original data points to preserve readability.</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, jsonlite, lubridate, here, scales, ggtext, patchwork, plotly, visNetwork, tidygraph, ggraph, igraph, DT, knitr, ggrepel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="importing-the-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-the-data">3.2 Importing the Data</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mc2_df <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"data/raw/mc2_df.rds"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>org_chart <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/raw/org_chart.json"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"mc2_df rows:"</span>, <span class="fu">nrow</span>(mc2_df), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc2_df rows: 185147 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"mc2_df cols:"</span>, <span class="fu">ncol</span>(mc2_df), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>mc2_df cols: 5 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Date range:"</span>,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">format</span>(<span class="fu">as_datetime</span>(<span class="fu">min</span>(mc2_df<span class="sc">$</span>when)), <span class="st">"%Y-%m-%d"</span>), <span class="st">"to"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">format</span>(<span class="fu">as_datetime</span>(<span class="fu">max</span>(mc2_df<span class="sc">$</span>when)), <span class="st">"%Y-%m-%d"</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Date range: 2046-05-08 to 2046-07-16 </code></pre>
+</div>
+</div>
+</section>
+<section id="data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-preparation">3.3 Data Preparation</h3>
+<p>Two transformations are applied before any analysis begins.</p>
+<ul>
+<li><p>The <code>when</code> column, stored as a unix timestamp (seconds since 1 January 1970), is converted to a proper datetime object using <code>as_datetime()</code>. Three derived time columns are added: <code>date</code> (calendar date), <code>hour</code> (hour of day in UTC), and <code>wday</code> (day of week). These are used in the activity heatmap and event timeline visualisations in subsequent sections.</p></li>
+<li><p>The <code>details</code> column contains a nested dataframe with 42 sub-columns embedded within each row of <code>mc2_df</code>. These sub-columns hold the event-specific attributes critical to this investigation, including <code>forum</code>, <code>content</code>, <code>content_source</code>, <code>file</code>, <code>from</code>, <code>to</code>, and <code>virus</code>. To enable direct column-level access without repeated <code>$details$</code> indexing, the nested dataframe is flattened into the main dataframe using <code>bind_cols()</code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="data-understanding" class="level2">
+<h2 class="anchored" data-anchor-id="data-understanding">4. Data Understanding</h2>
+<section id="a.-event-frequency-type-count" class="level3">
+<h3 class="anchored" data-anchor-id="a.-event-frequency-type-count">a. Event Frequency / Type Count</h3>
+<p>An interactive table is used to display the frequency of all 24 event types recorded in the dataset. Sorting by count allows me to immediately identify which automated behaviours dominate the system and which — such as <code>post_saidit</code> and <code>saidit_post</code> — are relatively rare. This rarity is analytically significant: low-frequency event types are more likely to contain anomalies that would be invisible in aggregate reporting.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>event_counts <span class="ot">&lt;-</span> mc2_df <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(short_name, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">`</span><span class="at">Event Type</span><span class="st">`</span> <span class="ot">=</span> short_name,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Count =</span> n) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">% of Total</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">percent</span>(Count <span class="sc">/</span> <span class="fu">sum</span>(Count), </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">accuracy =</span> <span class="fl">0.1</span>))</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  event_counts,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">options  =</span> <span class="fu">list</span>(<span class="at">pageLength =</span> <span class="dv">24</span>, </span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">dom        =</span> <span class="st">"t"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                  <span class="at">order      =</span> <span class="fu">list</span>(<span class="fu">list</span>(<span class="dv">1</span>, <span class="st">"desc"</span>))),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">rownames =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">caption  =</span> <span class="st">"Table 4.1: Event type frequencies (n = 185,147)"</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0396511c2a1a3767e0a1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0396511c2a1a3767e0a1">{"x":{"filter":"none","vertical":false,"caption":"<caption>Table 4.1: Event type frequencies (n = 185,147)<\/caption>","data":[["check_email","assign_agent_task","read_file","queue_subordinate_task","create_file","delete_file","check_in","sent","received","access_email","give_advice","check_access","enter_room","suggest_contacts","propose_meeting","access_files","list_files","ask_agent","post_flex","post_saidit","flex_post","saidit_post","saidit_post_check","send_email"],[37286,18856,18838,17038,16000,15057,15051,7407,7266,6442,4041,3710,3710,3617,3574,3571,2640,410,156,133,120,108,71,45],["20.1%","10.2%","10.2%","9.2%","8.6%","8.1%","8.1%","4.0%","3.9%","3.5%","2.2%","2.0%","2.0%","2.0%","1.9%","1.9%","1.4%","0.2%","0.1%","0.1%","0.1%","0.1%","0.0%","0.0%"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>Event Type<\/th>\n      <th>Count<\/th>\n      <th>% of Total<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":24,"dom":"t","order":[[1,"desc"]],"columnDefs":[{"className":"dt-right","targets":1},{"name":"Event Type","targets":0},{"name":"Count","targets":1},{"name":"% of Total","targets":2}],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,24,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>By executing during a period of near-zero system activity, the operation effectively avoided the “background noise” of concurrent workflows. This isolation ensured their scripted sequence—the post validation, the anomalous publication, and the immediate file deletions—could run without interference or immediate detection from standard oversight mechanisms.</strong></p>
+</div>
+</div>
+</section>
+<section id="b.-activity-heatmap" class="level3">
+<h3 class="anchored" data-anchor-id="b.-activity-heatmap">b. Activity Heatmap</h3>
+<p>A day-of-week by hour-of-day heatmap is used to reveal the temporal rhythm of system activity across the full observation period. This visualisation is preferred over a simple daily bar chart because it simultaneously captures two temporal dimensions: <em>when in the week</em> and <em>when in the day</em> - making it possible to identify both business-hours patterns and off-hours anomalies in a single view.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mc2_df <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(wday, hour) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> hour, <span class="at">y =</span> wday, <span class="at">fill =</span> n)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">colour =</span> <span class="st">"white"</span>, <span class="at">linewidth =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">low  =</span> <span class="st">"#f7fbff"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"#08519c"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Event count"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">23</span>, <span class="at">by =</span> <span class="dv">2</span>),</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">paste0</span>(<span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">23</span>, <span class="at">by =</span> <span class="dv">2</span>), <span class="st">":00"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">title    =</span> <span class="st">"When Is the System Most Active?"</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Heatmap of event counts by weekday and hour (UTC)"</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">x        =</span> <span class="st">"Hour of Day (UTC)"</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">y        =</span> <span class="cn">NULL</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>) <span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid  =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title  =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="1.-Data-Preparation_files/figure-html/activity-heatmap-1.png" class="img-fluid figure-img" width="960"></p>
+<figcaption>Figure 4.1: System activity heatmap by weekday and hour (UTC)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>The anomalous post occurred at 11:21 UTC on a Sunday—the system’s inherently quietest day—strongly indicating a rogue process exploiting an isolated period devoid of normal automated oversight.</strong></p>
+</div>
+</div>
+</section>
+<section id="c.-normal-vs-anomalous-posting" class="level3">
+<h3 class="anchored" data-anchor-id="c.-normal-vs-anomalous-posting">c.&nbsp;Normal vs Anomalous Posting</h3>
+<p>To establish a baseline, we classify all <code>saidit_post</code> events into normal and anomalous patterns based on whether <code>content_source</code> is populated. Under normal operation, an agent generates post content directly - <code>content</code> is populated with text and <code>content_source</code> remains null, indicating no external file was involved. An anomalous post reverses this - its <code>content</code> will be null and <code>content_source</code> points to an external file, indicating the post content was injected from outside the agent workflow.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>saidit_events <span class="ot">&lt;-</span> mc2_df <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(short_name <span class="sc">==</span> <span class="st">"saidit_post"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">pattern =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="sc">!</span><span class="fu">is.na</span>(content_source) <span class="sc">~</span> <span class="st">"Anomalous"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                   <span class="sc">~</span> <span class="st">"Normal"</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>pattern_summary <span class="ot">&lt;-</span> saidit_events <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pattern) <span class="sc">%&gt;%</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">Count            =</span> <span class="fu">n</span>(),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">content field</span><span class="st">`</span>  <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">all</span>(<span class="fu">is.na</span>(content)),  <span class="st">"NULL"</span>,     <span class="st">"Text present"</span>),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Files involved</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">paste</span>(<span class="fu">unique</span>(<span class="fu">na.omit</span>(content_source)), <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">content_source</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">ifelse</span>(<span class="fu">all</span>(<span class="fu">is.na</span>(content_source)), <span class="st">"NULL"</span>, <span class="st">"Filename (.txt)"</span>),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(pattern_summary,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Table 5.1: Normal vs Anomalous saidit_post Events"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Table 5.1: Normal vs Anomalous saidit_post Events</caption>
+<colgroup>
+<col style="width: 10%">
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 50%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">pattern</th>
+<th style="text-align: right;">Count</th>
+<th style="text-align: left;">content field</th>
+<th style="text-align: left;">Files involved</th>
+<th style="text-align: left;">content_source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Anomalous</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">NULL</td>
+<td style="text-align: left;">HiddenOrca.txt, MellowOtter.txt, SwiftWren.txt</td>
+<td style="text-align: left;">Filename (.txt)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Normal</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: left;">Text present</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;">NULL</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Three of the 108 <code>saidit_post</code> events were anomalous, bypassing normal agent generation by injecting content directly from external text files and prompting an investigation into the responsible party.</strong></p>
+</div>
+</div>
+</section>
+<section id="d.-organisational-hiearchy" class="level3">
+<h3 class="anchored" data-anchor-id="d.-organisational-hiearchy">d.&nbsp;Organisational Hiearchy</h3>
+<p>To contextualise the positions of all persons relevant to this investigation, the full 75-node TenantThread organisational chart is rendered as an interactive network using <code>visNetwork</code>. This package is chosen over static alternatives such as <code>ggraph</code> because the sheer number of nodes - spanning one company, six departments, 19 teams, and 49 persons - would render a fixed-size plot illegible. The interactive canvas allows us to zoom, pan, and hover on individual nodes to inspect relationships without visual compression. A top-down hierarchical layout is applied using <code>visHierarchicalLayout()</code> to preserve the reporting structure inherent in the <code>contains</code> edge type. <strong>John Windward</strong> is highlighted in red to immediately locate his position within the hierarchy and establish the organisational contxt before investigating how his agent came to execute the anomalous post.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visNetwork)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Parse org chart JSON ──────────────────────────────────────────────────────</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>org_raw <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"data/raw/org_chart.json"</span>, <span class="at">simplifyDataFrame =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>nodes_df <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(org_raw<span class="sc">$</span>nodes, <span class="sc">~</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">id    =</span> .x<span class="sc">$</span>id,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> .x<span class="sc">$</span>label,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">type  =</span> .x<span class="sc">$</span>type</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>edges_df <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(org_raw<span class="sc">$</span>edges, <span class="sc">~</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> .x<span class="sc">$</span>source,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">to   =</span> .x<span class="sc">$</span>target</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Assign visual properties ──────────────────────────────────────────────────</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>nodes_vis <span class="ot">&lt;-</span> nodes_df <span class="sc">%&gt;%</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">color.background =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"company"</span>    <span class="sc">~</span> <span class="st">"#2C3E50"</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"department"</span> <span class="sc">~</span> <span class="st">"#2980B9"</span>,</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"team"</span>       <span class="sc">~</span> <span class="st">"#27AE60"</span>,</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"person"</span>     <span class="sc">~</span> <span class="st">"#D5E8F3"</span>,</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                 <span class="sc">~</span> <span class="st">"#BDC3C7"</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color.border =</span> <span class="st">"white"</span>,</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">font.color =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"company"</span>, <span class="st">"department"</span>, <span class="st">"team"</span>) <span class="sc">~</span> <span class="st">"white"</span>,</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                                         <span class="sc">~</span> <span class="st">"#2C3E50"</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"company"</span>    <span class="sc">~</span> <span class="dv">40</span>,</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"department"</span> <span class="sc">~</span> <span class="dv">28</span>,</span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"team"</span>       <span class="sc">~</span> <span class="dv">18</span>,</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"person"</span>     <span class="sc">~</span> <span class="dv">14</span>,</span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                 <span class="sc">~</span> <span class="dv">12</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"company"</span>    <span class="sc">~</span> <span class="st">"diamond"</span>,</span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"department"</span> <span class="sc">~</span> <span class="st">"box"</span>,</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>      type <span class="sc">==</span> <span class="st">"team"</span>       <span class="sc">~</span> <span class="st">"box"</span>,</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>                 <span class="sc">~</span> <span class="st">"dot"</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Highlight John Windward in red</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">color.background =</span> <span class="fu">if_else</span>(</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">tolower</span>(id), <span class="st">"john_windward"</span>) <span class="sc">|</span></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(label), <span class="st">"john windward"</span>),</span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>      <span class="st">"#E74C3C"</span>, color.background</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">font.color =</span> <span class="fu">if_else</span>(</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">tolower</span>(id), <span class="st">"john_windward"</span>) <span class="sc">|</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(label), <span class="st">"john windward"</span>),</span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>      <span class="st">"white"</span>, font.color</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="fu">if_else</span>(</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(<span class="fu">tolower</span>(id), <span class="st">"john_windward"</span>) <span class="sc">|</span></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_detect</span>(<span class="fu">tolower</span>(label), <span class="st">"john windward"</span>),</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>      <span class="dv">22</span>, size</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"&lt;b&gt;"</span>, label, <span class="st">"&lt;/b&gt;&lt;br&gt;Type: "</span>, type)</span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a><span class="co"># ── Render ────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="fu">visNetwork</span>(</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>  nodes_vis,</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  edges_df,</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">main   =</span> <span class="fu">list</span>(</span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>    <span class="at">text  =</span> <span class="st">"Figure 6.1: TenantThread Organisational Hierarchy"</span>,</span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="st">"font-family:sans-serif; font-weight:bold; font-size:14px; text-align:center;"</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="st">"620px"</span>,</span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>  <span class="at">width  =</span> <span class="st">"100%"</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visHierarchicalLayout</span>(</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">direction            =</span> <span class="st">"UD"</span>,</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>    <span class="at">levelSeparation      =</span> <span class="dv">120</span>,</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">nodeSpacing          =</span> <span class="dv">45</span>,</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="at">treeSpacing          =</span> <span class="dv">150</span>,</span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">blockShifting        =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>    <span class="at">edgeMinimization     =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>    <span class="at">parentCentralization =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visNodes</span>(<span class="at">borderWidth =</span> <span class="fl">1.5</span>, <span class="at">borderWidthSelected =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visEdges</span>(</span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>    <span class="at">arrows =</span> <span class="fu">list</span>(<span class="at">to =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">TRUE</span>, <span class="at">scaleFactor =</span> <span class="fl">0.6</span>)),</span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>    <span class="at">color  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"#95A5A6"</span>, <span class="at">opacity =</span> <span class="fl">0.6</span>),</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>    <span class="at">smooth =</span> <span class="fu">list</span>(<span class="at">type =</span> <span class="st">"cubicBezier"</span>)</span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visOptions</span>(</span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">highlightNearest =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">TRUE</span>, <span class="at">degree =</span> <span class="dv">1</span>, <span class="at">hover =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">nodesIdSelection =</span> <span class="fu">list</span>(<span class="at">enabled =</span> <span class="cn">TRUE</span>, <span class="at">main =</span> <span class="st">"Select a node"</span>)</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visInteraction</span>(<span class="at">navigationButtons =</span> <span class="cn">TRUE</span>, <span class="at">tooltipDelay =</span> <span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visLegend</span>(</span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">position =</span> <span class="st">"left"</span>,</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">width    =</span> <span class="fl">0.10</span>,</span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">addNodes =</span> <span class="fu">list</span>(</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">label =</span> <span class="st">"Company"</span>,       <span class="at">shape =</span> <span class="st">"diamond"</span>, <span class="at">color =</span> <span class="st">"#2C3E50"</span>,</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>           <span class="at">font  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"white"</span>)),</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">label =</span> <span class="st">"Department"</span>,    <span class="at">shape =</span> <span class="st">"box"</span>,     <span class="at">color =</span> <span class="st">"#2980B9"</span>,</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>           <span class="at">font  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"white"</span>)),</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">label =</span> <span class="st">"Team"</span>,          <span class="at">shape =</span> <span class="st">"box"</span>,     <span class="at">color =</span> <span class="st">"#27AE60"</span>,</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>           <span class="at">font  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"white"</span>)),</span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">label =</span> <span class="st">"Person"</span>,        <span class="at">shape =</span> <span class="st">"dot"</span>,     <span class="at">color =</span> <span class="st">"#D5E8F3"</span>,</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>           <span class="at">font  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"#2C3E50"</span>)),</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>      <span class="fu">list</span>(<span class="at">label =</span> <span class="st">"John Windward"</span>, <span class="at">shape =</span> <span class="st">"dot"</span>,     <span class="at">color =</span> <span class="st">"#E74C3C"</span>,</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>           <span class="at">font  =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">"white"</span>))</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>    <span class="at">useGroups =</span> <span class="cn">FALSE</span></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">visEvents</span>(<span class="at">type =</span> <span class="st">"once"</span>, <span class="at">afterDrawing =</span> <span class="st">"function() { this.fit(); }"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-bb47f5dda2dcca506d60" style="width:100%;height:620px;" class="visNetwork html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bb47f5dda2dcca506d60">{"x":{"nodes":{"id":["company:tenant_thread","department:executive_suite","department:products","department:human_resources","department:legal","department:information_technologies","department:customer_support","team:residential_app","team:property_ops_console","team:analytics_suite","team:integrations","team:hiring","team:benefits","team:professional_development","team:ip","team:mergers_and_acquisitions","team:corporate_contracts","team:client_contracts","team:finance","team:ai_systems","team:infrastructure","team:helpdesk","team:phone_center","team:billing","team:concierge","team:public_relations","person:liam_anchor","person:emma_harbor","person:noah_mariner","person:olivia_keel","person:william_rudder","person:ava_tiller","person:james_stern","person:sophia_beacon","person:benjamin_mooring","person:mia_fender","person:lucas_compass","person:charlotte_current","person:henry_sail","person:amelia_skiff","person:alexander_jetty","person:evelyn_dock","person:michael_capstan","person:harper_oar","person:daniel_gangway","person:ella_pilot","person:matthew_tide","person:scarlett_wharf","person:david_breakwater","person:avery_sextant","person:joseph_buoy","person:abigail_spinnaker","person:sebastian_cutter","person:emily_ferry","person:jack_helm","person:grace_lifeboat","person:samuel_gull","person:chloe_ballast","person:levi_signal","person:victoria_rigging","person:owen_hatch","person:lily_anchorline","person:gabriel_sonar","person:zoey_drydock","person:john_windward","person:nora_bulkhead","person:julian_seaway","person:hannah_starboard","person:isaac_mast","person:audrey_portside","person:christopher_jettyline","person:layla_channel","person:anthony_reef","person:aria_towline","person:dylan_hawser"],"label":["Tenant Thread","Executive Suite","Products","Human Resources","Legal","Information Technologies","Customer Support","Residential App","Property Ops Console","Analytics Suite","Integrations","Hiring","Benefits","Professional Development","IP","Mergers and Acquisitions","Corporate Contracts","Client Contracts","Finance","AI Systems","Infrastructure","Helpdesk","Phone Center","Billing","Concierge","Public Relations","Liam Anchor","Emma Harbor","Noah Mariner","Olivia Keel","William Rudder","Ava Tiller","James Stern","Sophia Beacon","Benjamin Mooring","Mia Fender","Lucas Compass","Charlotte Current","Henry Sail","Amelia Skiff","Alexander Jetty","Evelyn Dock","Michael Capstan","Harper Oar","Daniel Gangway","Ella Pilot","Matthew Tide","Scarlett Wharf","David Breakwater","Avery Sextant","Joseph Buoy","Abigail Spinnaker","Sebastian Cutter","Emily Ferry","Jack Helm","Grace Lifeboat","Samuel Gull","Chloe Ballast","Levi Signal","Victoria Rigging","Owen Hatch","Lily Anchorline","Gabriel Sonar","Zoey Drydock","John Windward","Nora Bulkhead","Julian Seaway","Hannah Starboard","Isaac Mast","Audrey Portside","Christopher Jettyline","Layla Channel","Anthony Reef","Aria Towline","Dylan Hawser"],"type":["company","department","department","department","department","department","department","team","team","team","team","team","team","team","team","team","team","team","team","team","team","team","team","team","team","team","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person","person"],"color.background":["#2C3E50","#2980B9","#2980B9","#2980B9","#2980B9","#2980B9","#2980B9","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#27AE60","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#E74C3C","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3","#D5E8F3"],"color.border":["white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white"],"font.color":["white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","white","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","white","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50","#2C3E50"],"size":[40,28,28,28,28,28,28,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,22,14,14,14,14,14,14,14,14,14,14],"shape":["diamond","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","box","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot","dot"],"title":["<b>Tenant Thread<\/b><br>Type: company","<b>Executive Suite<\/b><br>Type: department","<b>Products<\/b><br>Type: department","<b>Human Resources<\/b><br>Type: department","<b>Legal<\/b><br>Type: department","<b>Information Technologies<\/b><br>Type: department","<b>Customer Support<\/b><br>Type: department","<b>Residential App<\/b><br>Type: team","<b>Property Ops Console<\/b><br>Type: team","<b>Analytics Suite<\/b><br>Type: team","<b>Integrations<\/b><br>Type: team","<b>Hiring<\/b><br>Type: team","<b>Benefits<\/b><br>Type: team","<b>Professional Development<\/b><br>Type: team","<b>IP<\/b><br>Type: team","<b>Mergers and Acquisitions<\/b><br>Type: team","<b>Corporate Contracts<\/b><br>Type: team","<b>Client Contracts<\/b><br>Type: team","<b>Finance<\/b><br>Type: team","<b>AI Systems<\/b><br>Type: team","<b>Infrastructure<\/b><br>Type: team","<b>Helpdesk<\/b><br>Type: team","<b>Phone Center<\/b><br>Type: team","<b>Billing<\/b><br>Type: team","<b>Concierge<\/b><br>Type: team","<b>Public Relations<\/b><br>Type: team","<b>Liam Anchor<\/b><br>Type: person","<b>Emma Harbor<\/b><br>Type: person","<b>Noah Mariner<\/b><br>Type: person","<b>Olivia Keel<\/b><br>Type: person","<b>William Rudder<\/b><br>Type: person","<b>Ava Tiller<\/b><br>Type: person","<b>James Stern<\/b><br>Type: person","<b>Sophia Beacon<\/b><br>Type: person","<b>Benjamin Mooring<\/b><br>Type: person","<b>Mia Fender<\/b><br>Type: person","<b>Lucas Compass<\/b><br>Type: person","<b>Charlotte Current<\/b><br>Type: person","<b>Henry Sail<\/b><br>Type: person","<b>Amelia Skiff<\/b><br>Type: person","<b>Alexander Jetty<\/b><br>Type: person","<b>Evelyn Dock<\/b><br>Type: person","<b>Michael Capstan<\/b><br>Type: person","<b>Harper Oar<\/b><br>Type: person","<b>Daniel Gangway<\/b><br>Type: person","<b>Ella Pilot<\/b><br>Type: person","<b>Matthew Tide<\/b><br>Type: person","<b>Scarlett Wharf<\/b><br>Type: person","<b>David Breakwater<\/b><br>Type: person","<b>Avery Sextant<\/b><br>Type: person","<b>Joseph Buoy<\/b><br>Type: person","<b>Abigail Spinnaker<\/b><br>Type: person","<b>Sebastian Cutter<\/b><br>Type: person","<b>Emily Ferry<\/b><br>Type: person","<b>Jack Helm<\/b><br>Type: person","<b>Grace Lifeboat<\/b><br>Type: person","<b>Samuel Gull<\/b><br>Type: person","<b>Chloe Ballast<\/b><br>Type: person","<b>Levi Signal<\/b><br>Type: person","<b>Victoria Rigging<\/b><br>Type: person","<b>Owen Hatch<\/b><br>Type: person","<b>Lily Anchorline<\/b><br>Type: person","<b>Gabriel Sonar<\/b><br>Type: person","<b>Zoey Drydock<\/b><br>Type: person","<b>John Windward<\/b><br>Type: person","<b>Nora Bulkhead<\/b><br>Type: person","<b>Julian Seaway<\/b><br>Type: person","<b>Hannah Starboard<\/b><br>Type: person","<b>Isaac Mast<\/b><br>Type: person","<b>Audrey Portside<\/b><br>Type: person","<b>Christopher Jettyline<\/b><br>Type: person","<b>Layla Channel<\/b><br>Type: person","<b>Anthony Reef<\/b><br>Type: person","<b>Aria Towline<\/b><br>Type: person","<b>Dylan Hawser<\/b><br>Type: person"]},"edges":{"from":["company:tenant_thread","company:tenant_thread","company:tenant_thread","company:tenant_thread","company:tenant_thread","company:tenant_thread","department:products","department:products","department:products","department:products","department:human_resources","department:human_resources","department:human_resources","department:legal","department:legal","department:legal","department:legal","department:legal","department:information_technologies","department:information_technologies","department:information_technologies","department:customer_support","department:customer_support","department:customer_support","department:customer_support","department:executive_suite","department:executive_suite","department:executive_suite","department:products","team:residential_app","team:residential_app","team:residential_app","team:property_ops_console","team:property_ops_console","team:property_ops_console","team:analytics_suite","team:analytics_suite","team:analytics_suite","team:integrations","team:integrations","team:integrations","department:human_resources","team:hiring","team:hiring","team:benefits","team:benefits","team:professional_development","department:legal","team:ip","team:mergers_and_acquisitions","team:corporate_contracts","team:corporate_contracts","team:client_contracts","team:client_contracts","team:finance","team:finance","department:information_technologies","team:ai_systems","team:ai_systems","team:infrastructure","team:infrastructure","team:helpdesk","team:helpdesk","department:customer_support","team:phone_center","team:phone_center","team:phone_center","team:billing","team:billing","team:concierge","team:concierge","team:public_relations","team:public_relations","team:public_relations"],"to":["department:executive_suite","department:products","department:human_resources","department:legal","department:information_technologies","department:customer_support","team:residential_app","team:property_ops_console","team:analytics_suite","team:integrations","team:hiring","team:benefits","team:professional_development","team:ip","team:mergers_and_acquisitions","team:corporate_contracts","team:client_contracts","team:finance","team:ai_systems","team:infrastructure","team:helpdesk","team:phone_center","team:billing","team:concierge","team:public_relations","person:liam_anchor","person:emma_harbor","person:noah_mariner","person:olivia_keel","person:william_rudder","person:ava_tiller","person:james_stern","person:sophia_beacon","person:benjamin_mooring","person:mia_fender","person:lucas_compass","person:charlotte_current","person:henry_sail","person:amelia_skiff","person:alexander_jetty","person:evelyn_dock","person:michael_capstan","person:harper_oar","person:daniel_gangway","person:ella_pilot","person:matthew_tide","person:scarlett_wharf","person:david_breakwater","person:avery_sextant","person:joseph_buoy","person:abigail_spinnaker","person:sebastian_cutter","person:emily_ferry","person:jack_helm","person:grace_lifeboat","person:samuel_gull","person:chloe_ballast","person:levi_signal","person:victoria_rigging","person:owen_hatch","person:lily_anchorline","person:gabriel_sonar","person:zoey_drydock","person:john_windward","person:nora_bulkhead","person:julian_seaway","person:hannah_starboard","person:isaac_mast","person:audrey_portside","person:christopher_jettyline","person:layla_channel","person:anthony_reef","person:aria_towline","person:dylan_hawser"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","borderWidth":1.5,"borderWidthSelected":3},"manipulation":{"enabled":false},"layout":{"hierarchical":{"enabled":true,"levelSeparation":120,"nodeSpacing":45,"treeSpacing":150,"blockShifting":true,"edgeMinimization":true,"parentCentralization":true,"direction":"UD"}},"edges":{"arrows":{"to":{"enabled":true,"scaleFactor":0.6}},"color":{"color":"#95A5A6","opacity":0.6},"smooth":{"type":"cubicBezier"}},"interaction":{"hover":true,"navigationButtons":true,"tooltipDelay":100,"zoomSpeed":1}},"groups":null,"width":"100%","height":"620px","idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select a node"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":{"text":"Figure 6.1: TenantThread Organisational Hierarchy","style":"font-family:sans-serif; font-weight:bold; font-size:14px; text-align:center;"},"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","highlight":{"enabled":true,"hoverNearest":true,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","legend":{"width":0.1,"useGroups":false,"position":"left","ncol":1,"stepX":100,"stepY":100,"zoom":true,"nodes":[{"label":"Company","shape":"diamond","color":"#2C3E50","font":{"color":"white"}},{"label":"Department","shape":"box","color":"#2980B9","font":{"color":"white"}},{"label":"Team","shape":"box","color":"#27AE60","font":{"color":"white"}},{"label":"Person","shape":"dot","color":"#D5E8F3","font":{"color":"#2C3E50"}},{"label":"John Windward","shape":"dot","color":"#E74C3C","font":{"color":"white"}}],"nodesToDataframe":false},"OnceEvents":{"afterDrawing":"function() { this.fit(); }"}},"evals":["OnceEvents.afterDrawing"],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Despite having no managerial authority or subordinates within the 75-node company hierarchy, a <code>queue_subordinate_task</code> recorded in John Windward’s activity at the exact moment of the anomalous post reveals a critical operational discrepancy.</strong></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="e.-full-incident-overview" class="level3">
+<h3 class="anchored" data-anchor-id="e.-full-incident-overview">e. Full Incident Overview</h3>
+<p>The preceding graphic established the delegation chain, the relay structure, the failed validation, and the post-publication cleanup as separate findings. Figure 7.4 will consoolidate all these into a single visual - plotting every relevant event from <code>00:51:43</code> to <code>11:21:17 UTC</code> across all actors involved, coloured by event type. This allows the full arc of the incident to be read in one view - the relay building across the morning, the behavioural signature repeating at each node, and the abrupt post-and-delete sequence at the terminal executor.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>chain_actors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"james_stern"</span>, <span class="st">"gabriel_sonar"</span>, <span class="st">"daniel_gangway"</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"zoey_drydock"</span>, <span class="st">"mia_fender"</span>, <span class="st">"victoria_rigging"</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"lily_anchorline"</span>, <span class="st">"chloe_ballast"</span>, <span class="st">"john_windward"</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>timeline_events <span class="ot">&lt;-</span> mc2_df <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    date <span class="sc">==</span> <span class="fu">as.Date</span>(<span class="st">"2046-05-17"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    datetime <span class="sc">&lt;=</span> <span class="fu">as.POSIXct</span>(<span class="st">"2046-05-17 11:21:17"</span>, <span class="at">tz =</span> <span class="st">"UTC"</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    short_name <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"queue_subordinate_task"</span>, <span class="st">"saidit_post_check"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>                      <span class="st">"saidit_post"</span>, <span class="st">"delete_file"</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_lgl</span>(parties, <span class="sc">~</span><span class="fu">any</span>(</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_remove</span>(.x, <span class="st">"Agent/person:"</span>) <span class="sc">%in%</span> chain_actors <span class="sc">|</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(.x, <span class="st">"john_windward"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">actor =</span> <span class="fu">map_chr</span>(parties, <span class="sc">~</span>{</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>      hit <span class="ot">&lt;-</span> <span class="fu">str_remove</span>(.x, <span class="st">"Agent/person:"</span>)[</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_remove</span>(.x, <span class="st">"Agent/person:"</span>) <span class="sc">%in%</span> chain_actors]</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">length</span>(hit) <span class="sc">&gt;</span> <span class="dv">0</span>) hit[[<span class="dv">1</span>]] <span class="cf">else</span> <span class="cn">NA_character_</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    }),</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">event_type =</span> <span class="fu">factor</span>(short_name,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>                        <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"queue_subordinate_task"</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"saidit_post_check"</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"saidit_post"</span>,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"delete_file"</span>),</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Delegation"</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Post Check"</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Anomalous Post"</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>                                   <span class="st">"Deletion"</span>)),</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">tooltip =</span> <span class="fu">case_when</span>(</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>      short_name <span class="sc">==</span> <span class="st">"queue_subordinate_task"</span> <span class="sc">~</span> <span class="fu">paste0</span>(</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Delegation</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_replace_all</span>(<span class="fu">map_chr</span>(parties, <span class="sc">~</span><span class="fu">str_remove</span>(.x[[<span class="dv">1</span>]], <span class="st">"Agent/person:"</span>)), <span class="st">"_"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_title</span>(),</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">" → "</span>,</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>        <span class="fu">str_replace_all</span>(<span class="fu">str_remove</span>(target_agent, <span class="st">"Agent/person:"</span>), <span class="st">"_"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_title</span>(),</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"</span><span class="sc">\n</span><span class="st">Time: "</span>, <span class="fu">format</span>(datetime, <span class="st">"%H:%M:%S UTC"</span>)</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>  <span class="cn">TRUE</span> <span class="sc">~</span> <span class="fu">paste0</span>(</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Actor: "</span>, <span class="fu">str_replace_all</span>(actor, <span class="st">"_"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span> <span class="fu">str_to_title</span>(), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Event: "</span>, event_type, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Time: "</span>, <span class="fu">format</span>(datetime, <span class="st">"%H:%M:%S UTC"</span>)</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(actor))</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(timeline_events,</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x      =</span> datetime,</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>           <span class="at">y      =</span> <span class="fu">factor</span>(actor,</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>                           <span class="at">levels =</span> <span class="fu">rev</span>(chain_actors),</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>                           <span class="at">labels =</span> <span class="fu">rev</span>(<span class="fu">str_replace_all</span>(chain_actors, <span class="st">"_"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>                                          <span class="fu">str_to_title</span>())),</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>           <span class="at">colour =</span> event_type,</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>           <span class="at">shape  =</span> event_type,</span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a>           <span class="at">text   =</span> tooltip)) <span class="sc">+</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">seq_along</span>(chain_actors),</span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">"grey92"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">as.POSIXct</span>(<span class="st">"2046-05-17 11:21:15"</span>, <span class="at">tz =</span> <span class="st">"UTC"</span>),</span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="st">"dashed"</span>, <span class="at">colour =</span> <span class="st">"#E15759"</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="sc">~</span><span class="fu">filter</span>(.x, event_type <span class="sc">!=</span> <span class="st">"Deletion"</span>),</span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="sc">~</span><span class="fu">filter</span>(.x, event_type <span class="sc">==</span> <span class="st">"Deletion"</span>),</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">4</span>, <span class="at">alpha =</span> <span class="fl">0.9</span>,</span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>             <span class="at">position =</span> <span class="fu">position_jitter</span>(<span class="at">height =</span> <span class="fl">0.15</span>, <span class="at">width =</span> <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Delegation"</span>     <span class="ot">=</span> <span class="st">"#4E79A7"</span>,</span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Post Check"</span>     <span class="ot">=</span> <span class="st">"#F28E2B"</span>,</span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Anomalous Post"</span> <span class="ot">=</span> <span class="st">"#E15759"</span>,</span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Deletion"</span>       <span class="ot">=</span> <span class="st">"#555555"</span>),</span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Event Type"</span></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_shape_manual</span>(</span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Delegation"</span>     <span class="ot">=</span> <span class="dv">16</span>,</span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Post Check"</span>     <span class="ot">=</span> <span class="dv">17</span>,</span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Anomalous Post"</span> <span class="ot">=</span> <span class="dv">8</span>,</span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a>               <span class="st">"Deletion"</span>       <span class="ot">=</span> <span class="dv">4</span>),</span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"Event Type"</span></span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_datetime</span>(<span class="at">date_labels =</span> <span class="st">"%H:%M"</span>,</span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a>                   <span class="at">date_breaks =</span> <span class="st">"1 hour"</span>) <span class="sc">+</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Figure 7.4: Full Incident Timeline — May 17 2046"</span>,</span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">x     =</span> <span class="st">"Time (UTC)"</span>,</span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>    <span class="at">y     =</span> <span class="cn">NULL</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>) <span class="sc">+</span></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title    =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">13</span>),</span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid    =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.y   =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x   =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>),</span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(p, <span class="at">tooltip =</span> <span class="st">"text"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a>  <span class="fu">layout</span>(</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">title  =</span> <span class="fu">list</span>(<span class="at">text =</span> <span class="st">"Figure 7.4: Full Incident Timeline — May 17 2046"</span>,</span>
+<span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a>                  <span class="at">font =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">14</span>)),</span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin =</span> <span class="fu">list</span>(<span class="at">r =</span> <span class="dv">80</span>, <span class="at">b =</span> <span class="dv">140</span>),</span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a>    <span class="at">xaxis  =</span> <span class="fu">list</span>(<span class="at">title =</span> <span class="fu">list</span>(<span class="at">text  =</span> <span class="st">"Time (UTC)"</span>,</span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a>                               <span class="at">standoff =</span> <span class="dv">30</span>)),</span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend =</span> <span class="fu">list</span>(<span class="at">orientation =</span> <span class="st">"h"</span>,</span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y =</span> <span class="sc">-</span><span class="fl">0.25</span>,</span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a>                  <span class="at">x =</span> <span class="fl">0.5</span>,</span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a>                  <span class="at">xanchor =</span> <span class="st">"center"</span>)</span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-1b04841e079cf7c39c1e" style="width:100%;height:350px;"></div>
+<script type="application/json" data-for="htmlwidget-1b04841e079cf7c39c1e">{"x":{"data":[{"x":[2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998,null,2410129214.3000002,2410170765.6999998],"y":[1,1,null,2,2,null,3,3,null,4,4,null,5,5,null,6,6,null,7,7,null,8,8,null,9,9],"text":"","type":"scatter","mode":"lines","line":{"width":1.5118110236220474,"color":"rgba(235,235,235,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2410168875,2410168875],"y":[0.40000000000000002,9.5999999999999996],"text":"","type":"scatter","mode":"lines","line":{"width":2.2677165354330708,"color":"rgba(225,87,89,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2410131103,2410136771,2410143152,2410148072,2410149171,2410152268,2410157767,2410164691,2410168344,2410168873],"y":[9,8,7,6,5,4,6,3,7,2],"text":["Delegation<br />James Stern → Gabriel Sonar<br />Time: 00:51:43 UTC","Delegation<br />Gabriel Sonar → Daniel Gangway<br />Time: 02:26:11 UTC","Delegation<br />Daniel Gangway → Zoey Drydock<br />Time: 04:12:32 UTC","Delegation<br />Zoey Drydock → Mia Fender<br />Time: 05:34:32 UTC","Delegation<br />Mia Fender → Victoria Rigging<br />Time: 05:52:51 UTC","Delegation<br />Victoria Rigging → Zoey Drydock<br />Time: 06:44:28 UTC","Delegation<br />Zoey Drydock → Lily Anchorline<br />Time: 08:16:07 UTC","Delegation<br />Lily Anchorline → Daniel Gangway<br />Time: 10:11:31 UTC","Delegation<br />Daniel Gangway → Chloe Ballast<br />Time: 11:12:24 UTC","Delegation<br />Chloe Ballast → John Windward<br />Time: 11:21:13 UTC"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(78,121,167,1)","opacity":0.90000000000000002,"size":15.118110236220474,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(78,121,167,1)"}},"hoveron":"points","name":"Delegation","legendgroup":"Delegation","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2410152269,2410164692,2410168874],"y":[6,7,1],"text":["Actor: Zoey Drydock<br />Event: Post Check<br />Time: 06:44:29 UTC","Actor: Daniel Gangway<br />Event: Post Check<br />Time: 10:11:32 UTC","Actor: John Windward<br />Event: Post Check<br />Time: 11:21:14 UTC"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(242,142,43,1)","opacity":0.90000000000000002,"size":15.118110236220474,"symbol":"triangle-up","line":{"width":1.8897637795275593,"color":"rgba(242,142,43,1)"}},"hoveron":"points","name":"Post Check","legendgroup":"Post Check","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2410168875],"y":[1],"text":"Actor: John Windward<br />Event: Anomalous Post<br />Time: 11:21:15 UTC","type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(225,87,89,1)","opacity":0.90000000000000002,"size":15.118110236220474,"symbol":"asterisk-open","line":{"width":1.8897637795275593,"color":"rgba(225,87,89,1)"}},"hoveron":"points","name":"Anomalous Post","legendgroup":"Anomalous Post","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[2410168876,2410168877],"y":[1.0527480449061841,0.86929796538315718],"text":["Actor: John Windward<br />Event: Deletion<br />Time: 11:21:16 UTC","Actor: John Windward<br />Event: Deletion<br />Time: 11:21:17 UTC"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(85,85,85,1)","opacity":0.90000000000000002,"size":15.118110236220474,"symbol":"x-thin-open","line":{"width":1.8897637795275593,"color":"rgba(85,85,85,1)"}},"hoveron":"points","name":"Deletion","legendgroup":"Deletion","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":40.574512245745126,"r":80,"b":140,"l":117.22706517227063},"paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Figure 7.4: Full Incident Timeline — May 17 2046","font":{"color":"rgba(0,0,0,1)","family":"","size":14},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[2410129214.3000002,2410170765.6999998],"tickmode":"array","ticktext":["01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00"],"tickvals":[2410131600,2410135200,2410138800,2410142400,2410146000,2410149600,2410153200,2410156800,2410160400,2410164000,2410167600],"categoryorder":"array","categoryarray":["01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-45,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"y","title":{"text":"Time (UTC)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"standoff":30},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.40000000000000002,9.5999999999999996],"tickmode":"array","ticktext":["John Windward","Chloe Ballast","Lily Anchorline","Victoria Rigging","Mia Fender","Zoey Drydock","Daniel Gangway","Gabriel Sonar","James Stern"],"tickvals":[1,2,3,4,5,6,6.9999999999999991,8,9],"categoryorder":"array","categoryarray":["John Windward","Chloe Ballast","Lily Anchorline","Victoria Rigging","Mia Fender","Zoey Drydock","Daniel Gangway","Gabriel Sonar","James Stern"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":13.283520132835198},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":false,"gridcolor":null,"gridwidth":0,"zeroline":false,"anchor":"x","title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[],"showlegend":true,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498},"orientation":"h","x":0.5,"y":-0.25,"xanchor":"center","yanchor":"top","title":{"text":"Event Type","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"88847a704c47":{"yintercept":{},"type":"scatter"},"888464078c9":{"xintercept":{}},"88847304353f":{"x":{},"y":{},"colour":{},"shape":{},"text":{}},"8884287a7af1":{"x":{},"y":{},"colour":{},"shape":{},"text":{}}},"cur_data":"88847a704c47","visdat":{"88847a704c47":["function (y) ","x"],"888464078c9":["function (y) ","x"],"88847304353f":["function (y) ","x"],"8884287a7af1":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.navbar-nav a').forEach(function(link) {
+    if (link.textContent.trim().includes('App') || 
+        link.href.includes('shinyapps.io')) {
+      link.setAttribute('target', '_blank');
+      link.setAttribute('rel', 'noopener noreferrer');
+    }
+  });
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
