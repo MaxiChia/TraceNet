@@ -1,8 +1,15 @@
 ---
-title: "1. Data Preparation"
+title: "Data Preparation"
 format: html
 editor: visual
 ---
+```{=html}
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
+```
 
 # Visual Analytics for AI Multi-Agent System Diagnostics
 
@@ -139,7 +146,7 @@ DT::datatable(
 **By executing during a period of near-zero system activity, the operation effectively avoided the "background noise" of concurrent workflows. This isolation ensured their scripted sequence—the post validation, the anomalous publication, and the immediate file deletions—could run without interference or immediate detection from standard oversight mechanisms.**
 :::
 
-### b.  Activity Heatmap
+### b. Activity Heatmap
 
 A day-of-week by hour-of-day heatmap is used to reveal the temporal rhythm of system activity across the full observation period. This visualisation is preferred over a simple daily bar chart because it simultaneously captures two temporal dimensions: *when in the week* and *when in the day* - making it possible to identify both business-hours patterns and off-hours anomalies in a single view.
 
@@ -218,7 +225,7 @@ kable(pattern_summary,
 **Three of the 108 `saidit_post` events were anomalous, bypassing normal agent generation by injecting content directly from external text files and prompting an investigation into the responsible party.**
 :::
 
-### d.  Organisational Hiearchy
+### d. Organisational Hiearchy
 
 To contextualise the positions of all persons relevant to this investigation, the full 75-node TenantThread organisational chart is rendered as an interactive network using `visNetwork`. This package is chosen over static alternatives such as `ggraph` because the sheer number of nodes - spanning one company, six departments, 19 teams, and 49 persons - would render a fixed-size plot illegible. The interactive canvas allows us to zoom, pan, and hover on individual nodes to inspect relationships without visual compression. A top-down hierarchical layout is applied using `visHierarchicalLayout()` to preserve the reporting structure inherent in the `contains` edge type. **John Windward** is highlighted in red to immediately locate his position within the hierarchy and establish the organisational contxt before investigating how his agent came to execute the anomalous post.
 

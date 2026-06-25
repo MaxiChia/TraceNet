@@ -28,7 +28,12 @@ website:
             href: Methodology/2. Statistical Analysis.html
           - text: "3. Data Exploration and VIsualisation"
             href: Methodology/3. Data Exploration and VIsualisation.html
-      - text: "Methodology"
+      - href: https://tracenet.shinyapps.io/TraceNet/
+        text: "TraceNet Shiny App ↗"
+        target: _blank
+        
+    right:
+      - text: "Appendix - "
         menu:
           - text: "Overview & Data"
             href: Take-Home_Exercise02/Take-Home_Ex02.html#overview
@@ -37,12 +42,7 @@ website:
           - text: "Analysis"
             href: Take-Home_Exercise02/Take-Home_Ex02.html#historical-anomalies---recurrence-analysis
           - text: "Intervention"
-            href: Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal
-      - href: https://tracenet.shinyapps.io/TraceNet/
-        text: "TraceNet Shiny App ↗"
-        target: _blank
-        
-    right:
+            href: Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal      
       - href: minutes.qmd
         text: Minutes of Meetings
       - icon: github

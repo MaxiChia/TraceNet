@@ -23,7 +23,7 @@ RELAY_NODES <- tibble::tibble(
   color.highlight.background = "#FFD700",
   value    = c(35, 20, 28, 28, 20, 20, 20, 20, 45),
   font.size = c(13, 11, 13, 13, 11, 11, 11, 11, 14),
-  font.color = "white",
+  font.color = "#E0C060",
   shadow = TRUE,
   x = c(500, 300, 100, -100, -300, -300, -100, 100, 300),
   y = c(0,   0,   -100, 0,   -100, 100,  100,  200, 300),
@@ -98,7 +98,7 @@ mod1_network_relay <- function(show_labels) {
     height = "450px",
     main   = list(
       text  = "11-Node Task Delegation Chain — 17 May 2046 (same structure confirmed across all 3 incidents)",
-      style = "font-size:13px; font-weight:bold; color:#333; text-align:left; padding-left:10px;"
+      style = "font-size:13px; font-weight:bold; color:#E0C060; text-align:left; padding-left:10px;"
     )
   ) |>
     visNetwork::visEdges(
@@ -106,7 +106,7 @@ mod1_network_relay <- function(show_labels) {
       font   = list(align = "top", strokeWidth = 0)
     ) |>
     visNetwork::visNodes(
-      font    = list(strokeWidth = 2, strokeColor = "rgba(0,0,0,0.3)"),
+      font    = list(color = "#E0C060", strokeWidth = 2, strokeColor = "rgba(0,0,0,0.3)"),
       shadow  = list(enabled = TRUE, size = 8)
     ) |>
     visNetwork::visPhysics(enabled = FALSE) |>
@@ -119,6 +119,7 @@ mod1_network_relay <- function(show_labels) {
         label            = c("Chain Root", "Reused (obfuscation)",
                              "Relay Node", "Terminal Executor"),
         color.background = c("#E8A52B", "#E8C547", "#1D9E75", "#D84040"),
+        font.color       = "#E0C060",
         shape = "dot", size = 20, stringsAsFactors = FALSE
       ),
       useGroups = FALSE, position = "right", width = 0.18
@@ -185,7 +186,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
       color.highlight.background = "#FFD700",
       value     = ifelse(is_core, 28, 12),
       font.size = ifelse(is_core, 13, 10),
-      font.color = "white",
+      font.color = "#E0C060",
       shadow    = TRUE,
       title     = paste0(
         "<b>", clean_name(id), "</b><br>",
@@ -199,7 +200,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
     width = "100%", height = "450px",
     main  = list(
       text  = paste0("Core Actor Interaction Network — ", selected_date),
-      style = "font-size:13px; font-weight:bold; color:#333; text-align:left; padding-left:10px;"
+      style = "font-size:13px; font-weight:bold; color:#E0C060; text-align:left; padding-left:10px;"
     )
   ) |>
     visNetwork::visOptions(
@@ -211,11 +212,15 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
       forceAtlas2Based = list(gravitationalConstant = -80, centralGravity = 0.01),
       stabilization    = list(iterations = 300)
     ) |>
-    visNetwork::visNodes(shadow = list(enabled = TRUE, size = 6)) |>
+    visNetwork::visNodes(
+      font   = list(color = "#E0C060"),
+      shadow = list(enabled = TRUE, size = 6)
+    ) |>
     visNetwork::visLegend(
       addNodes = data.frame(
         label            = c("Terminal Executor", "Core Actor", "Peripheral"),
         color.background = c(ANOMALY_COLOUR, "#1D9E75", "#3d5a63"),
+        font.color       = "#E0C060",
         shape = "dot", size = 20, stringsAsFactors = FALSE
       ),
       useGroups = FALSE, position = "right"

@@ -1,10 +1,18 @@
 ---
-title: "3. Data Exploration and VIsualisation"
+title: "Data Exploration and Visualisation"
 format: html
 editor: visual
 ---
 
-## 1. Discoveries from data preparation: 
+```{=html}
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
+```
+
+## 1. Discoveries from data preparation:
 
 - **The Content Injection Anomaly:** Only three of the 108 `saidit_post` events were anomalous, entirely bypassing normal agent-generated text by directly injecting content from external `.txt` files.
 

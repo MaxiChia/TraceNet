@@ -5,7 +5,6 @@
 
 ui <- bslib::page_navbar(
   title = div(
-    img(src = "logo.png", height = "30px", style = "margin-right:8px;"),
     "TraceNet"
   ),
   theme = bslib::bs_theme(
@@ -219,7 +218,7 @@ ui <- bslib::page_navbar(
         checkboxInput("mod1_show_labels", "Show node labels", value = TRUE),
         hr(),
         helpText(
-          "Relay Chain: confirmed May 17 2046 chain (hardcoded from investigation).",
+          "Relay Chain: confirmed May 17 2046 chain.",
           style = "font-size:0.8em; color:#888;"
         ),
         helpText("Click a node to inspect its event log below.")
@@ -324,10 +323,6 @@ ui <- bslib::page_navbar(
           min = 5, max = 16, value = 15, step = 1
         ),
         hr(),
-        helpText(
-          "Intervention split: last confirmed incident 17 May 2046.",
-          style = "font-size:0.85em; color:#666;"
-        )
       ),
       
       bslib::card(

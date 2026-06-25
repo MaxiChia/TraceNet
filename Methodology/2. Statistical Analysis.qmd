@@ -1,8 +1,15 @@
 ---
-title: "2. Statistical Analysis"
+title: "Statistical Analysis"
 format: html
 editor: visual
 ---
+```{=html}
+<style>
+  p {
+    text-align: justify;
+  }
+</style>
+```
 
 ### 1. Descriptive Statistics (Frequencies & Proportions)
 
