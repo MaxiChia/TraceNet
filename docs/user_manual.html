@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Brandon Komajaya | Albert Chia | Chua Wee Tian">
 
-<title>Data Exploration and Visualisation – TraceNet</title>
+<title>TraceNet User Manual – TraceNet</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -26,23 +27,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b49de2f8c4950123375d3985ca54db94.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b49de2f8c4950123375d3985ca54db94.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -81,11 +82,11 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/tracenet_logo.jpg" alt="" class="navbar-logo light-content">
-    <img src="../images/tracenet_logo.jpg" alt="" class="navbar-logo dark-content">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/tracenet_logo.jpg" alt="" class="navbar-logo light-content">
+    <img src="./images/tracenet_logo.jpg" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">TraceNet</span>
     </a>
   </div>
@@ -96,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../proposal.html"> 
+    <a class="nav-link" href="./proposal.html"> 
 <span class="menu-text">Proposal</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -109,15 +110,15 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-methodology">    
         <li>
-    <a class="dropdown-item" href="../Methodology/1. Data Preparation.html">
+    <a class="dropdown-item" href="./Methodology/1. Data Preparation.html">
  <span class="dropdown-text">1. Data Preparation</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Methodology/2. Statistical Analysis.html">
+    <a class="dropdown-item" href="./Methodology/2. Statistical Analysis.html">
  <span class="dropdown-text">2. Statistical Analysis</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Methodology/3. Data Exploration and VIsualisation.html">
+    <a class="dropdown-item" href="./Methodology/3. Data Exploration and VIsualisation.html">
  <span class="dropdown-text">3. Data Exploration and Visualisation</span></a>
   </li>  
     </ul>
@@ -134,29 +135,29 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-appendix---full-examination">    
         <li>
-    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#overview">
+    <a class="dropdown-item" href="./Take-Home_Exercise02/Take-Home_Ex02.html#overview">
  <span class="dropdown-text">Overview &amp; Data</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#how-was-the-post-made">
+    <a class="dropdown-item" href="./Take-Home_Exercise02/Take-Home_Ex02.html#how-was-the-post-made">
  <span class="dropdown-text">The Post</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#historical-anomalies---recurrence-analysis">
+    <a class="dropdown-item" href="./Take-Home_Exercise02/Take-Home_Ex02.html#historical-anomalies---recurrence-analysis">
  <span class="dropdown-text">Analysis</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal">
+    <a class="dropdown-item" href="./Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal">
  <span class="dropdown-text">Intervention</span></a>
   </li>  
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="../minutes.html"> 
+    <a class="nav-link" href="./minutes.html"> 
 <span class="menu-text">Minutes of Meetings</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../user_manual.html"> 
+    <a class="nav-link active" href="./user_manual.html" aria-current="page"> 
 <span class="menu-text">User Manual</span></a>
   </li>  
   <li class="nav-item compact">
@@ -177,12 +178,32 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+    <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#discoveries-from-data-preparation" id="toc-discoveries-from-data-preparation" class="nav-link active" data-scroll-target="#discoveries-from-data-preparation">1. Discoveries from data preparation:</a></li>
-  <li><a href="#here-are-the-primary-discoveries" id="toc-here-are-the-primary-discoveries" class="nav-link" data-scroll-target="#here-are-the-primary-discoveries">2. Here are the primary discoveries:</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">3. Summary</a></li>
+  <li><a href="#application-navigation" id="toc-application-navigation" class="nav-link active" data-scroll-target="#application-navigation">1. Application Navigation</a></li>
+  <li><a href="#overview-module" id="toc-overview-module" class="nav-link" data-scroll-target="#overview-module">2. Overview Module</a>
+  <ul class="collapse">
+  <li><a href="#key-components" id="toc-key-components" class="nav-link" data-scroll-target="#key-components">Key Components</a></li>
+  </ul></li>
+  <li><a href="#system-topology-module" id="toc-system-topology-module" class="nav-link" data-scroll-target="#system-topology-module">3. System Topology Module</a>
+  <ul class="collapse">
+  <li><a href="#controls" id="toc-controls" class="nav-link" data-scroll-target="#controls">Controls</a></li>
+  <li><a href="#visualisations" id="toc-visualisations" class="nav-link" data-scroll-target="#visualisations">Visualisations</a></li>
+  </ul></li>
+  <li><a href="#anomaly-detection-module" id="toc-anomaly-detection-module" class="nav-link" data-scroll-target="#anomaly-detection-module">4. Anomaly Detection Module</a>
+  <ul class="collapse">
+  <li><a href="#view-modes" id="toc-view-modes" class="nav-link" data-scroll-target="#view-modes">View Modes</a></li>
+  <li><a href="#event-log-explorer" id="toc-event-log-explorer" class="nav-link" data-scroll-target="#event-log-explorer">Event Log Explorer</a></li>
+  </ul></li>
+  <li><a href="#historical-patterns-module" id="toc-historical-patterns-module" class="nav-link" data-scroll-target="#historical-patterns-module">5. Historical Patterns Module</a>
+  <ul class="collapse">
+  <li><a href="#view-modes-1" id="toc-view-modes-1" class="nav-link" data-scroll-target="#view-modes-1">View Modes</a></li>
+  </ul></li>
+  <li><a href="#about-module" id="toc-about-module" class="nav-link" data-scroll-target="#about-module">6. About Module</a>
+  <ul class="collapse">
+  <li><a href="#key-information-displayed" id="toc-key-information-displayed" class="nav-link" data-scroll-target="#key-information-displayed">Key Information Displayed</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -191,13 +212,20 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data Exploration and Visualisation</h1>
+<h1 class="title">TraceNet User Manual</h1>
+<p class="subtitle lead">Incident Investigation and Forensic Network Analysis Guide</p>
 </div>
 
 
 
 <div class="quarto-title-meta column-page-left">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Brandon Komajaya | Albert Chia | Chua Wee Tian </p>
+          </div>
+  </div>
     
   
     
@@ -208,55 +236,183 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<style>
-  p {
-    text-align: justify;
-  }
-</style>
-<section id="discoveries-from-data-preparation" class="level2">
-<h2 class="anchored" data-anchor-id="discoveries-from-data-preparation">1. Discoveries from data preparation:</h2>
+<p>Welcome to the TraceNet user manual. TraceNet is an advanced incident investigation and forensic network analysis application designed to trace anomalous events, map agent interactions, and identify systemic vulnerabilities.</p>
+<p>This guide will walk you through the application’s core modules and functionalities.</p>
+<hr>
+<section id="application-navigation" class="level2">
+<h2 class="anchored" data-anchor-id="application-navigation">1. Application Navigation</h2>
+<p>TraceNet is divided into five primary modules, accessible via the top navigation bar:</p>
 <ul>
-<li><p><strong>The Content Injection Anomaly:</strong> Only three of the 108 <code>saidit_post</code> events were anomalous, entirely bypassing normal agent-generated text by directly injecting content from external <code>.txt</code> files.</p></li>
-<li><p><strong>The Temporal Exploit:</strong> The anomalous post occurred at 11:21 UTC on a Sunday—the system’s inherently quietest day—strongly indicating a rogue process designed to exploit an isolated period devoid of normal automated oversight.</p></li>
-<li><p><strong>The Organizational Discrepancy:</strong> Despite John Windward having no managerial authority or subordinates within the 75-node company hierarchy, his agent received a <code>queue_subordinate_task</code> at the exact moment of the post, exposing his role as an unwitting terminal executor.</p></li>
-<li><p><strong>The Vulnerability and Fix:</strong> The anomalous posts succeeded because the existing validation gate failed to check the <code>content_source</code> field; preventing recurrence requires a single rule addition to block any post where this field is not null.</p></li>
+<li><strong>Overview</strong> — A high-level summary of the investigation and confirmed incidents.</li>
+<li><strong>System Topology</strong> — Network graphs and timelines detailing actor interactions.</li>
+<li><strong>Anomaly Detection</strong> — Tools for isolating and analysing anomalous event sequences.</li>
+<li><strong>Historical Patterns</strong> — Comparative views across multiple incidents to identify recurring behaviours and structural flaws.</li>
+<li><strong>About</strong> — General information about the TraceNet application.</li>
+</ul>
+<p>The left-hand sidebar acts as your <strong>Controls panel</strong>, which dynamically updates based on the active module to provide relevant filters and view options.</p>
+<hr>
+</section>
+<section id="overview-module" class="level2">
+<h2 class="anchored" data-anchor-id="overview-module">2. Overview Module</h2>
+<p>The Overview tab serves as the entry point for your investigation, providing a high-level briefing on the current dataset.</p>
+<section id="key-components" class="level3">
+<h3 class="anchored" data-anchor-id="key-components">Key Components</h3>
+<ul>
+<li><strong>Investigation Summary</strong> — Displays a narrative overview of the anomaly, including the key actors involved (e.g., originators and terminal executors), the nature of the relay chain, and total dataset metrics such as total events.</li>
+<li><strong>Confirmed Incidents</strong> — Lists the specific dates of confirmed breaches and the associated anomalous files (e.g., HiddenOrca.txt).</li>
+<li><strong>Anomaly Detection Rule</strong> — Shows the specific logic or database rule that flags an event as anomalous (e.g., <code>content_source IS NOT NULL</code>).</li>
+<li><strong>Proposed Fix</strong> — Outlines the recommended infrastructure or code changes required to patch the vulnerability.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="system-topology-module" class="level2">
+<h2 class="anchored" data-anchor-id="system-topology-module">3. System Topology Module</h2>
+<p>The System Topology tab allows you to visually explore the chain of custody and event timelines for a specific incident date.</p>
+<section id="controls" class="level3">
+<h3 class="anchored" data-anchor-id="controls">Controls</h3>
+<ul>
+<li><strong>Select Incident Date</strong> — A dropdown menu allowing you to filter data by “All” dates or specific confirmed incident dates (e.g., 10 May 2046).</li>
+<li><strong>Network View</strong> — Toggle between different graph complexities:
+<ul>
+<li><strong>Relay Chain Only</strong> — Displays a clean, directed graph of the specific nodes involved in the anomalous task delegation.</li>
+<li><strong>Core Actors + Neighbours</strong> — Expands the graph to include peripheral actors, showing a broader web of system interactions.</li>
+</ul></li>
+<li><strong>Show Node Labels</strong> — A checkbox to toggle actor names on or off within the network graph.</li>
 </ul>
 </section>
-<section id="here-are-the-primary-discoveries" class="level2">
-<h2 class="anchored" data-anchor-id="here-are-the-primary-discoveries">2. Here are the primary discoveries:</h2>
+<section id="visualisations" class="level3">
+<h3 class="anchored" data-anchor-id="visualisations">Visualisations</h3>
 <ul>
-<li><p><strong>A Coordinated Operation:</strong> The three anomalous posts—involving <code>HiddenOrca.txt</code> on May 10, <code>MellowOtter.txt</code> on May 11, and <code>SwiftWren.txt</code> on May 17—were not isolated errors. They represented the repeated execution of a single, deliberate operation.</p></li>
-<li><p><strong>A Fixed Terminal Executor:</strong> John Windward was used as the terminal executor in all three incidents. He was consistently the agent who ultimately published the anomalous posts.</p></li>
-<li><p><strong>A Stable Core Network:</strong> The operation utilized a stable core network of actors (<code>victoria_rigging</code>, <code>mia_fender</code>, <code>lily_anchorline</code>, <code>daniel_gangway</code>, and <code>chloe_ballast</code>) across all three dates, even though the outer routing paths and immediate delegators varied.</p></li>
-<li><p><strong>Exploitation of the <code>content_source</code> Field:</strong> The operation consistently delivered content by injecting external files into the <code>content_source</code> field, bypassing normal file registration and evading standard file-based audit controls.</p></li>
-<li><p><strong>A Scripted Terminal Sequence:</strong> An identical, four-event automated sequence executed with precise one-second intervals each time: <code>saidit_post_check</code> → <code>saidit_post</code> → <code>delete_file</code> → <code>delete_file</code>.</p></li>
-<li><p><strong>Immediate Evidence Destruction:</strong> The two immediate <code>delete_file</code> events that followed every post acted as a cover-up, effectively destroying the evidence within two seconds of publication.</p></li>
-<li><p><strong>A Specific System Vulnerability:</strong> The existing validation gate (<code>saidit_post_check</code>) fired before every post but failed to block them because it evaluated <em>if</em> a post could be made, not <em>how</em> the content arrived. It specifically lacked a check on the <code>content_source</code> field.</p></li>
-<li><p><strong>Unresolved Elements:</strong> The true originator of the operation could not be identified due to the deliberate relay structure. Furthermore, the actual text content of the posts remains unknown because the source files were kept entirely off the audit trail. A separate anomaly involving sustained virus activity on the agent <code>zoey_drydock</code> was also noted but remains uninvestigated.</p></li>
+<li><strong>Agent Interaction Network</strong> — A directed node-link diagram showing how tasks are delegated from a “Chain Root” down to a “Terminal Executor.” You can zoom and pan using the on-screen controls or your mouse.</li>
+<li><strong>Incident Event Timeline</strong> — A Gantt-style chart displaying the exact timing of events for each actor. Colour-coded markers indicate different event types:</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Marker</th>
+<th>Event Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>🟢 Green</td>
+<td>Task Delegation</td>
+</tr>
+<tr class="even">
+<td>🟡 Yellow</td>
+<td>Gate Check</td>
+</tr>
+<tr class="odd">
+<td>🟣 Purple</td>
+<td>File Read</td>
+</tr>
+<tr class="even">
+<td>🔴 Red</td>
+<td>Anomalous Post / Injection</td>
+</tr>
+<tr class="odd">
+<td>⚫ Grey</td>
+<td>Evidence Deleted</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="anomaly-detection-module" class="level2">
+<h2 class="anchored" data-anchor-id="anomaly-detection-module">4. Anomaly Detection Module</h2>
+<p>The Anomaly Detection tab provides granular tools to locate the injections within the broader dataset and inspect the exact sequence of events.</p>
+<section id="view-modes" class="level3">
+<h3 class="anchored" data-anchor-id="view-modes">View Modes</h3>
+<ul>
+<li><strong>Normal vs Anomalous</strong> — Displays a scatter plot mapping all target events (e.g., <code>saidit_post</code>) over time. Anomalous events are highlighted with large red markers, making them easy to distinguish from normal baseline activity (green dots).</li>
+<li><strong>Injection Spotlight</strong> — Focuses on the precise, second-by-second “Validation Gate Sequence” of the anomaly. It visualises the automated, scripted nature of the attack — a 4-event sequence completing in 3 seconds: gate check → injection → delete evidence.</li>
+<li><strong>Full Event Log</strong> — Provides a filtered view of all events on the selected date involving the confirmed relay chain actors.</li>
 </ul>
 </section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">3. Summary</h2>
-<p>This investigation applied visual analytics methods to TenantThread’s Multi-agent event log to reconstruct three anomalous <code>saidit_post</code> events and determine whether they represented a coordinated operation. The findings across Section 5 through Section 9 are summarised below.</p>
-<p><strong>What Was Found</strong></p>
-<p>The three anomalous posts - <code>HiddenOrca.txt</code> (May 10), <code>MellowOtter.txt</code> (May 11), and <code>SwiftWren.txt</code> (May 17) - were not isolated system errors. They were the repeated execution of a single coordinated operation, confirmed by four converging lines of evidence: (1) a stable core actor network present across all three data, (2) a fixed terminal executor (<code>john_windward</code>) in every incident, (3) an identical <code>content_source</code> delivery mechanism bypassing normal file registration, and (4) a scripted four-event terminal sequnce executing at one-second precision each time.</p>
-<p><strong>Key Actors by Role</strong></p>
+<section id="event-log-explorer" class="level3">
+<h3 class="anchored" data-anchor-id="event-log-explorer">Event Log Explorer</h3>
+<p>Located at the bottom of the screen in all view modes, this tabular data grid allows you to inspect the raw logs.</p>
+<p><strong>Global Search Bar</strong> — Located at the top right of the table. Type any keyword (e.g., an actor’s name, a file name, or an event type) to instantly filter the entire dataset across all visible columns.</p>
+<p><strong>Data Export Buttons:</strong></p>
 <ul>
-<li><p><strong>Terminal Executor</strong>: <code>john_windward</code>. Present in all three incidents as the agent who published each anomalous post.</p></li>
-<li><p><strong>Immediate Delegators</strong>: <code>chloe_ballast</code> (May 10 and May 17) and <code>liam_anchor</code> (May 11).</p></li>
-<li><p><strong>Stable Core Network</strong>: <code>victoria_rigging</code>, <code>mia_fender</code>, <code>lily_anchorline</code>, <code>daniel_gangway</code>, <code>chloe_ballast</code>.</p></li>
-<li><p><strong>Earliest Traceable Actor (May 17)</strong>: <code>james_stern</code> at <code>00:51:43 UTC</code>. The chain limit of the available evidence, not a confirmed point of origin.</p></li>
+<li><strong>CSV</strong> — Download the currently filtered table as a raw comma-separated values file for programmatic parsing or integration into other tools.</li>
+<li><strong>Excel</strong> — Download the currently filtered table as an <code>.xlsx</code> spreadsheet for offline review and presentation.</li>
 </ul>
-<p><strong>What Remains Unresolved</strong></p>
+<p><strong>Column-Specific Filters</strong> — Use the blank filter boxes at the top of each column to narrow your investigation:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Filter By</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>TIME</td>
+<td>Specific timestamp or time string</td>
+</tr>
+<tr class="even">
+<td>EVENT</td>
+<td>Event classification (e.g., <code>saidit_post</code>, <code>delete_file</code>)</td>
+</tr>
+<tr class="odd">
+<td>ACTORS</td>
+<td>Agent username (e.g., <code>john_windward</code>, <code>james_stern</code>)</td>
+</tr>
+<tr class="even">
+<td>FILE</td>
+<td>File name (e.g., <code>HiddenOrca.txt</code>)</td>
+</tr>
+<tr class="odd">
+<td>CONTENTSRC</td>
+<td>Content source — filter <code>NOT NULL</code> to isolate anomalies</td>
+</tr>
+<tr class="even">
+<td>ID</td>
+<td>Unique event ID number</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="historical-patterns-module" class="level2">
+<h2 class="anchored" data-anchor-id="historical-patterns-module">5. Historical Patterns Module</h2>
+<p>The Historical Patterns tab is used to prove that anomalous behaviours are coordinated and recurring, rather than isolated manual errors.</p>
+<section id="view-modes-1" class="level3">
+<h3 class="anchored" data-anchor-id="view-modes-1">View Modes</h3>
 <ul>
-<li><p>The true originator of the operation cannot be identified from the available data. The relay structure was deliberately designed to prevent back-tracing to a single source.</p></li>
-<li><p>The content of the three posted files (what they said and what they meant) cannot be determined. The filenames appear nowhere in <code>mc2_df</code> outside the <code>content_source</code> field, and no file registration, read, or creation event references them anywhere in the log.</p></li>
-<li><p>The sustained virus activity attrributed to <code>zoey_drydock</code> beginning May 10 at <code>20:10:04 UTC</code> remains uninvestigated. Its relationshop to the posting operation is noted but outside the scope of this study.</p></li>
+<li><strong>Actor Participation Heatmap</strong> — A visual matrix showing which specific actors were present (green) or absent (dark grey) during each confirmed incident. Use the <strong>Top N Actors</strong> slider to adjust the number of actors displayed on the Y-axis.</li>
+<li><strong>Terminal Sequence Comparison</strong> — Aligns the final execution steps of all confirmed incidents side-by-side. This view is critical for proving scripted timing — identical event sequences occurred at exact intervals (+0s, +1s, +2s, +3s) across different days.</li>
+<li><strong>Intervention: Current State</strong> — A flowchart of the existing system logic, highlighting where the vulnerability lies (e.g., a validation gate that passes unconditionally).</li>
+<li><strong>Intervention: Proposed Fix</strong> — A flowchart of the system logic after the proposed fix is applied, showing how the anomaly will be intercepted.</li>
 </ul>
-<p><strong>The Intervention</strong></p>
-<p>A single additional null-check on the <code>content_source</code> field within the existing <code>saidit_post_check</code> gate is sufficient to block all three anomalous posts at the point of validation - before publication, before deletion, and before evidence is destroyed. This is the minimum effective intervention identified by the investigation.</p>
+<hr>
+</section>
+</section>
+<section id="about-module" class="level2">
+<h2 class="anchored" data-anchor-id="about-module">6. About Module</h2>
+<p>The About module provides background context for the TraceNet application and acts as a quick-reference summary for the investigation’s ultimate conclusions.</p>
+<section id="key-information-displayed" class="level3">
+<h3 class="anchored" data-anchor-id="key-information-displayed">Key Information Displayed</h3>
+<ul>
+<li><strong>Application Purpose</strong> — Defines TraceNet as a visual analytics system built to investigate anomalous agent behaviour within a multi-agent AI system (Company A, 2046) for the VAST Challenge 2026 MC2.</li>
+<li><strong>Confirmed Findings</strong> — A concise summary of the core discoveries:
+<ul>
+<li>Anomaly rule triggered: <code>content_source IS NOT NULL</code> on <code>saidit_post</code> events</li>
+<li>Three confirmed incidents: 10 May, 11 May, 17 May 2046</li>
+<li>Terminal executor identified: <code>john_windward</code></li>
+<li>Injected payload files: HiddenOrca.txt, MellowOtter.txt, SwiftWren.txt</li>
+<li>Attack structure: 11-node relay chain originating from <code>james_stern</code></li>
+<li>Automated execution evidenced by a four-event terminal sequence at exact one-second intervals</li>
+</ul></li>
+<li><strong>System Details</strong> — Credits the application’s development to R Shiny, built for ISSS608 AY2025-26 April Term at SMU.</li>
+</ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

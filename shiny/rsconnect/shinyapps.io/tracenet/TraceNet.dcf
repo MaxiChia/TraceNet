@@ -5,6 +5,6 @@ account: tracenet
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 17539061
-bundleId: 12178798
+bundleId: 12184633
 url: https://tracenet.shinyapps.io/TraceNet/
 version: 1

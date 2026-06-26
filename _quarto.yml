@@ -5,6 +5,7 @@ project:
     - index.qmd
     - proposal.qmd
     - minutes.qmd
+    - user_manual.qmd   
     - Take-Home_Exercise02/Take-Home_Ex02.qmd
     - Methodology/1. Data Preparation.qmd
     - Methodology/2. Statistical Analysis.qmd
@@ -13,6 +14,7 @@ project:
 website:
   title: "TraceNet"
   navbar:
+    logo: images/tracenet_logo.jpg
     background: "#0d1117"
     foreground: "#ffffff"
     left:
@@ -26,7 +28,7 @@ website:
             href: Methodology/1. Data Preparation.html
           - text: "2. Statistical Analysis"
             href: Methodology/2. Statistical Analysis.html
-          - text: "3. Data Exploration and VIsualisation"
+          - text: "3. Data Exploration and Visualisation"
             href: Methodology/3. Data Exploration and VIsualisation.html
       - href: https://tracenet.shinyapps.io/TraceNet/
         text: "TraceNet Shiny App ↗"
@@ -45,6 +47,8 @@ website:
             href: Take-Home_Exercise02/Take-Home_Ex02.html#intervention-proposal      
       - href: minutes.qmd
         text: Minutes of Meetings
+      - href: user_manual.qmd
+        text: User Manual
       - icon: github
         href: https://github.com/MaxiChia/TraceNet
 

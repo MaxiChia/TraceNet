@@ -1,0 +1,137 @@
+---
+title: "TraceNet User Manual"
+subtitle: "Incident Investigation and Forensic Network Analysis Guide"
+author: "Brandon Komajaya | Albert Chia | Chua Wee Tian"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Contents"
+    toc-location: left
+    code-tools: false
+    fontsize: 1rem
+    page-layout: full
+---
+
+Welcome to the TraceNet user manual. TraceNet is an advanced incident investigation and forensic network analysis application designed to trace anomalous events, map agent interactions, and identify systemic vulnerabilities.
+
+This guide will walk you through the application's core modules and functionalities.
+
+---
+
+## 1. Application Navigation
+
+TraceNet is divided into five primary modules, accessible via the top navigation bar:
+
+- **Overview** — A high-level summary of the investigation and confirmed incidents.
+- **System Topology** — Network graphs and timelines detailing actor interactions.
+- **Anomaly Detection** — Tools for isolating and analysing anomalous event sequences.
+- **Historical Patterns** — Comparative views across multiple incidents to identify recurring behaviours and structural flaws.
+- **About** — General information about the TraceNet application.
+
+The left-hand sidebar acts as your **Controls panel**, which dynamically updates based on the active module to provide relevant filters and view options.
+
+---
+
+## 2. Overview Module
+
+The Overview tab serves as the entry point for your investigation, providing a high-level briefing on the current dataset.
+
+### Key Components
+
+- **Investigation Summary** — Displays a narrative overview of the anomaly, including the key actors involved (e.g., originators and terminal executors), the nature of the relay chain, and total dataset metrics such as total events.
+- **Confirmed Incidents** — Lists the specific dates of confirmed breaches and the associated anomalous files (e.g., HiddenOrca.txt).
+- **Anomaly Detection Rule** — Shows the specific logic or database rule that flags an event as anomalous (e.g., `content_source IS NOT NULL`).
+- **Proposed Fix** — Outlines the recommended infrastructure or code changes required to patch the vulnerability.
+
+---
+
+## 3. System Topology Module
+
+The System Topology tab allows you to visually explore the chain of custody and event timelines for a specific incident date.
+
+### Controls
+
+- **Select Incident Date** — A dropdown menu allowing you to filter data by "All" dates or specific confirmed incident dates (e.g., 10 May 2046).
+- **Network View** — Toggle between different graph complexities:
+  - **Relay Chain Only** — Displays a clean, directed graph of the specific nodes involved in the anomalous task delegation.
+  - **Core Actors + Neighbours** — Expands the graph to include peripheral actors, showing a broader web of system interactions.
+- **Show Node Labels** — A checkbox to toggle actor names on or off within the network graph.
+
+### Visualisations
+
+- **Agent Interaction Network** — A directed node-link diagram showing how tasks are delegated from a "Chain Root" down to a "Terminal Executor." You can zoom and pan using the on-screen controls or your mouse.
+- **Incident Event Timeline** — A Gantt-style chart displaying the exact timing of events for each actor. Colour-coded markers indicate different event types:
+
+| Marker | Event Type |
+|--------|------------|
+| 🟢 Green | Task Delegation |
+| 🟡 Yellow | Gate Check |
+| 🟣 Purple | File Read |
+| 🔴 Red | Anomalous Post / Injection |
+| ⚫ Grey | Evidence Deleted |
+
+---
+
+## 4. Anomaly Detection Module
+
+The Anomaly Detection tab provides granular tools to locate the injections within the broader dataset and inspect the exact sequence of events.
+
+### View Modes
+
+- **Normal vs Anomalous** — Displays a scatter plot mapping all target events (e.g., `saidit_post`) over time. Anomalous events are highlighted with large red markers, making them easy to distinguish from normal baseline activity (green dots).
+- **Injection Spotlight** — Focuses on the precise, second-by-second "Validation Gate Sequence" of the anomaly. It visualises the automated, scripted nature of the attack — a 4-event sequence completing in 3 seconds: gate check → injection → delete evidence.
+- **Full Event Log** — Provides a filtered view of all events on the selected date involving the confirmed relay chain actors.
+
+### Event Log Explorer
+
+Located at the bottom of the screen in all view modes, this tabular data grid allows you to inspect the raw logs.
+
+**Global Search Bar** — Located at the top right of the table. Type any keyword (e.g., an actor's name, a file name, or an event type) to instantly filter the entire dataset across all visible columns.
+
+**Data Export Buttons:**
+
+- **CSV** — Download the currently filtered table as a raw comma-separated values file for programmatic parsing or integration into other tools.
+- **Excel** — Download the currently filtered table as an `.xlsx` spreadsheet for offline review and presentation.
+
+**Column-Specific Filters** — Use the blank filter boxes at the top of each column to narrow your investigation:
+
+| Column | Filter By |
+|--------|-----------|
+| TIME | Specific timestamp or time string |
+| EVENT | Event classification (e.g., `saidit_post`, `delete_file`) |
+| ACTORS | Agent username (e.g., `john_windward`, `james_stern`) |
+| FILE | File name (e.g., `HiddenOrca.txt`) |
+| CONTENTSRC | Content source — filter `NOT NULL` to isolate anomalies |
+| ID | Unique event ID number |
+
+---
+
+## 5. Historical Patterns Module
+
+The Historical Patterns tab is used to prove that anomalous behaviours are coordinated and recurring, rather than isolated manual errors.
+
+### View Modes
+
+- **Actor Participation Heatmap** — A visual matrix showing which specific actors were present (green) or absent (dark grey) during each confirmed incident. Use the **Top N Actors** slider to adjust the number of actors displayed on the Y-axis.
+- **Terminal Sequence Comparison** — Aligns the final execution steps of all confirmed incidents side-by-side. This view is critical for proving scripted timing — identical event sequences occurred at exact intervals (+0s, +1s, +2s, +3s) across different days.
+- **Intervention: Current State** — A flowchart of the existing system logic, highlighting where the vulnerability lies (e.g., a validation gate that passes unconditionally).
+- **Intervention: Proposed Fix** — A flowchart of the system logic after the proposed fix is applied, showing how the anomaly will be intercepted.
+
+---
+
+## 6. About Module
+
+The About module provides background context for the TraceNet application and acts as a quick-reference summary for the investigation's ultimate conclusions.
+
+### Key Information Displayed
+
+- **Application Purpose** — Defines TraceNet as a visual analytics system built to investigate anomalous agent behaviour within a multi-agent AI system (Company A, 2046) for the VAST Challenge 2026 MC2.
+- **Confirmed Findings** — A concise summary of the core discoveries:
+  - Anomaly rule triggered: `content_source IS NOT NULL` on `saidit_post` events
+  - Three confirmed incidents: 10 May, 11 May, 17 May 2046
+  - Terminal executor identified: `john_windward`
+  - Injected payload files: HiddenOrca.txt, MellowOtter.txt, SwiftWren.txt
+  - Attack structure: 11-node relay chain originating from `james_stern`
+  - Automated execution evidenced by a four-event terminal sequence at exact one-second intervals
+- **System Details** — Credits the application's development to R Shiny, built for ISSS608 AY2025-26 April Term at SMU.

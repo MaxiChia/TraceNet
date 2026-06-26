@@ -5,8 +5,10 @@
 
 ui <- bslib::page_navbar(
   title = div(
-    "TraceNet"
+    tags$img(src = "tracenet_logo.png", height = "38px",
+             style = "margin-right:8px; vertical-align:middle;")
   ),
+  
   theme = bslib::bs_theme(
     version    = 5,
     bootswatch = "darkly",
