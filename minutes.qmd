@@ -109,14 +109,82 @@ The team agreed on a clear division of labour and a phased delivery schedule. Al
 | 3 | Build Shiny App | Albert | 25 Jun 2026 |
 | 4 | Share blockers on code transformation; redistribute work if needed | Albert, All | 25 Jun 2026 |
 | 5 | Checkpoint meeting — review files and Shiny app status | All | 25 Jun 2026 |
-| 6 | Get familiar with the dataset and code | All | 26 Jun 2026 |
-| 7 | Weekend working session — content integration and site upload | All | 27 Jun 2026 |
-| 8 | Finalise and upload poster using content from completed app | All | 1 Jul 2026 |
-| 9 | Conduct final review meeting before poster deadline | All | 1 Jul 2026 |
-| 10 | Draft and finalise user manual after app is complete | Brandon | TBC |
-| 11 | Create new "Methodology" section on project website | Brandon | TBC |
+| 6 | Weekend working session — content integration and site upload | All | 27 Jun 2026 |
+| 7 | Finalise and upload poster using content from completed app | All | 1 Jul 2026 |
+| 8 | Conduct final review meeting before poster deadline | All | 1 Jul 2026 |
+| 9 | Draft and finalise user manual after app is complete | Brandon | TBC |
+| 10 | Create new "Methodology" section on project website | Brandon | TBC |
+| 11 | Review and test Shiny app modules; report usability issues to Albert | Wee Tian | 26 Jun 2026 |
+| 12 | Work with Brandon on poster layout and design | Wee Tian | 1 Jul 2026 |
 
 ::: callout-note
 ## Afternote
 Albert proceeded to build all three Shiny modules, completing Modules 1–3 ahead of the 25 June checkpoint. The app was deployed to [TraceNet on shinyapps.io](https://tracenet.shinyapps.io/TraceNet) on 22 June 2026 and linked from the TraceNet Vercel site.
 :::
+
+---
+
+## Meeting 3 — 25 June 2026
+
+**Date:** 25 June 2026  
+**Time:** TBC  
+**Location:** Teams Call  
+**Participants:** Brandon Komajaya, Albert Chia, Chua Wee Tian
+
+### Agenda
+
+1. Website methodology section review
+2. Shiny app UI/UX walkthrough and feedback
+3. App content and presentation strategy
+4. Project schedule and deadline confirmation
+
+### Discussion
+
+**Methodology section review and refinement**
+
+The team reviewed the methodology pages on the project website. Two versions currently exist: a concise, layman-oriented summary and a detailed technical breakdown derived from the MC2 take-home exercise. The team agreed to retain both, repositioning the technical breakdown into an appendix or "Full Explanation" section while keeping the high-level summary as the primary narrative. The high-level methodology will emphasise three pillars: data, statistical analysis, and data exploration and visualisation. Numbering was agreed to be removed from main section headers to avoid confusing hierarchies, while internal subsection numbering may be retained for structure. A formatting issue — excess white space on the methodology page — was traced to pages not having code executed before deployment to Vercel; the team will ensure code is run prior to upload.
+
+**Shiny app UI/UX feedback**
+
+The team conducted a live walkthrough of the Shiny app. The app uses a dark theme and includes tabs for system topology, event chains, and historical patterns. Several UI/UX issues were identified:
+
+- Text legibility is poor due to dark-on-dark colour combinations; contrast and text colour adjustments are required.
+- Font inconsistencies — mixed casing and small sizes — need standardisation across the app.
+- An extraneous image logo placeholder should be removed unless replaced with a finalised project logo.
+- During date filtering, the top-level incident structure did not update as expected; this behaviour was flagged for investigation.
+- Some visuals, such as the full event chain sequence charts, are intentionally non-interactive; this is acceptable if clearly communicated to users.
+- The historical patterns section — including tooltips and the heatmap — responds correctly to filters and was noted as working well.
+
+The team prefers to improve the existing dark theme rather than switch to a lighter one. Some legibility issues observed during screen sharing may have been due to resolution scaling, but font and contrast adjustments will be made regardless to ensure clarity across devices. A feature request was raised to cap the maximum zoom-out on network maps; feasibility within Shiny will be investigated.
+
+**App content and presentation strategy**
+
+The team clarified the app's primary purpose as a visual generator to support poster creation rather than a comprehensive explanatory tool. To maximise screen real estate, the split-screen layout showing visuals above and an event log table below will be redesigned — the full-screen visual will be the default view, with the event log rendered only when explicitly selected. Brief one-sentence descriptions will be added at the top of each incident day (10, 11, and 17 May) to contextualise why each qualifies as an incident, aiding layman comprehension without overloading users. The event sequence visual will remain non-interactive but will clearly convey the one-second interval timing between events for each incident.
+
+**Project schedule and deadline confirmation**
+
+The team reconfirmed key submission deadlines: poster submission on 1 July 2026 at 11:59pm, project presentation on 4 July 2026, and final submission of all materials on 5 July 2026. Brandon will begin poster and user manual creation from Monday 29 June, with the option to start earlier over the weekend if the app and website are finalised by end of Friday. As Brandon has a quiz on Saturday 28 June, the team agreed he should prioritise that and resume poster work afterward. The team will aim to have the Shiny app and website content finalised by end of Friday 27 June to unblock poster work.
+
+### Conclusion
+
+The team aligned on a clear content and UI strategy for the final stretch. Albert will finalise the Shiny app and website; Brandon will create the poster and user manual once those are ready. Meeting minutes for both the 20 June and 25 June meetings are to be uploaded promptly.
+
+### Action Items
+
+| # | Action | Owner | Due |
+|---|--------|-------|-----|
+| 1 | Fix illegible text colours and standardise fonts across the Shiny app | Albert | 27 Jun 2026 |
+| 2 | Remove placeholder image logo from the app | Albert | 27 Jun 2026 |
+| 3 | Redesign layout to default to full-screen visuals; event log on-demand only | Albert | 27 Jun 2026 |
+| 4 | Add brief incident-day descriptions (10, 11, 17 May) to the app | Albert | 27 Jun 2026 |
+| 5 | Investigate and fix incident structure not updating on date filter | Albert | 27 Jun 2026 |
+| 6 | Investigate zoom-out cap on network maps; apply if feasible | Albert | 27 Jun 2026 |
+| 7 | Relocate detailed MC2 methodology to appendix; keep concise version as primary | Albert | 27 Jun 2026 |
+| 8 | Remove numbering from main methodology headers | Albert | 27 Jun 2026 |
+| 9 | Ensure code is executed before deploying pages to Vercel | Albert, Brandon | 27 Jun 2026 |
+| 10 | Upload meeting minutes for 20 Jun and 25 Jun meetings | Albert | 27 Jun 2026 |
+| 11 | Generate candidate project logos using AI tools and share with team | Brandon | TBC |
+| 12 | Create project poster and user manual | Brandon | 29 Jun – 1 Jul 2026 |
+| 13 | Finalise app and website to enable poster screenshots | All | 27 Jun 2026 |
+| 14 | Review app and website content for layman clarity and flag issues | Wee Tian | 27 Jun 2026 |
+| 15 | Work with Brandon on poster content, layout, and design | Wee Tian, Brandon | 29 Jun – 1 Jul 2026 |
