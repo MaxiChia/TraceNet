@@ -8,7 +8,7 @@
 
 <meta name="author" content="Brandon Komajaya | Albert Chia | Chua Wee Tian">
 
-<title>TraceNet User Manual – TraceNet</title>
+<title>TraceNet User Manual</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -43,7 +43,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b49de2f8c4950123375d3985ca54db94.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b28f52d42de0fcc23533b9cfcf057de.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -75,7 +75,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="floating nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -85,9 +85,6 @@ ul.task-list li input[type="checkbox"] {
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     <img src="./images/tracenet_logo.jpg" alt="" class="navbar-logo light-content">
     <img src="./images/tracenet_logo.jpg" alt="" class="navbar-logo dark-content">
-    </a>
-    <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">TraceNet</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -123,10 +120,21 @@ ul.task-list li input[type="checkbox"] {
   </li>  
     </ul>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="https://tracenet.shinyapps.io/TraceNet/" target="_blank"> 
-<span class="menu-text">TraceNet Shiny App ↗</span></a>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-tracenet-shiny-app" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">TraceNet Shiny App</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-tracenet-shiny-app">    
+        <li>
+    <a class="dropdown-item" href="https://tracenet.shinyapps.io/TraceNet/" target="_blank">
+ <span class="dropdown-text">TraceNet Shiny App ↗</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="./user_manual.html">
+ <span class="dropdown-text">User Manual</span></a>
+  </li>  
+    </ul>
+  </li>
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item dropdown ">
@@ -156,10 +164,6 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./minutes.html"> 
 <span class="menu-text">Minutes of Meetings</span></a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link active" href="./user_manual.html" aria-current="page"> 
-<span class="menu-text">User Manual</span></a>
-  </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/MaxiChia/TraceNet"> <i class="bi bi-github" role="img">
 </i> 
@@ -175,9 +179,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
-<!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Contents</h2>
    
   <ul>
@@ -206,9 +209,13 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   </ul>
 </nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
+<main class="content column-page-right" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -218,7 +225,7 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page-right">
 
     <div>
     <div class="quarto-title-meta-heading">Author</div>
