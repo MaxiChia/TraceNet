@@ -59,7 +59,7 @@ server <- function(input, output, session) {
   
   # Timeline plot
   output$mod1_timeline <- plotly::renderPlotly({
-    mod1_render_timeline(data = mod1_data())
+    mod1_render_timeline(data = mod1_data(), selected_date = input$mod1_incident)
   })
   
   # ---------------------------------------------------------------------------

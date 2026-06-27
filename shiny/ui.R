@@ -48,7 +48,6 @@ ui <- bslib::page_navbar(
           div(
             style = "display: flex; align-items: flex-start; gap: 1.5rem;",
             
-            # Left: summary text + badges
             div(
               style = "flex: 1;",
               p(
@@ -57,11 +56,11 @@ ui <- bslib::page_navbar(
               ),
               p(
                 style = "font-size: 0.95rem; color: #212529; margin: 0 0 0.75rem; line-height: 1.6;",
-                "On 17 May 2046, ", tags$code("john_windward"), " posted anomalous content to SaidIT
-                 via an 11-node relay chain originating from ", tags$code("james_stern"), ".
-                 The same behaviour occurred on 10 and 11 May 2046. All three incidents share
-                 an identical four-event terminal sequence at one-second precision —
-                 evidence of a scripted automated protocol, not a manual error."
+                "On 17 May 2046, ", tags$code("john_windward"), " posted anomalous content to SaidIT ",
+                "via an 11-node relay chain originating from ", tags$code("james_stern"), ". ",
+                "The same behaviour occurred on 10 and 11 May 2046. All three incidents share ",
+                "an identical four-event terminal sequence at one-second precision — ",
+                "evidence of a scripted automated protocol, not a manual error."
               ),
               div(
                 tags$span(
@@ -79,7 +78,6 @@ ui <- bslib::page_navbar(
               )
             ),
             
-            # Right: total events counter
             div(
               style = "text-align: right; flex-shrink: 0;",
               p(style = "font-size: 0.72rem; color: #888; margin: 0;", "Dataset"),
@@ -93,7 +91,6 @@ ui <- bslib::page_navbar(
         div(
           style = "display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 1.25rem;",
           
-          # Card 1: Confirmed Incidents
           div(
             style = "background: #f8f9fa; border-radius: 6px; padding: 1rem 1.25rem;",
             p(style = "font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.4rem;",
@@ -106,7 +103,6 @@ ui <- bslib::page_navbar(
               tags$code("SwiftWren.txt"))
           ),
           
-          # Card 2: Anomaly Rule
           div(
             style = "background: #f8f9fa; border-radius: 6px; padding: 1rem 1.25rem;",
             p(style = "font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.4rem;",
@@ -118,7 +114,6 @@ ui <- bslib::page_navbar(
               "3 of 185,147 rows match")
           ),
           
-          # Card 3: Proposed Fix
           div(
             style = "background: #f8f9fa; border-radius: 6px; padding: 1rem 1.25rem;",
             p(style = "font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 0.4rem;",
@@ -139,7 +134,6 @@ ui <- bslib::page_navbar(
         div(
           style = "display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;",
           
-          # Module 1
           div(
             style = paste0(
               "background: white; border: 1px solid #dee2e6; ",
@@ -148,12 +142,11 @@ ui <- bslib::page_navbar(
             p(style = "font-size: 0.9rem; font-weight: 600; color: #212529; margin: 0 0 0.4rem;",
               bsicons::bs_icon("diagram-3"), " System Topology"),
             p(style = "font-size: 0.8rem; color: #555; margin: 0; line-height: 1.6;",
-              "Explore the 11-node relay chain, agent interaction network, and incident event timeline.
-               Trace how ", tags$code("james_stern"), " initiates and ", tags$code("john_windward"),
+              "Explore the 11-node relay chain, agent interaction network, and incident event timeline. ",
+              "Trace how ", tags$code("james_stern"), " initiates and ", tags$code("john_windward"),
               " executes the injection.")
           ),
           
-          # Module 2
           div(
             style = paste0(
               "background: white; border: 1px solid #dee2e6; ",
@@ -162,12 +155,11 @@ ui <- bslib::page_navbar(
             p(style = "font-size: 0.9rem; font-weight: 600; color: #212529; margin: 0 0 0.4rem;",
               bsicons::bs_icon("shield-exclamation"), " Anomaly Detection"),
             p(style = "font-size: 0.8rem; color: #555; margin: 0; line-height: 1.6;",
-              "Compare normal vs anomalous ", tags$code("saidit_post"), " structure.
-               Step through the validation gate sequence and inspect the full
-               event log for each of the three confirmed incidents.")
+              "Compare normal vs anomalous ", tags$code("saidit_post"), " structure. ",
+              "Step through the validation gate sequence and inspect the full ",
+              "event log for each of the three confirmed incidents.")
           ),
           
-          # Module 3
           div(
             style = paste0(
               "background: white; border: 1px solid #dee2e6; ",
@@ -176,9 +168,9 @@ ui <- bslib::page_navbar(
             p(style = "font-size: 0.9rem; font-weight: 600; color: #212529; margin: 0 0 0.4rem;",
               bsicons::bs_icon("clock-history"), " Historical Patterns"),
             p(style = "font-size: 0.8rem; color: #555; margin: 0; line-height: 1.6;",
-              "Actor participation heatmap across all three incidents, terminal
-               sequence comparison proving scripted timing, and before/after
-               intervention flow at the validation gate.")
+              "Actor participation heatmap across all three incidents, terminal ",
+              "sequence comparison proving scripted timing, and before/after ",
+              "intervention flow at the validation gate.")
           )
         )
       )
@@ -226,19 +218,27 @@ ui <- bslib::page_navbar(
         helpText("Click a node to inspect its event log below.")
       ),
       
-      bslib::layout_column_wrap(
-        width = 1,
-        
-        bslib::card(
-          full_screen = TRUE,
-          bslib::card_header("Agent Interaction Network"),
-          visNetwork::visNetworkOutput("mod1_network", height = "450px")
+      bslib::card(
+        full_screen = TRUE,
+        bslib::card_header(
+          div(
+            style = "display:flex; gap:1rem; align-items:center;",
+            radioButtons(
+              "mod1_display",
+              NULL,
+              choices  = c("Network" = "network", "Timeline" = "timeline"),
+              selected = "network",
+              inline   = TRUE
+            )
+          )
         ),
-        
-        bslib::card(
-          full_screen = TRUE,
-          bslib::card_header("Incident Event Timeline"),
-          plotly::plotlyOutput("mod1_timeline", height = "300px")
+        conditionalPanel(
+          condition = "input.mod1_display == 'network'",
+          visNetwork::visNetworkOutput("mod1_network", height = "600px")
+        ),
+        conditionalPanel(
+          condition = "input.mod1_display == 'timeline'",
+          plotly::plotlyOutput("mod1_timeline", height = "600px")
         )
       )
     )
@@ -276,18 +276,15 @@ ui <- bslib::page_navbar(
         )
       ),
       
-      bslib::layout_column_wrap(
-        width = 1,
-        
-        bslib::card(
-          full_screen = TRUE,
-          bslib::card_header(textOutput("mod2_panel_title", inline = TRUE)),
+      bslib::card(
+        full_screen = TRUE,
+        bslib::card_header(textOutput("mod2_panel_title", inline = TRUE)),
+        conditionalPanel(
+          condition = "input.mod2_view != 'log'",
           uiOutput("mod2_main_plot")
         ),
-        
-        bslib::card(
-          full_screen = TRUE,
-          bslib::card_header("Event Log Explorer"),
+        conditionalPanel(
+          condition = "input.mod2_view == 'log'",
           DT::dataTableOutput("mod2_event_log")
         )
       )
@@ -323,8 +320,7 @@ ui <- bslib::page_navbar(
           "mod3_top_n",
           "Top N actors (heatmap)",
           min = 5, max = 16, value = 15, step = 1
-        ),
-        hr(),
+        )
       ),
       
       bslib::card(

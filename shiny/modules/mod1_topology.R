@@ -233,7 +233,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
 # Each chain actor = one horizontal lane
 # Events shown as coloured segments/points with clear anomaly callout
 # -----------------------------------------------------------------------------
-mod1_render_timeline <- function(data) {
+mod1_render_timeline <- function(data, selected_date = "All") {
   
   chain_actors_clean <- c("james_stern", "gabriel_sonar", "daniel_gangway",
                           "zoey_drydock", "mia_fender", "victoria_rigging",
@@ -353,7 +353,8 @@ mod1_render_timeline <- function(data) {
     ggplot2::facet_wrap(~ date_label, ncol = 1, scales = "free_x") +
     ggplot2::scale_y_discrete(drop = FALSE) +
     ggplot2::labs(
-      title    = "Chain Actor Activity Timeline — All Incident Dates",
+      title = paste0("Chain Actor Activity Timeline — ",
+                     ifelse(selected_date == "All", "All Incident Dates", selected_date)),
       subtitle = paste0(
         "\u25cf Large red = anomalous post  \u2022  ",
         "\u25c6 Diamond = gate check  \u2022  ",
