@@ -31,103 +31,151 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
         "Time: ", format(datetime, "%H:%M:%S UTC"), "<br>",
         "Actor: ", actor,
         ifelse(!is.na(content_source),
-               paste0("<br><b>\u26a1 Injected file: ", content_source, "</b>"), "")
+               paste0("<br><b>⚡ Injected file: ", content_source, "</b>"), "")
       )
     )
   
+  normal_df    <- dplyr::filter(all_posts, status == "Normal")
   anomalous_df <- dplyr::filter(all_posts, status == "Anomalous (Injected)")
+  incident_dates <- as.Date(c("2046-05-10", "2046-05-11", "2046-05-17"))
   
-  p <- ggplot2::ggplot(
-    all_posts,
-    ggplot2::aes(
-      x      = date,
-      y      = time_of_day,
-      colour = status,
-      size   = status,
-      alpha  = status,
-      text   = tip
-    )
-  ) +
-    ggplot2::geom_vline(
-      xintercept = as.Date(c("2046-05-10", "2046-05-11", "2046-05-17")),
-      colour = "#D84040", linetype = "dashed", linewidth = 0.5, alpha = 0.4
-    ) +
-    ggplot2::geom_jitter(width = 0.3, height = 0, stroke = 0) +
-    ggplot2::geom_point(
-      data    = anomalous_df,
-      mapping = ggplot2::aes(x = date, y = time_of_day),
-      colour = "#D84040", size = 18, alpha = 0.12,
-      shape = 1, stroke = 1.2, inherit.aes = FALSE
-    ) +
-    ggplot2::geom_text(
-      data    = anomalous_df,
-      mapping = ggplot2::aes(x = date, y = time_of_day, label = content_source),
-      nudge_x = 1.5, hjust = 0, size = 3, colour = "#D84040",
-      fontface = "bold", inherit.aes = FALSE
-    ) +
-    ggplot2::scale_colour_manual(
-      values = c("Normal" = "#5DCAA5", "Anomalous (Injected)" = "#D84040"),
-      name   = NULL
-    ) +
-    ggplot2::scale_size_manual(
-      values = c("Normal" = 3, "Anomalous (Injected)" = 8),
-      guide  = "none"
-    ) +
-    ggplot2::scale_alpha_manual(
-      values = c("Normal" = 0.45, "Anomalous (Injected)" = 1),
-      guide  = "none"
-    ) +
-    ggplot2::scale_y_continuous(
-      limits = c(0, 24),
-      breaks = c(0, 6, 12, 18, 24),
-      labels = c("00:00", "06:00", "12:00", "18:00", "24:00"),
-      name   = "Time of day (UTC)"
-    ) +
-    ggplot2::scale_x_date(date_labels = "%d %b", date_breaks = "7 days") +
-    ggplot2::annotate("text", x = as.Date("2046-05-10"), y = 23,
-                      label = "10 May", size = 3, colour = "#D84040",
-                      hjust = 0.5, fontface = "bold") +
-    ggplot2::annotate("text", x = as.Date("2046-05-11"), y = 23,
-                      label = "11 May", size = 3, colour = "#D84040",
-                      hjust = 0.5, fontface = "bold") +
-    ggplot2::annotate("text", x = as.Date("2046-05-17"), y = 23,
-                      label = "17 May", size = 3, colour = "#D84040",
-                      hjust = 0.5, fontface = "bold") +
-    ggplot2::labs(
-      title    = "All saidit_post Events \u2014 Locating the 3 Anomalous Injections",
-      subtitle = paste0(
-        "108 total saidit_post events  \u2022  ",
-        "3 anomalous (red) carry content_source \u2260 NULL  \u2022  ",
-        "Dashed lines = confirmed incident dates"
-      ),
-      x = "Date"
-    ) +
-    ggplot2::theme_minimal(base_size = 12) +
-    ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "bold", size = 13, colour = "#E8EAEA"),
-      plot.subtitle      = ggplot2::element_text(colour = "#AAB7BA", size = 9.5),
-      legend.position    = "bottom",
-      panel.grid.minor   = ggplot2::element_blank(),
-      panel.grid.major.x = ggplot2::element_line(colour = "#243D47"),
-      panel.grid.major.y = ggplot2::element_line(colour = "#1A2E35"),
-      plot.background    = ggplot2::element_rect(fill = "#0B1418", colour = NA),
-      panel.background   = ggplot2::element_rect(fill = "#0B1418", colour = NA),
-      legend.background  = ggplot2::element_rect(fill = "#0B1418", colour = NA),
-      legend.key         = ggplot2::element_rect(fill = "#0B1418", colour = NA),
-      legend.text        = ggplot2::element_text(colour = "#E8EAEA"),
-      axis.text          = ggplot2::element_text(colour = "#E8EAEA"),
-      axis.title         = ggplot2::element_text(colour = "#AAB7BA")
-    )
+  x_range <- c(min(all_posts$date, na.rm = TRUE) - 2,
+               max(all_posts$date, na.rm = TRUE) + 2)
   
-  plotly::ggplotly(p, tooltip = "text") |>
+  vline_shapes <- purrr::map(incident_dates, ~ list(
+    type = "line",
+    xref = "x", yref = "y",
+    x0 = .x, x1 = .x,
+    y0 = 0, y1 = 24,
+    line = list(color = "rgba(216,64,64,0.58)", width = 2, dash = "dash")
+  ))
+  
+  # Date labels are intentionally nudged so 10 May and 11 May remain readable
+  # even when the plot is embedded as a narrow screenshot in the poster.
+  incident_label_df <- tibble::tibble(
+    date   = incident_dates,
+    label  = c("10 May", "11 May", "17 May"),
+    xshift = c(-34, 34, 0),
+    y      = c(23.35, 22.45, 23.35)
+  )
+  
+  date_annotations <- purrr::pmap(
+    list(incident_label_df$date,
+         incident_label_df$label,
+         incident_label_df$xshift,
+         incident_label_df$y),
+    function(date, label, xshift, y) {
+      list(
+        x = date, y = y,
+        xref = "x", yref = "y",
+        text = label,
+        showarrow = FALSE,
+        xanchor = "center",
+        xshift = xshift,
+        font = list(color = "#D84040", size = 16),
+        bgcolor = "rgba(11,20,24,0.72)",
+        bordercolor = "rgba(216,64,64,0.18)",
+        borderpad = 1
+      )
+    }
+  )
+  
+  file_annotations <- purrr::map(seq_len(nrow(anomalous_df)), function(i) {
+    list(
+      x = anomalous_df$date[i],
+      y = anomalous_df$time_of_day[i],
+      xref = "x", yref = "y",
+      text = anomalous_df$content_source[i],
+      showarrow = FALSE,
+      xanchor = "left",
+      xshift = 28,
+      yshift = ifelse(anomalous_df$time_of_day[i] < 3, 4, 0),
+      font = list(color = "#D84040", size = 15),
+      bgcolor = "rgba(11,20,24,0.58)",
+      bordercolor = "rgba(216,64,64,0.25)",
+      borderpad = 2
+    )
+  })
+  
+  plotly::plot_ly(source = "mod2_compare") |>
+    plotly::add_markers(
+      data = normal_df,
+      x = ~date, y = ~time_of_day,
+      customdata = ~tip,
+      hovertemplate = "%{customdata}<extra></extra>",
+      name = "Normal",
+      marker = list(
+        color = "#5DCAA5", size = 11, opacity = 0.55,
+        line = list(width = 0)
+      )
+    ) |>
+    plotly::add_markers(
+      data = anomalous_df,
+      x = ~date, y = ~time_of_day,
+      hoverinfo = "skip",
+      showlegend = FALSE,
+      marker = list(
+        color = "rgba(216,64,64,0)", size = 58, opacity = 1,
+        line = list(color = "rgba(216,64,64,0.28)", width = 4)
+      )
+    ) |>
+    plotly::add_markers(
+      data = anomalous_df,
+      x = ~date, y = ~time_of_day,
+      customdata = ~tip,
+      hovertemplate = "%{customdata}<extra></extra>",
+      name = "Anomalous (Injected)",
+      marker = list(
+        color = "#D84040", size = 24, opacity = 1,
+        line = list(color = "#D84040", width = 1)
+      )
+    ) |>
     plotly::layout(
+      autosize = TRUE,
       paper_bgcolor = "#0B1418",
       plot_bgcolor  = "#0B1418",
-      font = list(color = "#E8EAEA"),
-      legend = list(orientation = "h", y = -0.12, font = list(color = "#E8EAEA"))
-    )
+      font = list(color = "#E8EAEA", family = "Inter"),
+      title = list(
+        text = paste0(
+          "<b>All saidit_post Events — Locating the 3 Anomalous Injections</b>",
+          "<br><sup>108 total saidit_post events • 3 anomalous carry content_source ≠ NULL • dashed lines = confirmed incident dates</sup>"
+        ),
+        x = 0.03, xanchor = "left",
+        font = list(size = 23, color = "#E8EAEA")
+      ),
+      margin = list(l = 78, r = 24, t = 78, b = 72),
+      shapes = vline_shapes,
+      annotations = c(date_annotations, file_annotations),
+      legend = list(
+        orientation = "h",
+        x = 0.36, y = -0.16,
+        bgcolor = "rgba(11,20,24,0)",
+        font = list(color = "#E8EAEA", size = 15)
+      ),
+      xaxis = list(
+        title = list(text = "Date", font = list(color = "#AAB7BA", size = 18)),
+        type = "date",
+        range = x_range,
+        tickformat = "%d %b",
+        dtick = 7 * 24 * 60 * 60 * 1000,
+        gridcolor = "#243D47",
+        zeroline = FALSE,
+        tickfont = list(color = "#E8EAEA", size = 15),
+        automargin = TRUE
+      ),
+      yaxis = list(
+        title = list(text = "Time of day (UTC)", font = list(color = "#AAB7BA", size = 18)),
+        range = c(0, 24),
+        tickvals = c(0, 6, 12, 18, 24),
+        ticktext = c("00:00", "06:00", "12:00", "18:00", "24:00"),
+        gridcolor = "#243D47",
+        zeroline = FALSE,
+        tickfont = list(color = "#E8EAEA", size = 15),
+        automargin = TRUE
+      )
+    ) |>
+    plotly::config(responsive = TRUE, displaylogo = FALSE)
 }
-
 
 # -----------------------------------------------------------------------------
 # mod2_render_gate
@@ -184,14 +232,14 @@ mod2_render_gate <- function(data, selected_date) {
     ggplot2::scale_fill_identity() +
     ggplot2::geom_label(
       ggplot2::aes(x = 0.7, y = step, label = timing),
-      size = 4.5, fontface = "bold", colour = "#444444",
+      size = 5.2, fontface = "bold", colour = "#444444",
       fill = "#F5F5F5", linewidth = 0.3,
       label.padding = ggplot2::unit(0.35, "lines")
     ) +
     ggplot2::geom_text(
       ggplot2::aes(x = 5, y = step + 0.12, label = label_main,
                    colour = is_inject),
-      size = 3.8, fontface = "bold"
+      size = 4.4, fontface = "bold"
     ) +
     ggplot2::scale_colour_manual(
       values = c("FALSE" = "white", "TRUE" = "#FFE0B2"),
@@ -199,7 +247,7 @@ mod2_render_gate <- function(data, selected_date) {
     ) +
     ggplot2::geom_text(
       ggplot2::aes(x = 5, y = step - 0.15, label = label_sub),
-      size = 3, colour = "white", alpha = 0.85
+      size = 3.8, colour = "white", alpha = 0.85
     ) +
     ggplot2::geom_segment(
       data = data.frame(y_start = c(3.65, 2.65, 1.65)),
@@ -221,11 +269,11 @@ mod2_render_gate <- function(data, selected_date) {
     ggplot2::theme(
       plot.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
       panel.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
-      plot.title    = ggplot2::element_text(face = "bold", size = 13,
+      plot.title    = ggplot2::element_text(face = "bold", size = 16,
                                             margin = ggplot2::margin(b = 4),
                                             colour = "#E8EAEA"),
       plot.subtitle = ggplot2::element_text(colour = "#FFB4B4",
-                                            face = "bold", size = 10,
+                                            face = "bold", size = 12,
                                             margin = ggplot2::margin(b = 12)),
       plot.margin   = ggplot2::margin(16, 24, 16, 24)
     )

@@ -376,7 +376,7 @@ mod1_render_timeline <- function(data, selected_date = "All") {
       strip.background   = ggplot2::element_rect(fill = "#1D9E75", colour = NA),
       panel.grid.major.x = ggplot2::element_line(colour = "#243D47"),
       panel.grid.major.y = ggplot2::element_blank(),
-      axis.text.y        = ggplot2::element_text(size = 9, colour = "#E8EAEA"),
+      axis.text.y        = ggplot2::element_text(size = 12, face = "bold", colour = "#E8EAEA"),
       panel.spacing      = ggplot2::unit(0.6, "lines"),
       plot.background    = ggplot2::element_rect(fill = "#0B1418", colour = NA),
       panel.background   = ggplot2::element_rect(fill = "#0B1418", colour = NA),
@@ -393,6 +393,9 @@ mod1_render_timeline <- function(data, selected_date = "All") {
       paper_bgcolor = "#0B1418",
       plot_bgcolor  = "#0B1418",
       font = list(color = "#E8EAEA"),
+      yaxis  = list(tickfont = list(size = 13, color = "#E8EAEA")),
+      yaxis2 = list(tickfont = list(size = 13, color = "#E8EAEA")),
+      yaxis3 = list(tickfont = list(size = 13, color = "#E8EAEA")),
       legend = list(orientation = "h", y = -0.1, font = list(size = 10, color = "#E8EAEA"))
     )
 }

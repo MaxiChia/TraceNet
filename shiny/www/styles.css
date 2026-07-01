@@ -1363,3 +1363,241 @@ body {
 #mod3_plot_static {
   background: #0B1418 !important;
 }
+
+/* =============================================================================
+   DROPDOWN SIZE FIX
+   Keep sidebar controls readable, but stop selectInput from becoming oversized.
+   ============================================================================= */
+.sidebar .selectize-control {
+  margin-bottom: 0.45rem !important;
+}
+
+.sidebar .selectize-control.single .selectize-input,
+.sidebar .selectize-input,
+.sidebar .form-select,
+.sidebar .form-control {
+  min-height: 32px !important;
+  height: 32px !important;
+  padding: 5px 26px 5px 8px !important;
+  font-size: 0.72rem !important;
+  line-height: 1.12 !important;
+  border-radius: 7px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.sidebar .selectize-input > *,
+.sidebar .selectize-input input {
+  font-size: 0.72rem !important;
+  line-height: 1.12 !important;
+  white-space: nowrap !important;
+}
+
+.sidebar .selectize-control.single .selectize-input:after {
+  right: 8px !important;
+  margin-top: -2px !important;
+  border-width: 4px 4px 0 4px !important;
+}
+
+.sidebar .selectize-dropdown,
+.sidebar .selectize-dropdown .option,
+.sidebar .selectize-dropdown .active {
+  font-size: 0.72rem !important;
+  line-height: 1.18 !important;
+}
+
+.sidebar .selectize-dropdown .option {
+  padding: 6px 8px !important;
+}
+
+/* Slightly widen the sidebar so "All incidents" does not wrap, while keeping visuals dominant. */
+:root {
+  --sidebar-w: 165px !important;
+}
+
+/* --------------------------------------------------------------------------
+   FINAL POLISH — make top-right story badges readable again
+   -------------------------------------------------------------------------- */
+.tn-page-intro > .tn-badge-row,
+.tn-hero-badges {
+  gap: 0.55rem !important;
+}
+
+.tn-page-intro > .tn-badge-row .tn-badge,
+.tn-hero-badges .tn-badge {
+  font-size: 0.78rem !important;
+  line-height: 1.15 !important;
+  padding: 0.34rem 0.72rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.005em !important;
+  white-space: nowrap !important;
+}
+
+.tn-page-intro > .tn-badge-row .tn-badge svg,
+.tn-hero-badges .tn-badge svg {
+  width: 1em !important;
+  height: 1em !important;
+}
+
+@media (max-height: 820px) {
+  .tn-page-intro > .tn-badge-row .tn-badge,
+  .tn-hero-badges .tn-badge {
+    font-size: 0.72rem !important;
+    padding: 0.28rem 0.62rem !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   MODULE 2 FULL-WIDTH PLOTLY FIX
+   Native Plotly scatter should occupy the whole output card, not the old
+   ggplotly panel width.
+   -------------------------------------------------------------------------- */
+#mod2_main_plot,
+#mod2_plot_inner,
+#mod2_plot_inner .plotly,
+#mod2_plot_inner .js-plotly-plot,
+#mod2_plot_inner .plot-container,
+#mod2_plot_inner .svg-container,
+#mod2_plot_inner .main-svg {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#mod2_plot_inner {
+  min-width: 100% !important;
+}
+
+/* --------------------------------------------------------------------------
+   READABILITY BOOST — larger labels without expanding layout
+   -------------------------------------------------------------------------- */
+:root {
+  --sidebar-w: 168px !important;
+}
+
+/* Sidebar: increase text readability, reduce line-height/margins to keep size compact */
+.sidebar .sidebar-title,
+.sidebar h2 {
+  font-size: 0.72rem !important;
+  line-height: 0.98 !important;
+  letter-spacing: 0.065em !important;
+  margin-bottom: 0.60rem !important;
+}
+
+.sidebar label,
+.sidebar .form-label,
+.sidebar .control-label {
+  font-size: 0.66rem !important;
+  line-height: 1.02 !important;
+  letter-spacing: 0.045em !important;
+  margin-bottom: 0.26rem !important;
+}
+
+.sidebar .form-check {
+  margin-bottom: 0.26rem !important;
+  line-height: 1.03 !important;
+}
+
+.sidebar .form-check-label {
+  font-size: 0.68rem !important;
+  line-height: 1.05 !important;
+  letter-spacing: 0.025em !important;
+  font-weight: 800 !important;
+}
+
+.sidebar .form-check-input {
+  width: 0.70rem !important;
+  height: 0.70rem !important;
+  margin-top: 0.12rem !important;
+}
+
+.sidebar hr {
+  margin: 0.55rem 0 !important;
+}
+
+/* Dropdown remains compact but more readable */
+.sidebar .selectize-control.single .selectize-input,
+.sidebar .selectize-input,
+.sidebar .form-select,
+.sidebar .form-control {
+  min-height: 32px !important;
+  height: 32px !important;
+  font-size: 0.76rem !important;
+  line-height: 1.05 !important;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.sidebar .selectize-dropdown,
+.sidebar .selectize-dropdown .option,
+.sidebar .selectize-dropdown .active {
+  font-size: 0.76rem !important;
+  line-height: 1.08 !important;
+}
+
+/* Card labels and section labels: bigger, same header height */
+.tn-card-eyebrow,
+.tn-eyebrow,
+.tn-kicker {
+  font-size: 0.78rem !important;
+  line-height: 1.00 !important;
+  letter-spacing: 0.085em !important;
+  margin-bottom: 0.26rem !important;
+}
+
+.tn-card-header-row > div:first-child > span,
+.tn-card-header-row .shiny-text-output {
+  font-size: 0.90rem !important;
+  line-height: 1.05 !important;
+  font-weight: 850 !important;
+}
+
+.card-header {
+  padding: 0.20rem 0.48rem !important;
+}
+
+.card-body {
+  padding-top: 0.08rem !important;
+}
+
+/* Top intro title: more readable without making banner taller */
+.tn-page-intro h2 {
+  font-size: clamp(1.18rem, 1.75vw, 1.55rem) !important;
+  line-height: 0.95 !important;
+}
+
+.tn-page-intro {
+  padding-top: 0.30rem !important;
+  padding-bottom: 0.30rem !important;
+}
+
+/* Keep banner badges readable but not bulky */
+.tn-page-intro > .tn-badge-row .tn-badge,
+.tn-hero-badges .tn-badge,
+.tn-header-pill {
+  font-size: 0.78rem !important;
+  line-height: 1.02 !important;
+  padding: 0.26rem 0.60rem !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   PLOT FONT BOOST — improves readability inside screenshots/poster crops
+   without increasing container height or reducing visual area.
+   -------------------------------------------------------------------------- */
+.card-header .card-title,
+.card-header h3,
+.card-header h4,
+.tn-section-eyebrow {
+  font-size: 1.02rem !important;
+  line-height: 1.05 !important;
+}
+.card-header .tn-card-subtitle,
+.card-header .tn-card-title {
+  font-size: 1.08rem !important;
+  line-height: 1.08 !important;
+}
+.vis-network canvas {
+  image-rendering: auto !important;
+}
