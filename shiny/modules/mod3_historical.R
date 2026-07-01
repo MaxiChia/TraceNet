@@ -110,7 +110,7 @@ mod3_render_heatmap <- function(top_n = 15) {
       colour = "white", size = 5, inherit.aes = FALSE
     ) +
     ggplot2::scale_fill_manual(
-      values = c("Present" = "#1D9E75", "Absent" = "#243d47"),
+      values = c("Present" = "#1D9E75", "Absent" = "#182C34"),
       name   = NULL
     ) +
     ggplot2::labs(
@@ -121,16 +121,26 @@ mod3_render_heatmap <- function(top_n = 15) {
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      plot.title      = ggplot2::element_text(face = "bold"),
+      plot.title      = ggplot2::element_text(face = "bold", colour = "#E8EAEA"),
       plot.subtitle   = ggplot2::element_text(colour = "#5DCAA5", size = 10),
       panel.grid      = ggplot2::element_blank(),
-      axis.text.y     = ggplot2::element_text(size = 10),
-      axis.text.x     = ggplot2::element_text(size = 11, face = "bold"),
-      legend.position = "bottom"
+      axis.text.y     = ggplot2::element_text(size = 10, colour = "#E8EAEA"),
+      axis.text.x     = ggplot2::element_text(size = 11, face = "bold", colour = "#E8EAEA"),
+      legend.position = "bottom",
+      plot.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.key = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.text = ggplot2::element_text(colour = "#E8EAEA")
     )
   
   plotly::ggplotly(p, tooltip = "text") |>
-    plotly::layout(legend = list(orientation = "h", y = -0.1))
+    plotly::layout(
+      paper_bgcolor = "#0B1418",
+      plot_bgcolor  = "#0B1418",
+      font = list(color = "#E8EAEA"),
+      legend = list(orientation = "h", y = -0.1, font = list(color = "#E8EAEA"))
+    )
 }
 
 
@@ -223,29 +233,38 @@ mod3_render_sequence <- function() {
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      plot.title      = ggplot2::element_text(face = "bold"),
+      plot.title      = ggplot2::element_text(face = "bold", colour = "#E8EAEA"),
       plot.subtitle   = ggplot2::element_text(colour = "#5DCAA5", size = 10),
       panel.grid.major.x = ggplot2::element_blank(),
-      panel.grid.major.y = ggplot2::element_line(colour = "#243d47"),
-      axis.text.x     = ggplot2::element_text(face = "bold", size = 11),
-      legend.position = "bottom"
+      panel.grid.major.y = ggplot2::element_line(colour = "#243D47"),
+      axis.text.x     = ggplot2::element_text(face = "bold", size = 11, colour = "#E8EAEA"),
+      axis.text.y     = ggplot2::element_text(colour = "#E8EAEA"),
+      legend.position = "bottom",
+      plot.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.key = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.text = ggplot2::element_text(colour = "#E8EAEA"),
+      legend.title = ggplot2::element_text(colour = "#E8EAEA")
     )
   
   plotly::ggplotly(p, tooltip = "text") |>
-    plotly::layout(legend = list(orientation = "h", y = -0.1))
+    plotly::layout(
+      paper_bgcolor = "#0B1418",
+      plot_bgcolor  = "#0B1418",
+      font = list(color = "#E8EAEA"),
+      legend = list(orientation = "h", y = -0.1, font = list(color = "#E8EAEA"))
+    )
 }
 
 
 # =============================================================================
 # mod3_render_intervention
-# Before/after intervention flow diagram — replicates THEx02 Figure 9.1
-# Shows the single null-check addition at saidit_post_check that blocks all 3
-# panel = "intervention_before" → current vulnerable state
-# panel = "intervention_after"  → proposed fix state
+# Presentation-first intervention diagram.
+# Uses a fixed aspect ratio and compact geometry so the flowchart reads clearly
+# in the Shiny viewport instead of being stretched wide or vertically squeezed.
 # =============================================================================
 mod3_render_intervention <- function(panel = "intervention_before") {
-  
-  # Diamond shape helper
   diamond_df <- function(cx, cy, w, h, id) {
     tibble::tibble(
       x     = c(cx, cx + w/2, cx, cx - w/2),
@@ -254,155 +273,147 @@ mod3_render_intervention <- function(panel = "intervention_before") {
     )
   }
   
+  arrow_obj <- ggplot2::arrow(
+    length = ggplot2::unit(3.5, "mm"),
+    type   = "closed"
+  )
+  
+  base_theme <- ggplot2::theme_void() +
+    ggplot2::theme(
+      plot.background  = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      plot.margin      = ggplot2::margin(2, 2, 2, 2)
+    )
+  
   if (panel == "intervention_before") {
-    
-    # -------------------------------------------------------------------------
-    # CURRENT STATE — Vulnerable
-    # -------------------------------------------------------------------------
     ggplot2::ggplot() +
-      ggplot2::annotate("rect",
-                        xmin = 0.5, xmax = 9.5, ymin = 0.3, ymax = 11.2,
-                        fill = "#1a1010", color = "#D84040", linewidth = 1.5) +
-      ggplot2::annotate("text", x = 5, y = 10.7,
-                        label = "CURRENT STATE \u2014 Vulnerable",
-                        color = "#D84040", fontface = "bold", size = 6) +
-      ggplot2::annotate("text", x = 5, y = 10.15,
-                        label = "saidit_post_check does not inspect content_source \u2014 injection passes unchallenged",
-                        color = "#888888", size = 3.5, fontface = "italic") +
-      ggplot2::annotate("rect",
-                        xmin = 2.5, xmax = 7.5, ymin = 8.8, ymax = 9.7,
-                        fill = "#1D9E75", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 9.25,
+      ggplot2::annotate("rect", xmin = 0.35, xmax = 11.65, ymin = 0.35, ymax = 8.65,
+                        fill = "#170D0E", colour = "#D84040", linewidth = 1.0) +
+      ggplot2::annotate("text", x = 6, y = 8.18,
+                        label = "CURRENT STATE — Vulnerable",
+                        colour = "#D84040", fontface = "bold", size = 5.8) +
+      ggplot2::annotate("text", x = 6, y = 7.78,
+                        label = "Validation gate fires, but does not inspect content_source",
+                        colour = "#B8B8B8", fontface = "italic", size = 3.3) +
+      
+      ggplot2::annotate("rect", xmin = 3.05, xmax = 8.95, ymin = 6.85, ymax = 7.42,
+                        fill = "#1D9E75", colour = "#E8EAEA", linewidth = 0.6) +
+      ggplot2::annotate("text", x = 6, y = 7.13,
                         label = "queue_subordinate_task  (read_file)",
-                        color = "white", size = 4) +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 5, y = 8.8, yend = 7.9,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "grey50") +
+                        colour = "white", size = 3.9) +
+      ggplot2::annotate("segment", x = 6, xend = 6, y = 6.85, yend = 6.25,
+                        arrow = arrow_obj, colour = "#A0A0A0", linewidth = 0.7) +
+      
       ggplot2::geom_polygon(
-        data = diamond_df(5, 6.7, 5.0, 2.2, "d1"),
+        data = diamond_df(6, 5.55, 5.8, 1.35, "d_current"),
         mapping = ggplot2::aes(x = x, y = y, group = group),
-        fill = "#E8C547", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 7.0,
+        fill = "#E8C547", colour = "#FFFFFF", linewidth = 0.7
+      ) +
+      ggplot2::annotate("text", x = 6, y = 5.78,
                         label = "saidit_post_check",
-                        color = "white", size = 4.5, fontface = "bold") +
-      ggplot2::annotate("text", x = 5, y = 6.6,
-                        label = "Checks: can post be made?",
-                        color = "white", size = 3.5) +
-      ggplot2::annotate("text", x = 5, y = 6.2,
-                        label = "Does NOT inspect content_source",
-                        color = "#FAC775", size = 3.2, fontface = "italic") +
-      ggplot2::annotate("text", x = 3.8, y = 5.55,
-                        label = "PASS (unconditional \u2014 no content_source check)",
-                        color = "#D84040", fontface = "bold", size = 3.2) +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 5, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "#D84040", linewidth = 1.2) +
-      ggplot2::annotate("rect",
-                        xmin = 1.2, xmax = 8.8, ymin = 3.5, ymax = 4.7,
-                        fill = "#D84040", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 4.2,
-                        label = "saidit_post  \u2014  INJECTION SUCCEEDS",
-                        color = "white", size = 4.2, fontface = "bold") +
-      ggplot2::annotate("text", x = 5, y = 3.75,
-                        label = "content_source = HiddenOrca.txt  |  file = NA  (anomalous field population)",
-                        color = "#f09595", size = 3.2) +
-      ggplot2::annotate("text", x = 3.8, y = 3.1,
-                        label = "+1s \u2192 delete_file \u00d7 2  (evidence destroyed within 2 seconds)",
-                        color = "grey50", size = 3, fontface = "italic") +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 5, y = 3.5, yend = 2.6,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "grey50") +
-      ggplot2::annotate("rect",
-                        xmin = 2.5, xmax = 7.5, ymin = 1.5, ymax = 2.6,
-                        fill = "#3d5a63", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 2.05,
-                        label = "delete_file \u00d7 2  \u2014  Evidence destroyed",
-                        color = "white", size = 3.8) +
-      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5), expand = FALSE) +
-      ggplot2::theme_void() +
-      ggplot2::theme(plot.margin = ggplot2::margin(20, 20, 20, 20))
-    
+                        colour = "white", size = 4.3, fontface = "bold") +
+      ggplot2::annotate("text", x = 6, y = 5.38,
+                        label = "missing content_source check",
+                        colour = "#FFF4B8", size = 3.1, fontface = "italic") +
+      
+      ggplot2::annotate("segment", x = 6, xend = 6, y = 4.88, yend = 4.18,
+                        arrow = arrow_obj, colour = "#D84040", linewidth = 1.4) +
+      ggplot2::annotate("text", x = 7.85, y = 4.52,
+                        label = "PASS — injection not blocked",
+                        colour = "#D84040", size = 3.2, fontface = "bold") +
+      
+      ggplot2::annotate("rect", xmin = 2.05, xmax = 9.95, ymin = 3.20, ymax = 4.12,
+                        fill = "#D84040", colour = "#FFFFFF", linewidth = 0.7) +
+      ggplot2::annotate("text", x = 6, y = 3.78,
+                        label = "saidit_post — INJECTION SUCCEEDS",
+                        colour = "white", size = 4.1, fontface = "bold") +
+      ggplot2::annotate("text", x = 6, y = 3.40,
+                        label = "content_source populated while file = NA",
+                        colour = "#FFD2D2", size = 3.0) +
+      
+      ggplot2::annotate("segment", x = 6, xend = 6, y = 3.20, yend = 2.55,
+                        arrow = arrow_obj, colour = "#A0A0A0", linewidth = 0.7) +
+      ggplot2::annotate("rect", xmin = 3.20, xmax = 8.80, ymin = 1.65, ymax = 2.55,
+                        fill = "#3D5A63", colour = "#FFFFFF", linewidth = 0.7) +
+      ggplot2::annotate("text", x = 6, y = 2.20,
+                        label = "delete_file × 2 — evidence destroyed",
+                        colour = "white", size = 3.6, fontface = "bold") +
+      ggplot2::annotate("text", x = 6, y = 1.13,
+                        label = "Result: the anomalous post passes through and traces are removed within seconds.",
+                        colour = "#B8B8B8", size = 3.1, fontface = "italic") +
+      ggplot2::coord_fixed(ratio = 0.82, xlim = c(0, 12), ylim = c(0.5, 8.8), expand = FALSE) +
+      base_theme
   } else {
-    
-    # -------------------------------------------------------------------------
-    # PROPOSED STATE — Intervention Applied
-    # -------------------------------------------------------------------------
     ggplot2::ggplot() +
-      ggplot2::annotate("rect",
-                        xmin = 0.5, xmax = 9.5, ymin = 0.3, ymax = 11.2,
-                        fill = "#0a1a10", color = "#1D9E75", linewidth = 1.5) +
-      ggplot2::annotate("text", x = 5, y = 10.7,
-                        label = "PROPOSED STATE \u2014 Intervention Applied",
-                        color = "#1D9E75", fontface = "bold", size = 6) +
-      ggplot2::annotate("text", x = 5, y = 10.15,
-                        label = "One null-check added to saidit_post_check \u2014 blocks all 3 incidents with no new infrastructure",
-                        color = "#888888", size = 3.5, fontface = "italic") +
-      ggplot2::annotate("rect",
-                        xmin = 2.5, xmax = 7.5, ymin = 8.8, ymax = 9.7,
-                        fill = "#1D9E75", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 9.25,
+      ggplot2::annotate("rect", xmin = 0.35, xmax = 11.65, ymin = 0.35, ymax = 8.65,
+                        fill = "#091711", colour = "#1D9E75", linewidth = 1.0) +
+      ggplot2::annotate("text", x = 6, y = 8.18,
+                        label = "PROPOSED STATE — Fixed at the Gate",
+                        colour = "#5DCAA5", fontface = "bold", size = 5.4) +
+      ggplot2::annotate("text", x = 6, y = 7.78,
+                        label = "One added check: normal posts continue; injected content is stopped before posting",
+                        colour = "#B8B8B8", fontface = "italic", size = 3.0) +
+      
+      ggplot2::annotate("rect", xmin = 3.05, xmax = 8.95, ymin = 6.85, ymax = 7.42,
+                        fill = "#1D9E75", colour = "#E8EAEA", linewidth = 0.6) +
+      ggplot2::annotate("text", x = 6, y = 7.13,
                         label = "queue_subordinate_task  (read_file)",
-                        color = "white", size = 4) +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 5, y = 8.8, yend = 7.9,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "grey50") +
+                        colour = "white", size = 3.9) +
+      ggplot2::annotate("segment", x = 6, xend = 6, y = 6.85, yend = 6.25,
+                        arrow = arrow_obj, colour = "#A0A0A0", linewidth = 0.7) +
+      
       ggplot2::geom_polygon(
-        data = diamond_df(5, 6.7, 5.0, 2.2, "d2"),
+        data = diamond_df(6, 5.55, 5.5, 1.55, "d_proposed"),
         mapping = ggplot2::aes(x = x, y = y, group = group),
-        fill = "#E8C547", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 5, y = 7.05,
-                        label = "saidit_post_check  (ENHANCED)",
-                        color = "white", size = 4.2, fontface = "bold") +
-      ggplot2::annotate("text", x = 5, y = 6.6,
-                        label = "Checks: can post be made?",
-                        color = "white", size = 3.5) +
-      ggplot2::annotate("text", x = 5, y = 6.2,
-                        label = "+ NEW: is content_source NULL?",
-                        color = "#E8C547", size = 3.5, fontface = "bold") +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 2.2, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "#1D9E75", linewidth = 1.2) +
-      ggplot2::annotate("text", x = 2.4, y = 5.25,
-                        label = "PASS\ncontent_source = NA",
-                        color = "#1D9E75", fontface = "bold", size = 3.2) +
-      ggplot2::annotate("segment",
-                        x = 5, xend = 7.8, y = 5.6, yend = 4.7,
-                        arrow = ggplot2::arrow(length = ggplot2::unit(3, "mm"), type = "closed"),
-                        color = "#D84040", linewidth = 1.2) +
-      ggplot2::annotate("text", x = 7.6, y = 5.25,
-                        label = "FAIL\ncontent_source \u2260 NA",
-                        color = "#D84040", fontface = "bold", size = 3.2) +
-      ggplot2::annotate("rect",
-                        xmin = 0.6, xmax = 3.8, ymin = 3.5, ymax = 4.7,
-                        fill = "#1D9E75", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 2.2, y = 4.2,
+        fill = "#E8C547", colour = "#FFFFFF", linewidth = 0.7
+      ) +
+      ggplot2::annotate("text", x = 6, y = 5.82,
+                        label = "saidit_post_check",
+                        colour = "white", size = 3.9, fontface = "bold") +
+      ggplot2::annotate("text", x = 6, y = 5.50,
+                        label = "+ content_source null-check",
+                        colour = "#FFF4B8", size = 2.9, fontface = "bold") +
+      ggplot2::annotate("text", x = 6, y = 5.20,
+                        label = "Is content_source empty?",
+                        colour = "#FFF4B8", size = 2.7, fontface = "italic") +
+      
+      ggplot2::annotate("segment", x = 5.15, xend = 3.35, y = 4.98, yend = 4.23,
+                        arrow = arrow_obj, colour = "#1D9E75", linewidth = 1.4) +
+      ggplot2::annotate("segment", x = 6.85, xend = 8.65, y = 4.98, yend = 4.23,
+                        arrow = arrow_obj, colour = "#D84040", linewidth = 1.4) +
+      ggplot2::annotate("text", x = 2.45, y = 4.75,
+                        label = "ALLOW\nnormal post",
+                        colour = "#5DCAA5", size = 2.9, fontface = "bold",
+                        hjust = 0.5, lineheight = 0.95) +
+      ggplot2::annotate("text", x = 9.55, y = 4.75,
+                        label = "BLOCK\ninjected content",
+                        colour = "#D84040", size = 2.9, fontface = "bold",
+                        hjust = 0.5, lineheight = 0.95) +
+      
+      ggplot2::annotate("rect", xmin = 1.05, xmax = 5.25, ymin = 3.02, ymax = 4.02,
+                        fill = "#1D9E75", colour = "#FFFFFF", linewidth = 0.7) +
+      ggplot2::annotate("text", x = 3.15, y = 3.62,
                         label = "saidit_post",
-                        color = "white", size = 4, fontface = "bold") +
-      ggplot2::annotate("text", x = 2.2, y = 3.75,
-                        label = "content_source = NA\nfile = filename  (normal)",
-                        color = "#5DCAA5", size = 3) +
-      ggplot2::annotate("rect",
-                        xmin = 6.2, xmax = 9.4, ymin = 3.5, ymax = 4.7,
-                        fill = "#D84040", color = "white", linewidth = 0.5) +
-      ggplot2::annotate("text", x = 7.8, y = 4.2,
+                        colour = "white", size = 3.8, fontface = "bold") +
+      ggplot2::annotate("text", x = 3.15, y = 3.23,
+                        label = "normal post proceeds",
+                        colour = "#CFF5E8", size = 2.9) +
+      
+      ggplot2::annotate("rect", xmin = 6.75, xmax = 10.95, ymin = 3.02, ymax = 4.02,
+                        fill = "#D84040", colour = "#FFFFFF", linewidth = 0.7) +
+      ggplot2::annotate("text", x = 8.85, y = 3.62,
                         label = "BLOCK + ALERT",
-                        color = "white", size = 4, fontface = "bold") +
-      ggplot2::annotate("text", x = 7.8, y = 3.75,
-                        label = "Post prevented\nAnomaly flagged for review",
-                        color = "#f09595", size = 3) +
-      ggplot2::annotate("rect",
-                        xmin = 1.5, xmax = 8.5, ymin = 1.2, ymax = 2.5,
-                        fill = "#0a1a10", color = "#1D9E75", linewidth = 0.8) +
-      ggplot2::annotate("text", x = 5, y = 1.85,
-                        label = "No new infrastructure required.  The gate already fires at the right moment.\nOne null-check on content_source is sufficient to block all 3 confirmed incidents.",
-                        color = "#1D9E75", size = 3.2, fontface = "italic") +
-      ggplot2::coord_cartesian(xlim = c(0.5, 9.5), ylim = c(1.0, 11.5), expand = FALSE) +
-      ggplot2::theme_void() +
-      ggplot2::theme(plot.margin = ggplot2::margin(20, 20, 20, 20))
+                        colour = "white", size = 3.8, fontface = "bold") +
+      ggplot2::annotate("text", x = 8.85, y = 3.23,
+                        label = "injection prevented",
+                        colour = "#FFD2D2", size = 2.9) +
+      
+      ggplot2::annotate("rect", xmin = 1.25, xmax = 10.75, ymin = 1.10, ymax = 2.10,
+                        fill = "#0B1418", colour = "#5DCAA5", linewidth = 0.8) +
+      ggplot2::annotate("text", x = 6, y = 1.60,
+                        label = "Fix impact: the same gate blocks all 3 confirmed incidents.",
+                        colour = "#5DCAA5", size = 3.3, fontface = "bold") +
+      ggplot2::coord_fixed(ratio = 0.82, xlim = c(0, 12), ylim = c(0.7, 8.8), expand = FALSE) +
+      base_theme
   }
 }

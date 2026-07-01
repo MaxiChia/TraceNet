@@ -1,6 +1,8 @@
 # =============================================================================
 # global.R — TraceNet Shiny App
-# mc2_df.rds is PRE-PROCESSED — no unnest/rename needed on startup
+# Flexible loader version: supports the normal project structure
+#   data/mc2_df.rds, data/org_chart.json, modules/*.R
+# and the flat uploaded structure used during review.
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -21,21 +23,55 @@ library(visNetwork)
 library(DT)
 library(jsonlite)
 
+`%||%` <- function(x, y) if (is.null(x)) y else x
 
 # -----------------------------------------------------------------------------
-# 2. DATA LOADING
+# 2. FLEXIBLE PATH HELPERS
+# -----------------------------------------------------------------------------
+resolve_file <- function(...) {
+  candidates <- c(...)
+  hit <- candidates[file.exists(candidates)][1]
+  if (is.na(hit)) {
+    stop(
+      "Cannot find required file. Checked: ",
+      paste(candidates, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  hit
+}
+
+source_if_exists <- function(...) {
+  candidates <- c(...)
+  hit <- candidates[file.exists(candidates)][1]
+  if (!is.na(hit)) {
+    source(hit, local = FALSE)
+    return(invisible(TRUE))
+  }
+  invisible(FALSE)
+}
+
+# -----------------------------------------------------------------------------
+# 3. DATA LOADING
 # -----------------------------------------------------------------------------
 data_dir <- file.path(getwd(), "data")
+module_dir <- file.path(getwd(), "modules")
 
-mc2_df  <- readRDS(file.path(data_dir, "mc2_df.rds"))
+mc2_df <- readRDS(resolve_file(
+  file.path(data_dir, "mc2_df.rds"),
+  file.path(getwd(), "mc2_df.rds")
+))
+
 org_raw <- jsonlite::fromJSON(
-  file.path(data_dir, "org_chart.json"),
+  resolve_file(
+    file.path(data_dir, "org_chart.json"),
+    file.path(getwd(), "org_chart.json")
+  ),
   simplifyVector = FALSE
 )
 
-
 # -----------------------------------------------------------------------------
-# 3. PARSE org_chart.json
+# 4. PARSE org_chart.json
 # -----------------------------------------------------------------------------
 org_nodes <- org_raw$nodes |>
   purrr::map_dfr(~ tibble::tibble(
@@ -51,14 +87,6 @@ org_edges <- org_raw$edges |>
     weight = .x[["weight"]] %||% 1L
   ))
 
-
-# -----------------------------------------------------------------------------
-# 4. mc2_df NORMALISATION
-# Pre-processed locally — RDS already contains all derived columns.
-# No transformation needed on startup.
-# -----------------------------------------------------------------------------
-
-
 # -----------------------------------------------------------------------------
 # 5. CONFIRMED MC2 CONSTANTS
 # -----------------------------------------------------------------------------
@@ -73,7 +101,6 @@ TERMINAL_SEQUENCE <- c(
   "delete_file",
   "delete_file"
 )
-
 
 # -----------------------------------------------------------------------------
 # 6. SHARED DERIVED OBJECTS
@@ -109,7 +136,6 @@ cutoff_date       <- max(INCIDENT_DATES)
 pre_intervention  <- mc2_df |> dplyr::filter(date <= cutoff_date)
 post_intervention <- mc2_df |> dplyr::filter(date >  cutoff_date)
 
-
 # -----------------------------------------------------------------------------
 # 7. UI COLOUR CONSTANTS
 # -----------------------------------------------------------------------------
@@ -128,14 +154,23 @@ MODULE_COLOURS <- c(
   "Module3" = "#1D9E75"
 )
 
+# Shared plot background values for module plots.
+TN_PLOT_BG     <- "#0B1418"
+TN_PANEL_BG    <- "#0F1D22"
+TN_GRID        <- "#243D47"
+TN_TEXT        <- "#E8EAEA"
+TN_MUTED_TEXT  <- "#AAB7BA"
 
 # -----------------------------------------------------------------------------
 # 8. SOURCE MODULE FILES
 # -----------------------------------------------------------------------------
-source("modules/mod1_topology.R")
-source("modules/mod2_anomaly.R")
-source("modules/mod3_historical.R")
-source("modules/mod_investigation.R")
+source_if_exists(file.path(module_dir, "mod1_topology.R"), file.path(getwd(), "mod1_topology.R"))
+source_if_exists(file.path(module_dir, "mod2_anomaly.R"), file.path(getwd(), "mod2_anomaly.R"))
+source_if_exists(file.path(module_dir, "mod3_historical.R"), file.path(getwd(), "mod3_historical.R"))
+
+# Optional investigation walkthrough module. The upgraded UI does not depend on
+# it, but existing deployments can keep using it if the file is present.
+source_if_exists(file.path(module_dir, "mod_investigation.R"), file.path(getwd(), "mod_investigation.R"))
 
 cat("global.R loaded successfully.\n")
 cat("mc2_df rows       :", nrow(mc2_df), "\n")

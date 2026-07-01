@@ -49,7 +49,7 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
     )
   ) +
     ggplot2::geom_vline(
-      xintercept = as.numeric(as.Date(c("2046-05-10","2046-05-11","2046-05-17"))),
+      xintercept = as.Date(c("2046-05-10", "2046-05-11", "2046-05-17")),
       colour = "#D84040", linetype = "dashed", linewidth = 0.5, alpha = 0.4
     ) +
     ggplot2::geom_jitter(width = 0.3, height = 0, stroke = 0) +
@@ -59,11 +59,10 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
       colour = "#D84040", size = 18, alpha = 0.12,
       shape = 1, stroke = 1.2, inherit.aes = FALSE
     ) +
-    ggplot2::geom_label(
+    ggplot2::geom_text(
       data    = anomalous_df,
       mapping = ggplot2::aes(x = date, y = time_of_day, label = content_source),
-      nudge_x = 1.5, size = 3, colour = "#D84040",
-      fill = "#FFF5F5", label.size = 0.3,
+      nudge_x = 1.5, hjust = 0, size = 3, colour = "#D84040",
       fontface = "bold", inherit.aes = FALSE
     ) +
     ggplot2::scale_colour_manual(
@@ -105,15 +104,28 @@ mod2_render_compare <- function(normal_posts, anomalous_events) {
     ) +
     ggplot2::theme_minimal(base_size = 12) +
     ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "bold", size = 13),
-      plot.subtitle      = ggplot2::element_text(colour = "#666666", size = 9.5),
+      plot.title         = ggplot2::element_text(face = "bold", size = 13, colour = "#E8EAEA"),
+      plot.subtitle      = ggplot2::element_text(colour = "#AAB7BA", size = 9.5),
       legend.position    = "bottom",
       panel.grid.minor   = ggplot2::element_blank(),
-      panel.grid.major.x = ggplot2::element_line(colour = "#F0F0F0")
+      panel.grid.major.x = ggplot2::element_line(colour = "#243D47"),
+      panel.grid.major.y = ggplot2::element_line(colour = "#1A2E35"),
+      plot.background    = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background   = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.background  = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.key         = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.text        = ggplot2::element_text(colour = "#E8EAEA"),
+      axis.text          = ggplot2::element_text(colour = "#E8EAEA"),
+      axis.title         = ggplot2::element_text(colour = "#AAB7BA")
     )
   
   plotly::ggplotly(p, tooltip = "text") |>
-    plotly::layout(legend = list(orientation = "h", y = -0.12))
+    plotly::layout(
+      paper_bgcolor = "#0B1418",
+      plot_bgcolor  = "#0B1418",
+      font = list(color = "#E8EAEA"),
+      legend = list(orientation = "h", y = -0.12, font = list(color = "#E8EAEA"))
+    )
 }
 
 
@@ -137,7 +149,8 @@ mod2_render_gate <- function(data, selected_date) {
         ggplot2::annotate("text", x = 0.5, y = 0.5,
                           label = "No anomalous saidit_post found for this date.",
                           size = 5, colour = "#888888") +
-        ggplot2::theme_void()
+        ggplot2::theme_void() +
+        ggplot2::theme(plot.background = ggplot2::element_rect(fill = "#0B1418", colour = NA))
     )
   }
   
@@ -172,7 +185,7 @@ mod2_render_gate <- function(data, selected_date) {
     ggplot2::geom_label(
       ggplot2::aes(x = 0.7, y = step, label = timing),
       size = 4.5, fontface = "bold", colour = "#444444",
-      fill = "#F5F5F5", label.size = 0.3,
+      fill = "#F5F5F5", linewidth = 0.3,
       label.padding = ggplot2::unit(0.35, "lines")
     ) +
     ggplot2::geom_text(
@@ -206,10 +219,12 @@ mod2_render_gate <- function(data, selected_date) {
     ) +
     ggplot2::theme_void() +
     ggplot2::theme(
+      plot.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background = ggplot2::element_rect(fill = "#0B1418", colour = NA),
       plot.title    = ggplot2::element_text(face = "bold", size = 13,
                                             margin = ggplot2::margin(b = 4),
-                                            colour = "#222222"),
-      plot.subtitle = ggplot2::element_text(colour = ANOMALY_COLOUR,
+                                            colour = "#E8EAEA"),
+      plot.subtitle = ggplot2::element_text(colour = "#FFB4B4",
                                             face = "bold", size = 10,
                                             margin = ggplot2::margin(b = 12)),
       plot.margin   = ggplot2::margin(16, 24, 16, 24)

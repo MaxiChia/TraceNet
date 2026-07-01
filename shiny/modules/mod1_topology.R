@@ -95,9 +95,9 @@ mod1_network_relay <- function(show_labels) {
     nodes = nodes,
     edges = RELAY_EDGES,
     width  = "100%",
-    height = "450px",
+    height = "calc(100vh - 220px)",
     main   = list(
-      text  = "11-Node Task Delegation Chain — 17 May 2046 (same structure confirmed across all 3 incidents)",
+      text  = "11-Step Relay Sequence — 17 May 2046 (9 unique agents; same structure confirmed across all 3 incidents)",
       style = "font-size:13px; font-weight:bold; color:#E0C060; text-align:left; padding-left:10px;"
     )
   ) |>
@@ -127,7 +127,8 @@ mod1_network_relay <- function(show_labels) {
     visNetwork::visInteraction(
       navigationButtons = TRUE, tooltipDelay = 80,
       dragNodes = TRUE, zoomView = TRUE
-    )
+    ) |>
+    visNetwork::visEvents(type = "once", afterDrawing = "function() { this.fit({animation: false}); }")
 }
 
 # -----------------------------------------------------------------------------
@@ -197,7 +198,7 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
   
   visNetwork::visNetwork(
     nodes = node_df, edges = edge_df,
-    width = "100%", height = "450px",
+    width = "100%", height = "calc(100vh - 220px)",
     main  = list(
       text  = paste0("Core Actor Interaction Network — ", selected_date),
       style = "font-size:13px; font-weight:bold; color:#E0C060; text-align:left; padding-left:10px;"
@@ -225,7 +226,8 @@ mod1_network_core <- function(data, show_labels, selected_date = "All") {
       ),
       useGroups = FALSE, position = "right"
     ) |>
-    visNetwork::visInteraction(navigationButtons = TRUE, tooltipDelay = 80)
+    visNetwork::visInteraction(navigationButtons = TRUE, tooltipDelay = 80) |>
+    visNetwork::visEvents(type = "once", afterDrawing = "function() { this.fit({animation: false}); }")
 }
 
 # -----------------------------------------------------------------------------
@@ -289,7 +291,7 @@ mod1_render_timeline <- function(data, selected_date = "All") {
   
   if (nrow(timeline_df) == 0) {
     return(plotly::plot_ly() |>
-             plotly::layout(title = "No chain actor events for selected date range."))
+             plotly::layout(title = "No chain actor events for selected date range.", paper_bgcolor = "#0B1418", plot_bgcolor = "#0B1418", font = list(color = "#E8EAEA")))
   }
   
   colour_map <- c(
@@ -332,7 +334,7 @@ mod1_render_timeline <- function(data, selected_date = "All") {
       data = data.frame(
         ymin = seq(0.5, length(levels(timeline_df$actor_factor)) - 0.5, 1),
         ymax = seq(1.5, length(levels(timeline_df$actor_factor)) + 0.5, 1),
-        fill = rep(c("#F9F9F9", "white"),
+        fill = rep(c("#10242B", "#0B1418"),
                    length.out = length(levels(timeline_df$actor_factor)))
       ),
       ggplot2::aes(ymin = ymin, ymax = ymax, fill = fill),
@@ -365,20 +367,32 @@ mod1_render_timeline <- function(data, selected_date = "All") {
     ) +
     ggplot2::theme_minimal(base_size = 11) +
     ggplot2::theme(
-      plot.title         = ggplot2::element_text(face = "bold", size = 12),
-      plot.subtitle      = ggplot2::element_text(colour = "#666666", size = 9),
+      plot.title         = ggplot2::element_text(face = "bold", size = 12, colour = "#E8EAEA"),
+      plot.subtitle      = ggplot2::element_text(colour = "#AAB7BA", size = 9),
       legend.position    = "bottom",
       strip.text         = ggplot2::element_text(face = "bold", size = 10,
                                                  colour = "white",
                                                  margin = ggplot2::margin(3,3,3,3)),
       strip.background   = ggplot2::element_rect(fill = "#1D9E75", colour = NA),
-      panel.grid.major.x = ggplot2::element_line(colour = "#1a2e35"),
+      panel.grid.major.x = ggplot2::element_line(colour = "#243D47"),
       panel.grid.major.y = ggplot2::element_blank(),
-      axis.text.y        = ggplot2::element_text(size = 9, colour = "#333333"),
-      panel.spacing      = ggplot2::unit(0.6, "lines")
+      axis.text.y        = ggplot2::element_text(size = 9, colour = "#E8EAEA"),
+      panel.spacing      = ggplot2::unit(0.6, "lines"),
+      plot.background    = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      panel.background   = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.background  = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.key         = ggplot2::element_rect(fill = "#0B1418", colour = NA),
+      legend.text        = ggplot2::element_text(colour = "#E8EAEA"),
+      legend.title       = ggplot2::element_text(colour = "#E8EAEA"),
+      axis.text.x        = ggplot2::element_text(colour = "#E8EAEA"),
+      axis.title.x       = ggplot2::element_text(colour = "#AAB7BA")
     )
   
   plotly::ggplotly(p, tooltip = "text") |>
-    plotly::layout(legend = list(orientation = "h", y = -0.1,
-                                 font = list(size = 10)))
+    plotly::layout(
+      paper_bgcolor = "#0B1418",
+      plot_bgcolor  = "#0B1418",
+      font = list(color = "#E8EAEA"),
+      legend = list(orientation = "h", y = -0.1, font = list(size = 10, color = "#E8EAEA"))
+    )
 }
