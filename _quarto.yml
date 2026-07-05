@@ -5,7 +5,7 @@ project:
     - index.qmd
     - proposal.qmd
     - minutes.qmd
-    - user_manual.qmd   
+    - user_manual_Updated.qmd   
     - Take-Home_Exercise02/Take-Home_Ex02.qmd
     - Methodology/1. Data Preparation.qmd
     - Methodology/2. Statistical Analysis.qmd
