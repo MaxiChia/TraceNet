@@ -36,7 +36,7 @@ website:
             href: https://tracenet.shinyapps.io/TraceNet/
             target: _blank
           - text: User Manual
-            href: user_manual.qmd
+            href: user_manual_2.qmd
         
     right:
       - text: "Appendix - Full Examination"

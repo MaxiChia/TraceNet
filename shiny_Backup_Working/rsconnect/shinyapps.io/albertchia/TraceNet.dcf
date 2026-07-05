@@ -1,0 +1,10 @@
+name: TraceNet
+title:
+username: albertchia
+account: albertchia
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 17539109
+bundleId: 12162211
+url: https://albertchia.shinyapps.io/TraceNet/
+version: 1
